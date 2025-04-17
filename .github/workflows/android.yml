@@ -1,9 +1,9 @@
-name: Android CI
+name: Android CI
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
+    branches: [ main ]         # run on every push to main
+  pull_request:                # and on PRs targeting main
     branches: [ main ]
 
 jobs:
@@ -11,23 +11,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: gradle
+      # 1  Check out code
+      - uses: actions/checkout@v4        # ⬆ v4 is current
 
-    - name: Write secret to local.properties
-      run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> local.properties
-      
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-      
-    - name: Build with Gradle
-      run: ./gradlew build
-      
-    - name: Run tests
-      run: ./gradlew test 
+      # 2  Set up JDK 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:                           # ⇢ these three stay inside the same "with" block
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'               # Gradle deps cached automatically
+
+      # 3  (Extra) Cache build outputs & enable dependency graph
+      - uses: gradle/gradle-build-action@v3
+
+      # 4  Write the OpenAI key into local.properties (and mask it)
+      - name: Inject OpenAI key
+        shell: bash
+        run: |
+          echo "::add-mask::${{ secrets.OPENAI_API_KEY }}"
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> local.properties
+
+      # 5  Make wrapper executable (not needed on Windows runners)
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      # 6  Build APK (debug only = faster, skips signing)
+      - name: Assemble Debug
+        run: ./gradlew assembleDebug --stacktrace
+
+      # 7  Run unit tests
+      - name: Run tests
+        run: ./gradlew testDebugUnitTest --stacktrace
