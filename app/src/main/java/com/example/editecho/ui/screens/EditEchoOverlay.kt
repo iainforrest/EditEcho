@@ -1,0 +1,329 @@
+package com.example.editecho.ui.screens
+
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.media.MediaRecorder
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.core.content.ContextCompat
+import com.example.editecho.ui.components.ToneButton
+import com.example.editecho.ui.theme.EditEchoColors
+import com.example.editecho.util.AudioRecorder
+import com.example.editecho.util.OpenAIService
+import kotlinx.coroutines.launch
+import java.io.File
+import android.content.res.Configuration
+
+/**
+ * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
+ *
+ * @param onDismiss Callback to be invoked when the overlay is dismissed.
+ */
+@Composable
+fun EditEchoOverlay(
+    onDismiss: () -> Unit
+) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    
+    // State variables
+    var hasMicPermission by remember { mutableStateOf(false) }
+    var isRecording by remember { mutableStateOf(false) }
+    var transcribedText by remember { mutableStateOf("") }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    var selectedTone by remember { mutableStateOf("Professional") }
+    var isProcessing by remember { mutableStateOf(false) }
+    
+    // Audio recorder
+    val audioRecorder = remember { AudioRecorder(context) }
+    
+    // OpenAI service
+    val openAIService = remember { OpenAIService() }
+    
+    // Permission launcher
+    val permissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        hasMicPermission = isGranted
+        if (!isGranted) {
+            errorMessage = "Microphone permission is required for recording"
+        }
+    }
+    
+    // Check for microphone permission
+    LaunchedEffect(Unit) {
+        hasMicPermission = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.RECORD_AUDIO
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+    
+    // Request microphone permission if not granted
+    fun requestMicPermission() {
+        permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+    }
+    
+    // Start recording
+    fun startRecording() {
+        if (!hasMicPermission) {
+            requestMicPermission()
+            return
+        }
+        
+        scope.launch {
+            try {
+                audioRecorder.startRecording()
+                isRecording = true
+                errorMessage = null
+            } catch (e: Exception) {
+                errorMessage = "Failed to start recording: ${e.message}"
+            }
+        }
+    }
+    
+    // Stop recording and process audio
+    fun stopRecording() {
+        scope.launch {
+            try {
+                val audioFile = audioRecorder.stopRecording()
+                isRecording = false
+                
+                // Process the audio file for transcription
+                isProcessing = true
+                transcribedText = audioRecorder.transcribeAudio(audioFile)
+                isProcessing = false
+                
+                // Send text to OpenAI for tone adjustment
+                val adjustedText = openAIService.adjustTone(transcribedText, selectedTone)
+                transcribedText = adjustedText
+                
+            } catch (e: Exception) {
+                errorMessage = "Error processing audio: ${e.message}"
+                isProcessing = false
+            }
+        }
+    }
+    
+    // Copy text to clipboard
+    fun copyTextToClipboard() {
+        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        val clip = android.content.ClipData.newPlainText("Transcribed Text", transcribedText)
+        clipboard.setPrimaryClip(clip)
+    }
+    
+    // Bottom sheet dialog
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Black.copy(alpha = 0.5f))
+                .clickable(onClick = onDismiss)
+        ) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.7f)
+                    .align(Alignment.BottomCenter)
+                    .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .clickable(enabled = false) { },
+                colors = CardDefaults.cardColors(
+                    containerColor = EditEchoColors.Surface
+                )
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    // Header
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "EditEcho",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = EditEchoColors.PrimaryText
+                        )
+                        IconButton(onClick = onDismiss) {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = "Close",
+                                tint = EditEchoColors.PrimaryText
+                            )
+                        }
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Text field for transcribed text
+                    OutlinedTextField(
+                        value = transcribedText,
+                        onValueChange = { transcribedText = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        placeholder = {
+                            Text(
+                                text = if (isProcessing) "Processing audio..."
+                                else "Your transcribed text will appear here",
+                                color = EditEchoColors.PrimaryText.copy(alpha = 0.6f)
+                            )
+                        },
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedTextColor = EditEchoColors.PrimaryText,
+                            unfocusedTextColor = EditEchoColors.PrimaryText,
+                            focusedBorderColor = EditEchoColors.Primary,
+                            unfocusedBorderColor = EditEchoColors.PrimaryText.copy(alpha = 0.6f),
+                            focusedPlaceholderColor = EditEchoColors.PrimaryText.copy(alpha = 0.6f),
+                            unfocusedPlaceholderColor = EditEchoColors.PrimaryText.copy(alpha = 0.6f)
+                        ),
+                        enabled = !isProcessing
+                    )
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Tone selection
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        ToneButton(
+                            text = "Professional",
+                            isActive = selectedTone == "Professional",
+                            onClick = { selectedTone = "Professional" },
+                            modifier = Modifier.weight(1f)
+                        )
+                        ToneButton(
+                            text = "Casual",
+                            isActive = selectedTone == "Casual",
+                            onClick = { selectedTone = "Casual" },
+                            modifier = Modifier.weight(1f)
+                        )
+                        ToneButton(
+                            text = "Friendly",
+                            isActive = selectedTone == "Friendly",
+                            onClick = { selectedTone = "Friendly" },
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    // Action buttons
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        // Record button
+                        Button(
+                            onClick = { if (isRecording) stopRecording() else startRecording() },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (isRecording) EditEchoColors.Error
+                                else EditEchoColors.Primary
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Mic,
+                                contentDescription = if (isRecording) "Stop Recording"
+                                else "Start Recording"
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = if (isRecording) "Stop"
+                                else "Record"
+                            )
+                        }
+                        
+                        // Copy button
+                        Button(
+                            onClick = { copyTextToClipboard() },
+                            enabled = transcribedText.isNotEmpty(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = EditEchoColors.Primary
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.ContentCopy,
+                                contentDescription = "Copy Text"
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "Copy")
+                        }
+                        
+                        // Settings button
+                        Button(
+                            onClick = { /* TODO: Open settings */ },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = EditEchoColors.Primary
+                            )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Settings,
+                                contentDescription = "Settings"
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "Settings")
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Error message dialog
+    errorMessage?.let { message ->
+        AlertDialog(
+            onDismissRequest = { errorMessage = null },
+            title = { Text("Error") },
+            text = { Text(message) },
+            confirmButton = {
+                TextButton(onClick = { errorMessage = null }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EditEchoOverlayPreview() {
+    EditEchoOverlay(onDismiss = {})
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun EditEchoOverlayDarkPreview() {
+    EditEchoOverlay(onDismiss = {})
+} 
