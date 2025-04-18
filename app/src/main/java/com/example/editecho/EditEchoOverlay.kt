@@ -48,10 +48,15 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.editecho.ui.components.ToneButton
 import com.example.editecho.ui.theme.EditEchoColors
 import com.example.editecho.util.AudioRecorder
 import com.example.editecho.util.OpenAIService
+import com.example.editecho.view.EditEchoOverlayViewModel
+import com.example.editecho.view.RecordingState
+import com.example.editecho.view.ToneState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -69,10 +74,6 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import androidx.compose.runtime.rememberCoroutineScope
 import android.content.res.Configuration
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.editecho.view.EditEchoOverlayViewModel
-import com.example.editecho.view.RecordingState
-import com.example.editecho.view.ToneState
 
 /**
  * Composable function that displays the EditEcho overlay as a bottom sheet.
@@ -84,9 +85,12 @@ fun EditEchoOverlay(
     modifier: Modifier = Modifier,
     viewModel: EditEchoOverlayViewModel = viewModel()
 ) {
-    val recordingState by viewModel.recordingState.collectAsState()
-    val toneState by viewModel.toneState.collectAsState()
-    val selectedTone by viewModel.selectedTone.collectAsState()
+    val recordingState by viewModel.recordingState.collectAsStateWithLifecycle()
+    val toneState by viewModel.toneState.collectAsStateWithLifecycle()
+    val selectedTone = viewModel.selectedTone
+    
+    // Determine if we're in a "thinking" state
+    val isThinking = recordingState is RecordingState.Processing || toneState is ToneState.Processing
 
     Column(
         modifier = modifier
@@ -138,15 +142,17 @@ fun EditEchoOverlay(
             )
         }
 
-        // Status and result display
+        // Main text field - read-only
         when (toneState) {
-            is ToneState.Processing -> {
-                CircularProgressIndicator()
-            }
             is ToneState.Success -> {
-                Text(
-                    text = (toneState as ToneState.Success).text,
-                    style = MaterialTheme.typography.bodyLarge
+                TextField(
+                    value = (toneState as ToneState.Success).text,
+                    onValueChange = {}, // read-only
+                    readOnly = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 200.dp),
+                    label = { Text("Refined Text") }
                 )
             }
             is ToneState.Error -> {
@@ -156,7 +162,27 @@ fun EditEchoOverlay(
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
-            else -> {} // Do nothing for Idle state
+            else -> {
+                // Placeholder text when no result yet
+                TextField(
+                    value = "Record audio to see refined text here",
+                    onValueChange = {}, // read-only
+                    readOnly = true,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(max = 200.dp),
+                    label = { Text("Refined Text") }
+                )
+            }
+        }
+
+        // Linear progress indicator during processing
+        if (isThinking) {
+            LinearProgressIndicator(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+            )
         }
 
         // Error display for recording state

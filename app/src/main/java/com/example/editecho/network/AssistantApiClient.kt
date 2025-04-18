@@ -16,6 +16,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.util.concurrent.TimeUnit
+import com.example.editecho.BuildConfig
 
 /**
  * Client for interacting with OpenAI's Assistants API.
@@ -31,7 +32,7 @@ class AssistantApiClient(private val context: Context) {
     private val jsonMediaType = "application/json; charset=utf-8".toMediaType()
     
     // API key loaded from BuildConfig
-    private val OPENAI_API_KEY = BuildConfig.OPENAI_API_KEY
+    private val apiKey = BuildConfig.OPENAI_API_KEY
     
     // Assistant ID for the EditEcho assistant
     private val ASSISTANT_ID = "asst_p0phw0bPpJw88hhcEisHkNEQ"
@@ -44,7 +45,7 @@ class AssistantApiClient(private val context: Context) {
     
     init {
         // Validate API key and Assistant ID
-        if (OPENAI_API_KEY.isBlank() || !OPENAI_API_KEY.startsWith("sk-")) {
+        if (apiKey.isBlank() || !apiKey.startsWith("sk-")) {
             Log.e("AssistantApiClient", "Invalid OpenAI API key format")
         }
         
@@ -52,7 +53,7 @@ class AssistantApiClient(private val context: Context) {
             Log.e("AssistantApiClient", "Invalid Assistant ID format")
         }
         
-        Log.d("AssistantApiClient", "Initialized with API key: ${OPENAI_API_KEY.take(10)}... and Assistant ID: $ASSISTANT_ID")
+        Log.d("AssistantApiClient", "Initialized with API key: ${apiKey.take(10)}... and Assistant ID: $ASSISTANT_ID")
     }
 
     /**
@@ -123,7 +124,7 @@ class AssistantApiClient(private val context: Context) {
         
         val request = Request.Builder()
             .url("https://api.openai.com/v1/threads")
-            .addHeader("Authorization", "Bearer $OPENAI_API_KEY")
+            .addHeader("Authorization", "Bearer $apiKey")
             .addHeader("OpenAI-Beta", "assistants=v2")
             .addHeader("Content-Type", "application/json")
             .post(requestBody)
@@ -174,7 +175,7 @@ class AssistantApiClient(private val context: Context) {
             
             val request = Request.Builder()
                 .url("https://api.openai.com/v1/threads/$threadId/messages")
-                .addHeader("Authorization", "Bearer $OPENAI_API_KEY")
+                .addHeader("Authorization", "Bearer $apiKey")
                 .addHeader("OpenAI-Beta", "assistants=v2")
                 .addHeader("Content-Type", "application/json")
                 .post(requestBody.toRequestBody(jsonMediaType))
@@ -212,7 +213,7 @@ class AssistantApiClient(private val context: Context) {
         
         val request = Request.Builder()
             .url("https://api.openai.com/v1/threads/$threadId/runs")
-            .addHeader("Authorization", "Bearer $OPENAI_API_KEY")
+            .addHeader("Authorization", "Bearer $apiKey")
             .addHeader("OpenAI-Beta", "assistants=v2")
             .addHeader("Content-Type", "application/json")
             .post(requestBody.toRequestBody(jsonMediaType))
@@ -245,7 +246,7 @@ class AssistantApiClient(private val context: Context) {
         while (attempts < MAX_POLLING_ATTEMPTS) {
             val request = Request.Builder()
                 .url("https://api.openai.com/v1/threads/$threadId/runs/$runId")
-                .addHeader("Authorization", "Bearer $OPENAI_API_KEY")
+                .addHeader("Authorization", "Bearer $apiKey")
                 .addHeader("OpenAI-Beta", "assistants=v2")
                 .get()
                 .build()
@@ -284,7 +285,7 @@ class AssistantApiClient(private val context: Context) {
     private fun getAssistantResponse(threadId: String): String {
         val request = Request.Builder()
             .url("https://api.openai.com/v1/threads/$threadId/messages")
-            .addHeader("Authorization", "Bearer $OPENAI_API_KEY")
+            .addHeader("Authorization", "Bearer $apiKey")
             .addHeader("OpenAI-Beta", "assistants=v2")
             .get()
             .build()
@@ -320,5 +321,20 @@ class AssistantApiClient(private val context: Context) {
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText("Refined Text", text)
         clipboard.setPrimaryClip(clip)
+    }
+
+    /**
+     * Processes text with a specific tone using the Assistants API.
+     *
+     * @param text The text to process.
+     * @param tone The tone to apply.
+     * @return The processed text.
+     */
+    suspend fun processTextWithTone(text: String, tone: String): String {
+        var result = ""
+        refineText(text, tone) { refinedText ->
+            result = refinedText
+        }
+        return result
     }
 } 

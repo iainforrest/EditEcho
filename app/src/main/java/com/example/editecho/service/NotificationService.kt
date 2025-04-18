@@ -36,7 +36,16 @@ class NotificationService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand")
+        // Return START_STICKY to ensure the service is restarted if it's killed by the system
         return START_STICKY
+    }
+
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        Log.d(TAG, "onTaskRemoved - App was killed, restarting service")
+        // Restart the service when the app is killed
+        val restartServiceIntent = Intent(applicationContext, NotificationService::class.java)
+        startForegroundService(restartServiceIntent)
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -44,6 +53,9 @@ class NotificationService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
+        // Restart the service when it's destroyed
+        val restartServiceIntent = Intent(applicationContext, NotificationService::class.java)
+        startForegroundService(restartServiceIntent)
     }
 
     private fun createNotificationChannel() {

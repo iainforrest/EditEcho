@@ -29,13 +29,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.editecho.ui.components.ToneButton
 import com.example.editecho.ui.theme.EditEchoColors
-import com.example.editecho.util.AudioRecorder
-import com.example.editecho.util.OpenAIService
+import com.example.editecho.view.EditEchoOverlayViewModel
+import com.example.editecho.view.RecordingState
+import com.example.editecho.view.ToneState
 import kotlinx.coroutines.launch
 import java.io.File
 import android.content.res.Configuration
+import com.example.editecho.util.AudioRecorder
+import com.example.editecho.util.OpenAIService
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -44,18 +49,31 @@ import android.content.res.Configuration
  */
 @Composable
 fun EditEchoOverlay(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    viewModel: EditEchoOverlayViewModel = viewModel()
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     
+    val recordingState by viewModel.recordingState.collectAsStateWithLifecycle()
+    val toneState by viewModel.toneState.collectAsStateWithLifecycle()
+    
     // State variables
     var hasMicPermission by remember { mutableStateOf(false) }
-    var isRecording by remember { mutableStateOf(false) }
-    var transcribedText by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
-    var selectedTone by remember { mutableStateOf("Professional") }
-    var isProcessing by remember { mutableStateOf(false) }
+    
+    // Remove redundant state variables that are now in ViewModel
+    val isRecording = recordingState is RecordingState.Recording
+    val isProcessing = recordingState is RecordingState.Processing
+    var transcribedText by remember { mutableStateOf("") }
+    
+    // Update transcribedText when toneState changes
+    LaunchedEffect(toneState) {
+        transcribedText = when (toneState) {
+            is ToneState.Success -> (toneState as ToneState.Success).text
+            else -> transcribedText
+        }
+    }
     
     // Audio recorder
     val audioRecorder = remember { AudioRecorder(context) }
@@ -92,39 +110,12 @@ fun EditEchoOverlay(
             requestMicPermission()
             return
         }
-        
-        scope.launch {
-            try {
-                audioRecorder.startRecording()
-                isRecording = true
-                errorMessage = null
-            } catch (e: Exception) {
-                errorMessage = "Failed to start recording: ${e.message}"
-            }
-        }
+        viewModel.startRecording()
     }
     
     // Stop recording and process audio
     fun stopRecording() {
-        scope.launch {
-            try {
-                val audioFile = audioRecorder.stopRecording()
-                isRecording = false
-                
-                // Process the audio file for transcription
-                isProcessing = true
-                transcribedText = audioRecorder.transcribeAudio(audioFile)
-                isProcessing = false
-                
-                // Send text to OpenAI for tone adjustment
-                val adjustedText = openAIService.adjustTone(transcribedText, selectedTone)
-                transcribedText = adjustedText
-                
-            } catch (e: Exception) {
-                errorMessage = "Error processing audio: ${e.message}"
-                isProcessing = false
-            }
-        }
+        viewModel.stopRecording()
     }
     
     // Copy text to clipboard
@@ -220,20 +211,20 @@ fun EditEchoOverlay(
                     ) {
                         ToneButton(
                             text = "Professional",
-                            isActive = selectedTone == "Professional",
-                            onClick = { selectedTone = "Professional" },
+                            isActive = viewModel.selectedTone == "Professional",
+                            onClick = { viewModel.setTone("Professional") },
                             modifier = Modifier.weight(1f)
                         )
                         ToneButton(
                             text = "Casual",
-                            isActive = selectedTone == "Casual",
-                            onClick = { selectedTone = "Casual" },
+                            isActive = viewModel.selectedTone == "Casual",
+                            onClick = { viewModel.setTone("Casual") },
                             modifier = Modifier.weight(1f)
                         )
                         ToneButton(
                             text = "Friendly",
-                            isActive = selectedTone == "Friendly",
-                            onClick = { selectedTone = "Friendly" },
+                            isActive = viewModel.selectedTone == "Friendly",
+                            onClick = { viewModel.setTone("Friendly") },
                             modifier = Modifier.weight(1f)
                         )
                     }

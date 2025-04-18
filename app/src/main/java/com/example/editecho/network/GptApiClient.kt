@@ -5,6 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.example.editecho.BuildConfig
 import com.example.editecho.prompt.PromptBuilder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -31,7 +32,14 @@ class GptApiClient(private val context: Context) {
     private val jsonMediaType = "application/json; charset=utf-8".toMediaType()
     
     // API key loaded from BuildConfig
-    private val OPENAI_API_KEY = BuildConfig.OPENAI_API_KEY
+    private val apiKey = BuildConfig.OPENAI_API_KEY
+
+    init {
+        // Validate API key
+        if (apiKey.isBlank() || !apiKey.startsWith("sk-")) {
+            Log.e("GptApiClient", "Invalid OpenAI API key format")
+        }
+    }
 
     /**
      * Sends transcribed text to OpenAI's ChatGPT API for refinement.
@@ -52,7 +60,7 @@ class GptApiClient(private val context: Context) {
                 // Create request
                 val request = Request.Builder()
                     .url("https://api.openai.com/v1/chat/completions")
-                    .addHeader("Authorization", "Bearer $OPENAI_API_KEY")
+                    .addHeader("Authorization", "Bearer $apiKey")
                     .addHeader("Content-Type", "application/json")
                     .post(requestBody.toRequestBody(jsonMediaType))
                     .build()

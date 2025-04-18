@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.editecho.BuildConfig
 import com.example.editecho.network.AssistantApiClient
 import com.example.editecho.network.WhisperApiService
 import com.example.editecho.network.WhisperResponse
@@ -21,6 +22,7 @@ import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.IOException
 
@@ -67,6 +69,7 @@ class EditEchoOverlayViewModel(
                 mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     MediaRecorder(context)
                 } else {
+                    @Suppress("DEPRECATION")
                     MediaRecorder()
                 }.apply {
                     setAudioSource(MediaRecorder.AudioSource.MIC)
