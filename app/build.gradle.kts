@@ -5,10 +5,6 @@ plugins {
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
 
-repositories {
-    mavenCentral()
-}
-
 android {
     namespace = "com.example.editecho"
     compileSdk = 34
@@ -91,9 +87,15 @@ dependencies {
     implementation(libs.activity.compose)
 
     // Network libraries for API calls
-    implementation("com.aallam.openai:openai-client:0.6.2")
+    implementation("com.aallam.openai:openai-client:4.0.1")
     implementation("io.github.aakira:napier:2.6.1")   // logger for the client
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("com.squareup.okio:okio:3.9.0")
+    
+    // Retrofit for Whisper API
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0") // for plain text responses
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
     
     // Testing dependencies
     testImplementation("junit:junit:4.13.2")

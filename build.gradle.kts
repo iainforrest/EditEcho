@@ -9,17 +9,3 @@ plugins {
 subprojects {
     apply(plugin = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
 }
-
-buildscript {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}

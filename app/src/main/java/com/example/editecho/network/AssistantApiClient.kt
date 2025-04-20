@@ -5,11 +5,6 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import com.aallam.openai.api.assistant.Assistant
-import com.aallam.openai.api.assistant.AssistantRequest
-import com.aallam.openai.api.assistant.AssistantRole
-import com.aallam.openai.api.assistant.AssistantTool
-import com.aallam.openai.api.assistant.AssistantToolType
 import com.aallam.openai.api.chat.ChatCompletion
 import com.aallam.openai.api.chat.ChatCompletionRequest
 import com.aallam.openai.api.chat.ChatMessage
