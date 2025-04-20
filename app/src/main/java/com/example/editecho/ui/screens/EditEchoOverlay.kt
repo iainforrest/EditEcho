@@ -40,7 +40,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import android.content.res.Configuration
 import com.example.editecho.util.AudioRecorder
-import com.example.editecho.util.OpenAIService
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -77,9 +76,6 @@ fun EditEchoOverlay(
     
     // Audio recorder
     val audioRecorder = remember { AudioRecorder(context) }
-    
-    // OpenAI service
-    val openAIService = remember { OpenAIService() }
     
     // Permission launcher
     val permissionLauncher = rememberLauncherForActivityResult(

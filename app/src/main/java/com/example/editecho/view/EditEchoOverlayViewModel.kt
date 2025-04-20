@@ -9,20 +9,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.editecho.BuildConfig
 import com.example.editecho.network.AssistantApiClient
-import com.example.editecho.network.WhisperApiService
-import com.example.editecho.network.WhisperResponse
+import com.example.editecho.network.OpenAIProvider
+import com.example.editecho.network.WhisperRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.IOException
 
@@ -42,8 +37,8 @@ sealed class ToneState {
 
 class EditEchoOverlayViewModel(
     private val context: Context,
-    private val whisperApiService: WhisperApiService,
-    private val assistantApiClient: AssistantApiClient
+    private val whisperRepo: WhisperRepository = WhisperRepository(),
+    private val assistant: AssistantApiClient = AssistantApiClient(OpenAIProvider.client)
 ) : ViewModel() {
 
     private var mediaRecorder: MediaRecorder? = null
@@ -110,22 +105,14 @@ class EditEchoOverlayViewModel(
                 val file = audioFile ?: throw IOException("No audio file found")
                 
                 // Transcribe audio using Whisper API
-                val transcription = withContext(Dispatchers.IO) {
-                    val requestFile = file.asRequestBody("audio/mpeg".toMediaType())
-                    val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-                    val model = "whisper-1".toRequestBody("text/plain".toMediaType())
-                    
-                    whisperApiService.transcribeAudio(
-                        file = body,
-                        model = model,
-                        authorization = "Bearer ${BuildConfig.OPENAI_API_KEY}"
-                    )
+                val rawText = withContext(Dispatchers.IO) {
+                    whisperRepo.transcribe(file)
                 }
 
                 // Process transcription with Assistants API
                 _toneState.value = ToneState.Processing
-                val refinedText = assistantApiClient.processTextWithTone(
-                    transcription.text,
+                val refinedText = assistant.processTextWithTone(
+                    rawText,
                     selectedTone
                 )
                 _toneState.value = ToneState.Success(refinedText)

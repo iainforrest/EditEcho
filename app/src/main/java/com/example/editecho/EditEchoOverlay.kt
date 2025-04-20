@@ -53,7 +53,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.editecho.ui.components.ToneButton
 import com.example.editecho.ui.theme.EditEchoColors
 import com.example.editecho.util.AudioRecorder
-import com.example.editecho.util.OpenAIService
 import com.example.editecho.view.EditEchoOverlayViewModel
 import com.example.editecho.view.RecordingState
 import com.example.editecho.view.ToneState
@@ -63,10 +62,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
-import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
-import org.json.JSONObject
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat

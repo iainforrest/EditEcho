@@ -14,7 +14,6 @@ lifecycle-common = "2.7.0"
 lifecycle-runtime = "2.7.0"
 lifecycle-viewmodel = "2.7.0"
 savedstate = "1.2.1"
-okhttp = "4.11.0"
 activity = "1.8.2"
 compose = "1.6.0"
 material3 = "1.2.0"
@@ -54,9 +53,6 @@ savedstate-ktx = { group = "androidx.savedstate", name = "savedstate-ktx", versi
 # Activity components
 activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
-
-# OkHttp
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
