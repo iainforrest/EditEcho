@@ -41,6 +41,10 @@ class EditEchoOverlayViewModel(
     private val assistant: AssistantApiClient = AssistantApiClient(OpenAIProvider.client)
 ) : ViewModel() {
 
+    companion object {
+        private const val TAG = "EditEchoViewModel"
+    }
+
     private var mediaRecorder: MediaRecorder? = null
     private var audioFile: File? = null
 
@@ -53,37 +57,48 @@ class EditEchoOverlayViewModel(
     var selectedTone by mutableStateOf("Professional")
         private set
 
-<<<<<<< HEAD
-=======
     init {
         // Initialize any necessary components
     }
 
->>>>>>> 9496214 (apikey loading)
     fun setTone(tone: String) {
+        Log.d(TAG, "Setting tone to: $tone")
         selectedTone = tone
     }
 
     fun startRecording() {
         viewModelScope.launch {
             try {
-                audioFile = File(context.cacheDir, "audio_record.mp3")
+                Log.d(TAG, "Starting recording process...")
+                audioFile = File(context.cacheDir, "audio_record.m4a")
+                Log.d(TAG, "Audio file path: ${audioFile?.absolutePath}")
+
                 mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Log.d(TAG, "Using new MediaRecorder API")
                     MediaRecorder(context)
                 } else {
+                    Log.d(TAG, "Using legacy MediaRecorder API")
                     @Suppress("DEPRECATION")
                     MediaRecorder()
                 }.apply {
+                    Log.d(TAG, "Configuring MediaRecorder...")
                     setAudioSource(MediaRecorder.AudioSource.MIC)
                     setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
                     setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                    setAudioEncodingBitRate(128000) // 128 kbps
+                    setAudioSamplingRate(44100) // 44.1 kHz
+                    setAudioChannels(1) // Mono audio
                     setOutputFile(audioFile?.absolutePath)
+                    
+                    Log.d(TAG, "Preparing MediaRecorder...")
                     prepare()
+                    Log.d(TAG, "Starting MediaRecorder...")
                     start()
                 }
+                Log.d(TAG, "Recording started successfully")
                 _recordingState.value = RecordingState.Recording
             } catch (e: IOException) {
-                Log.e("EditEchoOverlayViewModel", "Error starting recording", e)
+                Log.e(TAG, "Error starting recording", e)
                 _recordingState.value = RecordingState.Error("Failed to start recording: ${e.message}")
             }
         }
@@ -92,15 +107,19 @@ class EditEchoOverlayViewModel(
     fun stopRecording() {
         viewModelScope.launch {
             try {
+                Log.d(TAG, "Stopping recording...")
                 mediaRecorder?.apply {
+                    Log.d(TAG, "Stopping MediaRecorder...")
                     stop()
+                    Log.d(TAG, "Releasing MediaRecorder...")
                     release()
                 }
                 mediaRecorder = null
+                Log.d(TAG, "Recording stopped successfully")
                 _recordingState.value = RecordingState.Processing
                 processAudio()
             } catch (e: IOException) {
-                Log.e("EditEchoOverlayViewModel", "Error stopping recording", e)
+                Log.e(TAG, "Error stopping recording", e)
                 _recordingState.value = RecordingState.Error("Failed to stop recording: ${e.message}")
             }
         }
@@ -109,29 +128,14 @@ class EditEchoOverlayViewModel(
     private suspend fun processAudio() {
         viewModelScope.launch {
             try {
-                Log.d("EditEcho", "Starting processAudio...")
+                Log.d(TAG, "Starting audio processing...")
                 val file = audioFile ?: run {
-                    Log.e("EditEcho", "No audio file found.")
+                    Log.e(TAG, "No audio file found")
                     throw IOException("No audio file found")
                 }
-                Log.d("EditEcho", "Audio file path: ${file.absolutePath}")
+                Log.d(TAG, "Audio file exists: ${file.exists()}, size: ${file.length()} bytes")
                 
                 // Transcribe audio using Whisper API
-<<<<<<< HEAD
-                val rawText = withContext(Dispatchers.IO) {
-                    whisperRepo.transcribe(file)
-                }
-                Log.d("EditEcho", "Transcription result: $rawText")
-
-                // Process transcription with Assistants API
-                _toneState.value = ToneState.Processing
-                val refinedText = assistant.processTextWithTone(
-                    rawText,
-                    selectedTone
-                )
-                _toneState.value = ToneState.Success(refinedText)
-                _recordingState.value = RecordingState.Idle
-=======
                 Log.d(TAG, "Starting Whisper API transcription...")
                 val transcript = withContext(Dispatchers.IO) {
                     whisperRepo.transcribe(file)
@@ -142,9 +146,10 @@ class EditEchoOverlayViewModel(
                 _toneState.value = ToneState.Success(transcript)
                 _recordingState.value = RecordingState.Idle
                 
->>>>>>> 9496214 (apikey loading)
             } catch (e: Exception) {
-                Log.e("EditEchoOverlayViewModel", "Error processing audio", e)
+                Log.e(TAG, "Error processing audio", e)
+                Log.e(TAG, "Error details: ${e.message}")
+                Log.e(TAG, "Stack trace: ${e.stackTraceToString()}")
                 _recordingState.value = RecordingState.Error("Failed to process audio: ${e.message}")
                 _toneState.value = ToneState.Error("Failed to process audio: ${e.message}")
             }
@@ -153,9 +158,11 @@ class EditEchoOverlayViewModel(
 
     override fun onCleared() {
         super.onCleared()
+        Log.d(TAG, "Cleaning up resources...")
         mediaRecorder?.release()
         mediaRecorder = null
         audioFile?.delete()
         audioFile = null
+        Log.d(TAG, "Cleanup completed")
     }
 } 

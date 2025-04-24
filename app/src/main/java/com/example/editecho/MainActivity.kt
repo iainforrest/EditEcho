@@ -72,12 +72,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
-<<<<<<< HEAD
-=======
         // Log the API key from BuildConfig for verification
         Log.d("MainActivity", "🔑 Using API key from BuildConfig: ${BuildConfig.OPENAI_API_KEY.take(10)}...")
         
->>>>>>> 9496214 (apikey loading)
         // Check if the overlay should be shown (from notification tap)
         showOverlay = intent.getBooleanExtra("show_overlay", false)
         
@@ -87,7 +84,10 @@ class MainActivity : ComponentActivity() {
         // Set the content of the activity
         setContent {
             EditEchoTheme {
-                MainActivityContent(showOverlay = showOverlay)
+                MainActivityContent(
+                    showOverlay = showOverlay,
+                    onDismissOverlay = { showOverlay = false }
+                )
             }
         }
     }
@@ -105,21 +105,14 @@ class MainActivity : ComponentActivity() {
                 checkNotificationPermission()
             }
             else -> {
-                // Request permission to record audio
-                requestAudioPermission()
+                // Request the permission
+                audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
             }
         }
     }
     
     /**
-     * Requests permission to record audio.
-     */
-    private fun requestAudioPermission() {
-        audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
-    }
-
-    /**
-     * Checks if the app has permission to show notifications.
+     * Checks if the app has permission to post notifications.
      */
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -132,22 +125,13 @@ class MainActivity : ComponentActivity() {
                     startNotificationService()
                 }
                 else -> {
-                    // Request notification permission
-                    requestNotificationPermission()
+                    // Request the permission
+                    notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                 }
             }
         } else {
-            // For Android 12 and below, no notification permission needed
+            // For Android 12 and below, no need to request notification permission
             startNotificationService()
-        }
-    }
-
-    /**
-     * Requests permission to show notifications.
-     */
-    private fun requestNotificationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
     
@@ -156,63 +140,86 @@ class MainActivity : ComponentActivity() {
      */
     private fun startNotificationService() {
         val serviceIntent = Intent(this, NotificationService::class.java)
-        startForegroundService(serviceIntent)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(serviceIntent)
+        } else {
+            startService(serviceIntent)
+        }
+    }
+    
+    /**
+     * Shows the EditEcho overlay.
+     */
+    private fun showEditEchoOverlay() {
+        showOverlay = true
+    }
+    
+    /**
+     * Hides the EditEcho overlay.
+     */
+    private fun hideEditEchoOverlay() {
+        showOverlay = false
     }
 }
 
+/**
+ * The main content of the MainActivity.
+ */
 @Composable
-fun MainActivityContent(showOverlay: Boolean = false) {
-    // State to track if the overlay should be shown
-    var isOverlayVisible by remember { mutableStateOf(showOverlay) }
-    
-    // A surface container using the 'background' color from the theme
+fun MainActivityContent(
+    showOverlay: Boolean,
+    onDismissOverlay: () -> Unit
+) {
+    // Surface using the 'background' color from the theme
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        // Show a simple message that the app is running
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "EditEcho is running",
-                style = MaterialTheme.typography.headlineMedium
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "The notification service is active.",
-                style = MaterialTheme.typography.bodyLarge
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            Button(
-                onClick = { isOverlayVisible = true }
-            ) {
-                Text("Show EditEcho Overlay")
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = { /* Close the app */ }
-            ) {
-                Text("Close App")
-            }
-        }
-        
-        // Show the EditEchoOverlay as a bottom sheet if isOverlayVisible is true
-        if (isOverlayVisible) {
-            EditEchoOverlay(onDismiss = { isOverlayVisible = false })
+        if (showOverlay) {
+            // Show the EditEcho overlay
+            EditEchoOverlay(onDismiss = onDismissOverlay)
+        } else {
+            // Show the main screen
+            MainScreen()
         }
     }
 }
 
+/**
+ * The main screen of the app.
+ */
+@Composable
+fun MainScreen() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "EditEcho",
+            style = MaterialTheme.typography.headlineLarge,
+            color = EditEchoColors.Primary
+        )
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        
+        Text(
+            text = "Tap the notification to start recording",
+            style = MaterialTheme.typography.bodyLarge
+        )
+    }
+}
+
+/**
+ * Preview for the MainScreen.
+ */
 @Preview(showBackground = true)
 @Composable
-fun MainActivityPreview() {
+fun MainScreenPreview() {
     EditEchoTheme {
-        MainActivityContent()
+        MainScreen()
     }
 }
 
@@ -220,6 +227,9 @@ fun MainActivityPreview() {
 @Composable
 fun MainActivityDarkPreview() {
     EditEchoTheme(darkTheme = true) {
-        MainActivityContent()
+        MainActivityContent(
+            showOverlay = false,
+            onDismissOverlay = {}
+        )
     }
 } 

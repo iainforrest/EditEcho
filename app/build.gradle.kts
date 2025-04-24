@@ -4,8 +4,6 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose") 
 }
 
-<<<<<<< HEAD
-=======
 // Import Properties for reading secrets.properties
 import java.util.Properties
 
@@ -17,7 +15,6 @@ val openAiKey: String = Properties().apply {
     if (it.isBlank()) logger.warn("⚠️ OPENAI_API_KEY is blank in secrets.properties")
 }
 
->>>>>>> 9496214 (apikey loading)
 android {
     namespace = "com.example.editecho"
     compileSdk = 34
@@ -33,15 +30,9 @@ android {
         buildConfigField("String", "OPENAI_API_KEY", "\"$openAiKey\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-<<<<<<< HEAD
-        
-        // Define the required secrets
-        buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY") ?: ""}\"")
-=======
         vectorDrawables {
             useSupportLibrary = true
         }
->>>>>>> 9496214 (apikey loading)
     }
 
     buildTypes {
