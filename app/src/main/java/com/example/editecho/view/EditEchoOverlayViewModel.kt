@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
+import com.example.editecho.prompt.ToneProfile
 
 sealed class RecordingState {
     object Idle : RecordingState()
@@ -54,14 +55,14 @@ class EditEchoOverlayViewModel(
     private val _toneState = MutableStateFlow<ToneState>(ToneState.Idle)
     val toneState: StateFlow<ToneState> = _toneState.asStateFlow()
 
-    var selectedTone by mutableStateOf("Professional")
+    var selectedTone by mutableStateOf(ToneProfile.Professional)
         private set
 
     init {
         // Initialize any necessary components
     }
 
-    fun setTone(tone: String) {
+    fun setTone(tone: ToneProfile) {
         Log.d(TAG, "Setting tone to: $tone")
         selectedTone = tone
     }

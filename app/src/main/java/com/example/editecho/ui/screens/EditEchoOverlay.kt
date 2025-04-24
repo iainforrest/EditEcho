@@ -41,6 +41,7 @@ import java.io.File
 import android.content.res.Configuration
 import com.example.editecho.util.AudioRecorder
 import com.example.editecho.view.EditEchoViewModelFactory
+import com.example.editecho.prompt.ToneProfile
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -210,21 +211,21 @@ fun EditEchoOverlay(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         ToneButton(
-                            text = "Professional",
-                            isActive = selectedTone == "Professional",
-                            onClick = { viewModel.setTone("Professional") },
+                            text = ToneProfile.SMS.displayName,
+                            isActive = selectedTone == ToneProfile.SMS,
+                            onClick = { viewModel.setTone(ToneProfile.SMS) },
                             modifier = Modifier.weight(1f)
                         )
                         ToneButton(
-                            text = "Casual",
-                            isActive = selectedTone == "Casual",
-                            onClick = { viewModel.setTone("Casual") },
+                            text = ToneProfile.Email.displayName,
+                            isActive = selectedTone == ToneProfile.Email,
+                            onClick = { viewModel.setTone(ToneProfile.Email) },
                             modifier = Modifier.weight(1f)
                         )
                         ToneButton(
-                            text = "Friendly",
-                            isActive = selectedTone == "Friendly",
-                            onClick = { viewModel.setTone("Friendly") },
+                            text = ToneProfile.Professional.displayName,
+                            isActive = selectedTone == ToneProfile.Professional,
+                            onClick = { viewModel.setTone(ToneProfile.Professional) },
                             modifier = Modifier.weight(1f)
                         )
                     }

@@ -2,12 +2,11 @@ package com.example.editecho.prompt
 
 object PromptBuilder {
 
-    fun buildSystemPrompt(tone: String): String {
+    fun buildSystemPrompt(tone: ToneProfile): String {
         val examples = when (tone) {
-            "SMS" -> ToneProfile.smsExamples
-            "Email" -> ToneProfile.emailExamples
-            "Pro" -> ToneProfile.proExamples
-            else -> emptyList()
+            ToneProfile.SMS -> ToneProfileExamples.smsExamples
+            ToneProfile.Email -> ToneProfileExamples.emailExamples
+            ToneProfile.Professional -> ToneProfileExamples.proExamples
         }
 
         return """
@@ -16,9 +15,9 @@ object PromptBuilder {
             ${PromptConfig.editingInstructions}
 
             Additional Style Rules:
-            ${ToneProfile.styleRules}
+            ${ToneProfileExamples.styleRules}
 
-            Example Messages for ${tone.uppercase()} tone:
+            Example Messages for ${tone.displayName} tone:
             ${examples.joinToString("\n- ", prefix = "- ")}
         """.trimIndent()
     }

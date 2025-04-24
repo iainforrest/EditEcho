@@ -1,7 +1,19 @@
 package com.example.editecho.prompt
 
-object ToneProfile {
+enum class ToneProfile {
+    SMS,
+    Email,
+    Professional;
 
+    val displayName: String
+        get() = when (this) {
+            SMS -> "SMS"
+            Email -> "Email"
+            Professional -> "Professional"
+        }
+}
+
+object ToneProfileExamples {
     val smsExamples = listOf(
         "Sweet as, see ya soon.",
         "Nah all good mate.",
