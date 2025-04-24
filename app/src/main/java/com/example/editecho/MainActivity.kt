@@ -3,6 +3,7 @@ package com.example.editecho
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -29,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.example.editecho.service.NotificationService
+import com.example.editecho.ui.theme.EditEchoColors
 import android.content.res.Configuration
 import com.example.editecho.ui.screens.EditEchoOverlay
 import com.example.editecho.ui.theme.EditEchoTheme
@@ -43,13 +45,26 @@ class MainActivity : ComponentActivity() {
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            // Audio permission granted, start the notification service
-            startNotificationService()
+            // Audio permission granted, check notification permission
+            checkNotificationPermission()
         } else {
             // Permission denied, show message and handle gracefully
             Toast.makeText(this, "Microphone permission is required for audio recording", Toast.LENGTH_LONG).show()
             // Close the app
             finish()
+        }
+    }
+
+    // Activity result launcher for the POST_NOTIFICATIONS permission
+    private val notificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            // Notification permission granted, start the notification service
+            startNotificationService()
+        } else {
+            // Permission denied, show message
+            Toast.makeText(this, "Notification permission is required for EditEcho to work properly", Toast.LENGTH_LONG).show()
         }
     }
     
@@ -79,8 +94,8 @@ class MainActivity : ComponentActivity() {
                 this,
                 Manifest.permission.RECORD_AUDIO
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // Permission already granted, start the notification service
-                startNotificationService()
+                // Permission already granted, check notification permission
+                checkNotificationPermission()
             }
             else -> {
                 // Request permission to record audio
@@ -94,6 +109,39 @@ class MainActivity : ComponentActivity() {
      */
     private fun requestAudioPermission() {
         audioPermissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+    }
+
+    /**
+     * Checks if the app has permission to show notifications.
+     */
+    private fun checkNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            when {
+                ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    // Permission already granted, start the notification service
+                    startNotificationService()
+                }
+                else -> {
+                    // Request notification permission
+                    requestNotificationPermission()
+                }
+            }
+        } else {
+            // For Android 12 and below, no notification permission needed
+            startNotificationService()
+        }
+    }
+
+    /**
+     * Requests permission to show notifications.
+     */
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
     
     /**

@@ -63,10 +63,12 @@ class NotificationService : Service() {
             val channel = NotificationChannel(
                 CHANNEL_ID,
                 CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
                 description = CHANNEL_DESCRIPTION
                 setShowBadge(false)
+                enableLights(false)
+                enableVibration(false)
             }
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
@@ -94,8 +96,9 @@ class NotificationService : Service() {
             .setContentTitle("EditEcho")
             .setContentText("Tap to open EditEcho")
             .setSmallIcon(R.drawable.ic_notification)
-            .setPriority(NotificationCompat.PRIORITY_LOW)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setOngoing(true)
+            .setAutoCancel(false)
             .setContentIntent(pendingIntent)
             .build()
     }

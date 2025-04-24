@@ -87,10 +87,15 @@ dependencies {
     implementation(libs.activity.compose)
 
     // Network libraries for API calls
-    implementation("com.aallam.openai:openai-client:4.0.1")
+    implementation("com.aallam.openai:openai-client:3.6.0")  // Downgrade to a more stable version
     implementation("io.github.aakira:napier:2.6.1")   // logger for the client
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.squareup.okio:okio:3.9.0")
+    
+    // Ktor dependencies for OpenAI client
+    implementation("io.ktor:ktor-client-core:2.3.7")
+    implementation("io.ktor:ktor-client-android:2.3.7")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
     
     // Retrofit for Whisper API
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
