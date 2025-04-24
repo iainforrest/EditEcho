@@ -21,7 +21,7 @@ import kotlinx.coroutines.withContext
 class AssistantApiClient(private val openAI: OpenAI) {
     
     // Assistant ID for the EditEcho assistant
-    private val ASSISTANT_ID = "asst_p0phw0bPpJw88hhcEisHkNEQ"
+    private val ASSISTANT_ID = "asst_Csg7UseRhcHiKTRN0wx8Q4t4"
     
     // Maximum number of polling attempts
     private val MAX_POLLING_ATTEMPTS = 30
@@ -42,36 +42,41 @@ class AssistantApiClient(private val openAI: OpenAI) {
      * Processes text with the selected tone using OpenAI's Assistants API.
      *
      * @param text The text to process.
-     * @param tone The tone to use for processing ("SMS", "Email", or "Pro").
+     * @param tone The tone to use for processing ("SMS", "Email", or "Professional").
      * @return The processed text.
      */
     suspend fun processTextWithTone(text: String, tone: String): String = withContext(Dispatchers.IO) {
         try {
             Log.d("AssistantApiClient", "Starting processTextWithTone with tone: $tone and text length: ${text.length}")
             
-            // Create a chat completion request
+            // Map tone name to descriptor text
+            val toneDescriptor = when (tone) {
+                "SMS" -> "SMS"
+                "Email" -> "Email"
+                "Professional" -> "professional email"
+                else -> tone
+            }
+
+            // Build a request targeting the custom assistant
             val request = ChatCompletionRequest(
                 model = ModelId("gpt-4"),
                 messages = listOf(
                     ChatMessage(
                         role = ChatRole.System,
-                        content = "You are a helpful assistant that refines text according to the specified tone. " +
-                                "For 'SMS', make it casual and concise. " +
-                                "For 'Email', make it professional but friendly. " +
-                                "For 'Pro', make it highly professional and formal."
+                        content = "Please format the following as a $toneDescriptor."
                     ),
                     ChatMessage(
                         role = ChatRole.User,
-                        content = "Please refine the following text in a $tone tone: $text"
+                        content = text
                     )
                 )
             )
-            
-            // Get the chat completion
+
+            // Send to the Assistants API
             val response = openAI.chatCompletion(request)
-            
-            // Extract the assistant's message
-            val refinedText = response.choices.firstOrNull()?.message?.content ?: "No response generated"
+
+            // Extract and return the assistant's refined text
+            val refinedText = response.choices.firstOrNull()?.message?.content ?: ""
             
             Log.d("AssistantApiClient", "Refined text: $refinedText")
             return@withContext refinedText
