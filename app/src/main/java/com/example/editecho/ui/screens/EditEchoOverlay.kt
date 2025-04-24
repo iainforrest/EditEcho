@@ -42,6 +42,7 @@ import android.content.res.Configuration
 import com.example.editecho.util.AudioRecorder
 import com.example.editecho.view.EditEchoViewModelFactory
 import com.example.editecho.prompt.ToneProfile
+import android.widget.Toast
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -68,13 +69,18 @@ fun EditEchoOverlay(
     
     // Remove redundant state variables that are now in ViewModel
     val isRecording = recordingState is RecordingState.Recording
-    val isProcessing = recordingState is RecordingState.Processing
+    val isProcessing = recordingState is RecordingState.Processing || toneState is ToneState.Processing
     var transcribedText by remember { mutableStateOf("") }
     
     // Update transcribedText when toneState changes
     LaunchedEffect(toneState) {
         transcribedText = when (toneState) {
             is ToneState.Success -> (toneState as ToneState.Success).text
+            is ToneState.Error -> {
+                // Show error message in a toast
+                Toast.makeText(context, (toneState as ToneState.Error).message, Toast.LENGTH_SHORT).show()
+                transcribedText // Keep the current text
+            }
             else -> transcribedText
         }
     }

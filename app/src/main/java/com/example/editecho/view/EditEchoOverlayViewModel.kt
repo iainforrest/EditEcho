@@ -143,8 +143,29 @@ class EditEchoOverlayViewModel(
                 }
                 Log.d(TAG, "Transcription completed successfully")
                 
-                // Update UI with transcription result
+                // Update UI with raw transcription result
                 _toneState.value = ToneState.Success(transcript)
+                
+                // Refine the transcript using the Assistant API
+                try {
+                    Log.d(TAG, "Starting Assistant API refinement with tone: $selectedTone")
+                    _toneState.value = ToneState.Processing
+                    
+                    val refinedText = withContext(Dispatchers.IO) {
+                        assistant.processTextWithTone(transcript, selectedTone.displayName)
+                    }
+                    Log.d(TAG, "Assistant refinement completed successfully")
+                    
+                    // Update UI with refined text
+                    _toneState.value = ToneState.Success(refinedText)
+                } catch (e: Exception) {
+                    Log.e(TAG, "Error refining text with Assistant API", e)
+                    Log.e(TAG, "Error details: ${e.message}")
+                    Log.e(TAG, "Stack trace: ${e.stackTraceToString()}")
+                    // Keep the raw transcript but show an error
+                    _toneState.value = ToneState.Error("Failed to refine text: ${e.message}")
+                }
+                
                 _recordingState.value = RecordingState.Idle
                 
             } catch (e: Exception) {
