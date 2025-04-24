@@ -1,25 +1,47 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose") 
 }
 
+<<<<<<< HEAD
+=======
+// Import Properties for reading secrets.properties
+import java.util.Properties
+
+// Load the real API key from secrets.properties and inject into BuildConfig
+val secretsFile = rootProject.file("secrets.properties")
+val openAiKey: String = Properties().apply {
+    if (secretsFile.exists()) load(secretsFile.inputStream())
+}.getProperty("OPENAI_API_KEY", "").also {
+    if (it.isBlank()) logger.warn("⚠️ OPENAI_API_KEY is blank in secrets.properties")
+}
+
+>>>>>>> 9496214 (apikey loading)
 android {
     namespace = "com.example.editecho"
     compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.editecho"
-        minSdk = 31
+        minSdk = 24
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
+        // Inject the API key into BuildConfig
+        buildConfigField("String", "OPENAI_API_KEY", "\"$openAiKey\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+<<<<<<< HEAD
         
         // Define the required secrets
         buildConfigField("String", "OPENAI_API_KEY", "\"${project.findProperty("OPENAI_API_KEY") ?: ""}\"")
+=======
+        vectorDrawables {
+            useSupportLibrary = true
+        }
+>>>>>>> 9496214 (apikey loading)
     }
 
     buildTypes {
@@ -31,29 +53,24 @@ android {
             )
         }
     }
-
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
-
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "1.8"
     }
-
     buildFeatures {
+        buildConfig = true
         compose = true
-        buildConfig = true  // Enable BuildConfig generation
     }
-
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.0"  // Updated to match Kotlin 2.0.x better
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
-
-    // Configure the Secrets Gradle Plugin
-    secrets {
-        defaultPropertiesFileName = "local.properties"
-        propertiesFileName = "secrets.properties"
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 }
 

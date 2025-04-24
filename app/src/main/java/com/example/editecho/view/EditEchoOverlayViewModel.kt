@@ -53,6 +53,13 @@ class EditEchoOverlayViewModel(
     var selectedTone by mutableStateOf("Professional")
         private set
 
+<<<<<<< HEAD
+=======
+    init {
+        // Initialize any necessary components
+    }
+
+>>>>>>> 9496214 (apikey loading)
     fun setTone(tone: String) {
         selectedTone = tone
     }
@@ -110,6 +117,7 @@ class EditEchoOverlayViewModel(
                 Log.d("EditEcho", "Audio file path: ${file.absolutePath}")
                 
                 // Transcribe audio using Whisper API
+<<<<<<< HEAD
                 val rawText = withContext(Dispatchers.IO) {
                     whisperRepo.transcribe(file)
                 }
@@ -123,6 +131,18 @@ class EditEchoOverlayViewModel(
                 )
                 _toneState.value = ToneState.Success(refinedText)
                 _recordingState.value = RecordingState.Idle
+=======
+                Log.d(TAG, "Starting Whisper API transcription...")
+                val transcript = withContext(Dispatchers.IO) {
+                    whisperRepo.transcribe(file)
+                }
+                Log.d(TAG, "Transcription completed successfully")
+                
+                // Update UI with transcription result
+                _toneState.value = ToneState.Success(transcript)
+                _recordingState.value = RecordingState.Idle
+                
+>>>>>>> 9496214 (apikey loading)
             } catch (e: Exception) {
                 Log.e("EditEchoOverlayViewModel", "Error processing audio", e)
                 _recordingState.value = RecordingState.Error("Failed to process audio: ${e.message}")

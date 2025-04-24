@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -71,6 +72,12 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         
+<<<<<<< HEAD
+=======
+        // Log the API key from BuildConfig for verification
+        Log.d("MainActivity", "🔑 Using API key from BuildConfig: ${BuildConfig.OPENAI_API_KEY.take(10)}...")
+        
+>>>>>>> 9496214 (apikey loading)
         // Check if the overlay should be shown (from notification tap)
         showOverlay = intent.getBooleanExtra("show_overlay", false)
         
