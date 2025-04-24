@@ -40,6 +40,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import android.content.res.Configuration
 import com.example.editecho.util.AudioRecorder
+import com.example.editecho.view.EditEchoViewModelFactory
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -48,14 +49,17 @@ import com.example.editecho.util.AudioRecorder
  */
 @Composable
 fun EditEchoOverlay(
-    onDismiss: () -> Unit,
-    viewModel: EditEchoOverlayViewModel = viewModel()
+    onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    
+    val viewModel: EditEchoOverlayViewModel = viewModel(
+        factory = EditEchoViewModelFactory(context)
+    )
     val recordingState by viewModel.recordingState.collectAsStateWithLifecycle()
     val toneState by viewModel.toneState.collectAsStateWithLifecycle()
+    val selectedTone = viewModel.selectedTone
+    
+    val scope = rememberCoroutineScope()
     
     // State variables
     var hasMicPermission by remember { mutableStateOf(false) }
@@ -207,19 +211,19 @@ fun EditEchoOverlay(
                     ) {
                         ToneButton(
                             text = "Professional",
-                            isActive = viewModel.selectedTone == "Professional",
+                            isActive = selectedTone == "Professional",
                             onClick = { viewModel.setTone("Professional") },
                             modifier = Modifier.weight(1f)
                         )
                         ToneButton(
                             text = "Casual",
-                            isActive = viewModel.selectedTone == "Casual",
+                            isActive = selectedTone == "Casual",
                             onClick = { viewModel.setTone("Casual") },
                             modifier = Modifier.weight(1f)
                         )
                         ToneButton(
                             text = "Friendly",
-                            isActive = viewModel.selectedTone == "Friendly",
+                            isActive = selectedTone == "Friendly",
                             onClick = { viewModel.setTone("Friendly") },
                             modifier = Modifier.weight(1f)
                         )

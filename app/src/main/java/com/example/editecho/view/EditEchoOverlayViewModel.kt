@@ -102,12 +102,18 @@ class EditEchoOverlayViewModel(
     private suspend fun processAudio() {
         viewModelScope.launch {
             try {
-                val file = audioFile ?: throw IOException("No audio file found")
+                Log.d("EditEcho", "Starting processAudio...")
+                val file = audioFile ?: run {
+                    Log.e("EditEcho", "No audio file found.")
+                    throw IOException("No audio file found")
+                }
+                Log.d("EditEcho", "Audio file path: ${file.absolutePath}")
                 
                 // Transcribe audio using Whisper API
                 val rawText = withContext(Dispatchers.IO) {
                     whisperRepo.transcribe(file)
                 }
+                Log.d("EditEcho", "Transcription result: $rawText")
 
                 // Process transcription with Assistants API
                 _toneState.value = ToneState.Processing

@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,8 +18,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,58 +25,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.example.editecho.service.NotificationService
 import android.content.res.Configuration
-
-// Light theme color scheme
-private val LightColorScheme = lightColorScheme(
-    primary = EditEchoColors.Primary,
-    secondary = EditEchoColors.Secondary,
-    tertiary = EditEchoColors.Accent,
-    background = EditEchoColors.Background,
-    surface = EditEchoColors.Surface,
-    error = EditEchoColors.Error,
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = EditEchoColors.PrimaryText,
-    onSurface = EditEchoColors.PrimaryText,
-    onError = Color.White
-)
-
-// Dark theme color scheme (for future use)
-private val DarkColorScheme = darkColorScheme(
-    primary = EditEchoColors.Primary,
-    secondary = EditEchoColors.Secondary,
-    tertiary = EditEchoColors.Accent,
-    background = Color(0xFF121212),
-    surface = Color(0xFF1E1E1E),
-    error = EditEchoColors.Error,
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
-    onError = Color.White
-)
-
-@Composable
-fun EditEchoTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable () -> Unit
-) {
-    val colorScheme = if (darkTheme) DarkColorScheme else LightColorScheme
-
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = MaterialTheme.typography,
-        content = content
-    )
-}
+import com.example.editecho.ui.screens.EditEchoOverlay
+import com.example.editecho.ui.theme.EditEchoTheme
 
 class MainActivity : ComponentActivity() {
     
@@ -196,7 +148,7 @@ fun MainActivityContent(showOverlay: Boolean = false) {
         
         // Show the EditEchoOverlay as a bottom sheet if isOverlayVisible is true
         if (isOverlayVisible) {
-            EditEchoOverlay()
+            EditEchoOverlay(onDismiss = { isOverlayVisible = false })
         }
     }
 }
