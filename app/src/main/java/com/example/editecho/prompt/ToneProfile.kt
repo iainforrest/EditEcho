@@ -1,16 +1,19 @@
 package com.example.editecho.prompt
 
-enum class ToneProfile {
-    SMS,
-    Email,
-    Professional;
+/**
+ * Enum representing different tone profiles for text refinement.
+ * Each profile has a short display name for UI and a full label for API prompts.
+ */
+enum class ToneProfile(val displayName: String, val fullLabel: String) {
+    QUICK("Quick", "Quick Message"),
+    FRIENDLY("Friendly", "Friendly Reply"),
+    POLISHED("Polished", "Clear and Polished");
 
-    val displayName: String
-        get() = when (this) {
-            SMS -> "SMS"
-            Email -> "Email"
-            Professional -> "Professional"
+    companion object {
+        fun fromDisplayName(name: String): ToneProfile {
+            return values().find { it.displayName == name } ?: FRIENDLY
         }
+    }
 }
 
 object ToneProfileExamples {

@@ -54,17 +54,25 @@ class EditEchoOverlayViewModel(
 
     private val _toneState = MutableStateFlow<ToneState>(ToneState.Idle)
     val toneState: StateFlow<ToneState> = _toneState.asStateFlow()
+    
+    // StateFlow for transcribed text
+    private val _transcribedText = MutableStateFlow("")
+    val transcribedText: StateFlow<String> = _transcribedText.asStateFlow()
+    
+    // StateFlow for refined text
+    private val _refinedText = MutableStateFlow("")
+    val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
-    var selectedTone by mutableStateOf(ToneProfile.Professional)
-        private set
+    private val _selectedTone = MutableStateFlow(ToneProfile.FRIENDLY)
+    val selectedTone: ToneProfile
+        get() = _selectedTone.value
 
     init {
         // Initialize any necessary components
     }
 
     fun setTone(tone: ToneProfile) {
-        Log.d(TAG, "Setting tone to: $tone")
-        selectedTone = tone
+        _selectedTone.value = tone
     }
 
     fun startRecording() {
@@ -144,25 +152,24 @@ class EditEchoOverlayViewModel(
                 Log.d(TAG, "Transcription completed successfully")
                 
                 // Update UI with raw transcription result
+                _transcribedText.value = transcript
                 _toneState.value = ToneState.Success(transcript)
                 
                 // Refine the transcript using the Assistant API
                 try {
-                    Log.d(TAG, "Starting Assistant API refinement with tone: $selectedTone")
+                    Log.d(TAG, "Starting Assistant API refinement with tone: ${selectedTone.fullLabel}")
                     _toneState.value = ToneState.Processing
                     
                     val refinedText = withContext(Dispatchers.IO) {
-                        assistant.processTextWithTone(transcript, selectedTone.displayName)
+                        assistant.processTextWithTone(transcript, selectedTone.fullLabel)
                     }
-                    Log.d(TAG, "Assistant refinement completed successfully")
+                    Log.d(TAG, "Assistant API refinement completed successfully")
                     
                     // Update UI with refined text
+                    _refinedText.value = refinedText
                     _toneState.value = ToneState.Success(refinedText)
                 } catch (e: Exception) {
-                    Log.e(TAG, "Error refining text with Assistant API", e)
-                    Log.e(TAG, "Error details: ${e.message}")
-                    Log.e(TAG, "Stack trace: ${e.stackTraceToString()}")
-                    // Keep the raw transcript but show an error
+                    Log.e(TAG, "Error during Assistant API refinement", e)
                     _toneState.value = ToneState.Error("Failed to refine text: ${e.message}")
                 }
                 
