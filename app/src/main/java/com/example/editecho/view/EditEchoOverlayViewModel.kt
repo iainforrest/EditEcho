@@ -1,17 +1,17 @@
 package com.example.editecho.view
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.media.MediaRecorder
 import android.os.Build
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.editecho.network.AssistantApiClient
-import com.example.editecho.network.OpenAIProvider
 import com.example.editecho.network.WhisperRepository
+import com.example.editecho.prompt.ToneProfile
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
-import com.example.editecho.prompt.ToneProfile
 
+/* ---------- UI state wrappers ---------- */
 sealed class RecordingState {
     object Idle : RecordingState()
     object Recording : RecordingState()
@@ -36,30 +36,31 @@ sealed class ToneState {
     data class Error(val message: String) : ToneState()
 }
 
+/* ---------- ViewModel ---------- */
 class EditEchoOverlayViewModel(
     private val context: Context,
     private val whisperRepo: WhisperRepository = WhisperRepository(),
-    private val assistant: AssistantApiClient = AssistantApiClient(OpenAIProvider.client)
+    private val assistant: AssistantApiClient = AssistantApiClient(),
 ) : ViewModel() {
 
     companion object {
         private const val TAG = "EditEchoViewModel"
     }
 
+    /* Media-recorder stuff */
     private var mediaRecorder: MediaRecorder? = null
     private var audioFile: File? = null
 
+    /* UI state */
     private val _recordingState = MutableStateFlow<RecordingState>(RecordingState.Idle)
     val recordingState: StateFlow<RecordingState> = _recordingState.asStateFlow()
 
     private val _toneState = MutableStateFlow<ToneState>(ToneState.Idle)
     val toneState: StateFlow<ToneState> = _toneState.asStateFlow()
-    
-    // StateFlow for transcribed text
+
     private val _transcribedText = MutableStateFlow("")
     val transcribedText: StateFlow<String> = _transcribedText.asStateFlow()
-    
-    // StateFlow for refined text
+
     private val _refinedText = MutableStateFlow("")
     val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
@@ -67,131 +68,105 @@ class EditEchoOverlayViewModel(
     val selectedTone: ToneProfile
         get() = _selectedTone.value
 
-    init {
-        // Initialize any necessary components
-    }
-
+    /* ---------- Public helpers ---------- */
     fun setTone(tone: ToneProfile) {
         _selectedTone.value = tone
     }
 
-    fun startRecording() {
-        viewModelScope.launch {
-            try {
-                Log.d(TAG, "Starting recording process...")
-                audioFile = File(context.cacheDir, "audio_record.m4a")
-                Log.d(TAG, "Audio file path: ${audioFile?.absolutePath}")
-
-                mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    Log.d(TAG, "Using new MediaRecorder API")
-                    MediaRecorder(context)
-                } else {
-                    Log.d(TAG, "Using legacy MediaRecorder API")
-                    @Suppress("DEPRECATION")
-                    MediaRecorder()
-                }.apply {
-                    Log.d(TAG, "Configuring MediaRecorder...")
-                    setAudioSource(MediaRecorder.AudioSource.MIC)
-                    setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-                    setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-                    setAudioEncodingBitRate(128000) // 128 kbps
-                    setAudioSamplingRate(44100) // 44.1 kHz
-                    setAudioChannels(1) // Mono audio
-                    setOutputFile(audioFile?.absolutePath)
-                    
-                    Log.d(TAG, "Preparing MediaRecorder...")
-                    prepare()
-                    Log.d(TAG, "Starting MediaRecorder...")
-                    start()
-                }
-                Log.d(TAG, "Recording started successfully")
-                _recordingState.value = RecordingState.Recording
-            } catch (e: IOException) {
-                Log.e(TAG, "Error starting recording", e)
-                _recordingState.value = RecordingState.Error("Failed to start recording: ${e.message}")
+    fun startRecording() = viewModelScope.launch {
+        try {
+            audioFile = File(context.cacheDir, "audio_record.m4a")
+            mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                MediaRecorder(context)
+            } else {
+                @Suppress("DEPRECATION")
+                MediaRecorder()
+            }.apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+                setAudioEncodingBitRate(128_000)
+                setAudioSamplingRate(44_100)
+                setAudioChannels(1)
+                setOutputFile(audioFile?.absolutePath)
+                prepare()
+                start()
             }
+            _recordingState.value = RecordingState.Recording
+        } catch (e: IOException) {
+            Log.e(TAG, "Failed to start recording", e)
+            _recordingState.value = RecordingState.Error("Start recording error: ${e.message}")
         }
     }
 
-    fun stopRecording() {
-        viewModelScope.launch {
-            try {
-                Log.d(TAG, "Stopping recording...")
-                mediaRecorder?.apply {
-                    Log.d(TAG, "Stopping MediaRecorder...")
-                    stop()
-                    Log.d(TAG, "Releasing MediaRecorder...")
-                    release()
-                }
-                mediaRecorder = null
-                Log.d(TAG, "Recording stopped successfully")
-                _recordingState.value = RecordingState.Processing
-                processAudio()
-            } catch (e: IOException) {
-                Log.e(TAG, "Error stopping recording", e)
-                _recordingState.value = RecordingState.Error("Failed to stop recording: ${e.message}")
+    fun stopRecording() = viewModelScope.launch {
+        try {
+            mediaRecorder?.apply {
+                stop()
+                release()
             }
+            mediaRecorder = null
+            _recordingState.value = RecordingState.Processing
+            transcribeAndRefine()
+        } catch (e: IOException) {
+            Log.e(TAG, "Failed to stop recording", e)
+            _recordingState.value = RecordingState.Error("Stop recording error: ${e.message}")
         }
     }
 
-    private suspend fun processAudio() {
-        viewModelScope.launch {
-            try {
-                Log.d(TAG, "Starting audio processing...")
-                val file = audioFile ?: run {
-                    Log.e(TAG, "No audio file found")
-                    throw IOException("No audio file found")
-                }
-                Log.d(TAG, "Audio file exists: ${file.exists()}, size: ${file.length()} bytes")
-                
-                // Transcribe audio using Whisper API
-                Log.d(TAG, "Starting Whisper API transcription...")
-                val transcript = withContext(Dispatchers.IO) {
-                    whisperRepo.transcribe(file)
-                }
-                Log.d(TAG, "Transcription completed successfully")
-                
-                // Update UI with raw transcription result
-                _transcribedText.value = transcript
-                _toneState.value = ToneState.Success(transcript)
-                
-                // Refine the transcript using the Assistant API
-                try {
-                    Log.d(TAG, "Starting Assistant API refinement with tone: ${selectedTone.fullLabel}")
-                    _toneState.value = ToneState.Processing
+    /* ---------- Core flow ---------- */
+    private fun transcribeAndRefine() = viewModelScope.launch {
+        try {
+            val file = audioFile ?: error("No audio file")
+            val transcript = withContext(Dispatchers.IO) { whisperRepo.transcribe(file) }
+
+            _transcribedText.value = transcript
+            _toneState.value = ToneState.Processing
+            
+            // Clear previous refined text
+            _refinedText.value = ""
+            
+            // Use streaming API
+            assistant.startRunStreaming(
+                tone = selectedTone.fullLabel,
+                rawText = transcript,
+                onToken = { token ->
+                    // Update UI with each token as it arrives
+                    _refinedText.value += token
+                },
+                onDone = { finalText ->
+                    // Update UI with final text
+                    _refinedText.value = finalText
+                    _toneState.value = ToneState.Success(finalText)
                     
-                    val refinedText = withContext(Dispatchers.IO) {
-                        assistant.processTextWithTone(transcript, selectedTone.fullLabel)
+                    // Auto-copy to clipboard on main thread
+                    viewModelScope.launch(Dispatchers.Main) {
+                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        clipboard.setPrimaryClip(ClipData.newPlainText("EditEcho", finalText))
+                        Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
                     }
-                    Log.d(TAG, "Assistant API refinement completed successfully")
                     
-                    // Update UI with refined text
-                    _refinedText.value = refinedText
-                    _toneState.value = ToneState.Success(refinedText)
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error during Assistant API refinement", e)
-                    _toneState.value = ToneState.Error("Failed to refine text: ${e.message}")
+                    _recordingState.value = RecordingState.Idle
+                },
+                onError = { error ->
+                    Log.e(TAG, "Streaming error", error)
+                    _recordingState.value = RecordingState.Error("Processing error: ${error.message}")
+                    _toneState.value = ToneState.Error("Processing error: ${error.message}")
                 }
-                
-                _recordingState.value = RecordingState.Idle
-                
-            } catch (e: Exception) {
-                Log.e(TAG, "Error processing audio", e)
-                Log.e(TAG, "Error details: ${e.message}")
-                Log.e(TAG, "Stack trace: ${e.stackTraceToString()}")
-                _recordingState.value = RecordingState.Error("Failed to process audio: ${e.message}")
-                _toneState.value = ToneState.Error("Failed to process audio: ${e.message}")
-            }
+            )
+        } catch (e: Exception) {
+            Log.e(TAG, "Processing failed", e)
+            _recordingState.value = RecordingState.Error("Processing error: ${e.message}")
+            _toneState.value = ToneState.Error("Processing error: ${e.message}")
         }
     }
 
+    /* ---------- Cleanup ---------- */
     override fun onCleared() {
         super.onCleared()
-        Log.d(TAG, "Cleaning up resources...")
         mediaRecorder?.release()
         mediaRecorder = null
         audioFile?.delete()
         audioFile = null
-        Log.d(TAG, "Cleanup completed")
     }
-} 
+}

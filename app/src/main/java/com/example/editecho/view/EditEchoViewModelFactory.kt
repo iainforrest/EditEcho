@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.editecho.network.AssistantApiClient
-import com.example.editecho.network.OpenAIProvider
 import com.example.editecho.network.WhisperRepository
 
 class EditEchoViewModelFactory(
@@ -16,9 +15,9 @@ class EditEchoViewModelFactory(
             return EditEchoOverlayViewModel(
                 context,
                 WhisperRepository(),
-                AssistantApiClient(OpenAIProvider.client)
+                AssistantApiClient()          // ← no more OpenAIProvider.client
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
-} 
+}

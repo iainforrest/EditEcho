@@ -17,6 +17,7 @@ savedstate = "1.2.1"
 activity = "1.8.2"
 compose = "1.6.0"
 material3 = "1.2.0"
+serialization = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -37,7 +38,7 @@ compose-material3 = { module = "androidx.compose.material3:material3", version.r
 compose-material-icons-extended = { module = "androidx.compose.material:material-icons-extended", version.ref = "compose" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
-
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 
 # Lifecycle components
 lifecycle-common = { group = "androidx.lifecycle", name = "lifecycle-common", version.ref = "lifecycle-common" }
@@ -58,3 +59,4 @@ activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

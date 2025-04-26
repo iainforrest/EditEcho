@@ -1,205 +1,152 @@
+// AssistantApiClient.kt
 package com.example.editecho.network
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
-import com.aallam.openai.api.assistant.Assistant
-import com.aallam.openai.api.assistant.AssistantId
-import com.aallam.openai.api.assistant.AssistantRequest
-import com.aallam.openai.api.assistant.Thread
-import com.aallam.openai.api.assistant.ThreadId
-import com.aallam.openai.api.assistant.ThreadRequest
-import com.aallam.openai.api.assistant.ThreadMessage
-import com.aallam.openai.api.assistant.ThreadMessageRequest
-import com.aallam.openai.api.assistant.ThreadRun
-import com.aallam.openai.api.assistant.ThreadRunRequest
-import com.aallam.openai.api.assistant.ThreadRunStatus
-import com.aallam.openai.client.OpenAI
-import kotlinx.coroutines.Dispatchers
+import com.example.editecho.network.dto.MessageRequestBody
+import com.example.editecho.network.dto.RunRequestBody
+import com.example.editecho.network.dto.ThreadResponse
+import com.example.editecho.network.dto.RunResponse
+import com.example.editecho.network.dto.StreamEvent
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.sse.EventSource
+import okhttp3.sse.EventSourceListener
+import okhttp3.sse.EventSources
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import java.util.concurrent.atomic.AtomicBoolean
 
-/**
- * Client for interacting with OpenAI's Assistants API v2.
- */
-class AssistantApiClient(private val openAI: OpenAI) {
-    
+class AssistantApiClient(
+    private val api: OpenAiAssistantsApi = OpenAiRetrofit.api,
+    private val okHttpClient: OkHttpClient = OkHttpClient.Builder().build()
+) {
+
     companion object {
         private const val TAG = "AssistantApiClient"
         private const val ASSISTANT_ID = "asst_Csg7UseRhcHiKTRN0wx8Q4t4"
-        private const val MAX_POLLING_ATTEMPTS = 30
-        private const val POLLING_DELAY_MS = 1000L
-    }
-    
-    init {
-        // Validate Assistant ID
-        if (ASSISTANT_ID.isBlank() || !ASSISTANT_ID.startsWith("asst_")) {
-            Log.e(TAG, "Invalid Assistant ID format")
-        }
-        
-        Log.d(TAG, "Initialized with Assistant ID: $ASSISTANT_ID")
     }
 
     /**
-     * Processes text with the selected tone using OpenAI's Assistants API v2.
-     *
-     * @param text The text to process.
-     * @param tone The tone to use for processing (e.g., "Quick Message", "Friendly Reply", "Clear and Polished").
-     * @return The processed text.
+     * Full Edit-Echo flow with streaming:
+     * 1) create thread, 2) send user message, 3) create run with Retrofit,
+     * 4) open SSE GET to /events, 5) process SSE events, 6) return final text when complete.
      */
-    suspend fun processTextWithTone(text: String, tone: String): String = withContext(Dispatchers.IO) {
-        try {
-            Log.d(TAG, "Starting processTextWithTone with tone: $tone and text length: ${text.length}")
-            
-            // Format the message content with tone prefix
-            val messageContent = """
-                Tone: $tone
-                
-                $text
-            """.trimIndent()
-            
-            // Log the message content
-            Log.d(TAG, "Message content:\n$messageContent")
-            
-            // Step 1: Create a thread
-            val thread = createThread()
-            val threadId = thread.id
-            Log.d(TAG, "Created thread with ID: $threadId")
-            
-            // Step 2: Add the user message to the thread
-            val message = addMessageToThread(threadId, messageContent)
-            val messageId = message.id
-            Log.d(TAG, "Added message to thread with ID: $messageId")
-            
-            // Step 3: Create a run with the assistant
-            val run = createRun(threadId)
-            val runId = run.id
-            Log.d(TAG, "Created run with ID: $runId")
-            
-            // Step 4: Poll until the run completes
-            val completedRun = pollRunCompletion(threadId, runId)
-            Log.d(TAG, "Run completed with status: ${completedRun.status}")
-            
-            // Step 5: Get the assistant's response
-            val assistantMessage = getAssistantResponse(threadId)
-            val refinedText = assistantMessage.content.firstOrNull()?.text?.value ?: ""
-            
-            Log.d(TAG, "Refined text: $refinedText")
-            return@withContext refinedText
-            
-        } catch (e: Exception) {
-            Log.e(TAG, "Error processing text", e)
-            Log.e(TAG, "Error details: ${e.message}")
-            Log.e(TAG, "Stack trace: ${e.stackTraceToString()}")
-            throw e
-        }
-    }
-    
-    /**
-     * Creates a new thread.
-     */
-    private suspend fun createThread(): Thread {
-        val request = ThreadRequest()
-        val response = openAI.thread(request)
-        Log.d(TAG, "Thread creation response: ${Json { prettyPrint = true }.encodeToString(Thread.serializer(), response)}")
-        return response
-    }
-    
-    /**
-     * Adds a message to a thread.
-     */
-    private suspend fun addMessageToThread(threadId: String, content: String): ThreadMessage {
-        val request = ThreadMessageRequest(
-            role = "user",
-            content = content
-        )
-        val response = openAI.threadMessage(threadId, request)
-        Log.d(TAG, "Message creation response: ${Json { prettyPrint = true }.encodeToString(ThreadMessage.serializer(), response)}")
-        return response
-    }
-    
-    /**
-     * Creates a run with the assistant.
-     */
-    private suspend fun createRun(threadId: String): ThreadRun {
-        val request = ThreadRunRequest(
-            assistantId = AssistantId(ASSISTANT_ID)
-        )
-        val response = openAI.threadRun(threadId, request)
-        Log.d(TAG, "Run creation response: ${Json { prettyPrint = true }.encodeToString(ThreadRun.serializer(), response)}")
-        return response
-    }
-    
-    /**
-     * Polls until the run completes.
-     */
-    private suspend fun pollRunCompletion(threadId: String, runId: String): ThreadRun {
-        var attempts = 0
-        var run: ThreadRun? = null
+    suspend fun startRunStreaming(
+        tone: String,
+        rawText: String,
+        onToken: (String) -> Unit,
+        onDone: (String) -> Unit,
+        onError: (Throwable) -> Unit
+    ) {
+        Log.d(TAG, "Starting streaming process with tone: $tone")
         
-        while (attempts < MAX_POLLING_ATTEMPTS) {
-            val response = openAI.threadRun(threadId, runId)
-            run = response
+        try {
+            // 1️⃣ create thread
+            val threadId: String = api.createThread().id
+            Log.d(TAG, "Created thread: $threadId")
+
+            // 2️⃣ add user message
+            api.addMessage(
+                threadId,
+                MessageRequestBody(content = "Tone: $tone\n\n$rawText")
+            )
+            Log.d(TAG, "Added message to thread")
+
+            // 3️⃣ create run with Retrofit
+            val run = api.createRun(threadId, RunRequestBody(assistantId = ASSISTANT_ID))
+            Log.d(TAG, "Created run: ${run.id}")
+
+            // 4️⃣ open SSE GET to /events
+            val sseRequest = Request.Builder()
+                .url("https://api.openai.com/v1/threads/$threadId/runs/${run.id}/events")
+                .addHeader("Authorization", "Bearer ${com.example.editecho.BuildConfig.OPENAI_API_KEY}")
+                .addHeader("OpenAI-Beta", "assistants=v2")
+                .build()
+
+            // 5️⃣ process SSE events
+            val accumulatedText = StringBuilder()
+            val isCompleted = AtomicBoolean(false)
             
-            Log.d(TAG, "Run status: ${run.status}, attempt: ${attempts + 1}")
-            
-            when (run.status) {
-                ThreadRunStatus.COMPLETED -> {
-                    Log.d(TAG, "Run completed successfully")
-                    break
-                }
-                ThreadRunStatus.FAILED -> {
-                    Log.e(TAG, "Run failed: ${run.lastError?.message}")
-                    throw Exception("Run failed: ${run.lastError?.message}")
-                }
-                ThreadRunStatus.CANCELLED -> {
-                    Log.e(TAG, "Run was cancelled")
-                    throw Exception("Run was cancelled")
-                }
-                ThreadRunStatus.EXPIRED -> {
-                    Log.e(TAG, "Run expired")
-                    throw Exception("Run expired")
-                }
-                else -> {
-                    // Still processing, wait and try again
-                    delay(POLLING_DELAY_MS)
-                    attempts++
+            val eventSource = EventSources.createFactory(okHttpClient)
+                .newEventSource(sseRequest, object : EventSourceListener() {
+                    override fun onEvent(
+                        eventSource: EventSource,
+                        id: String?,
+                        type: String?,
+                        data: String
+                    ) {
+                        try {
+                            val event = StreamEvent(
+                                event = type ?: "",
+                                data = data
+                            )
+                            
+                            val eventData = event.parseData()
+                            if (eventData == null) {
+                                Log.e(TAG, "Failed to parse event data: $data")
+                                return
+                            }
+                            
+                            when (event.event) {
+                                "thread.message.delta" -> {
+                                    val delta = eventData.delta
+                                    if (delta?.role == "assistant") {
+                                        val contentDeltas = delta.content ?: return
+                                        for (contentDelta in contentDeltas) {
+                                            if (contentDelta.type == "text") {
+                                                val textValue = contentDelta.text?.value
+                                                if (!textValue.isNullOrEmpty()) {
+                                                    accumulatedText.append(textValue)
+                                                    onToken(textValue)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                "thread.message.completed" -> {
+                                    if (!isCompleted.getAndSet(true)) {
+                                        val finalText = accumulatedText.toString()
+                                        Log.d(TAG, "Stream completed with text: $finalText")
+                                        onDone(finalText)
+                                        eventSource.cancel()
+                                    }
+                                }
+                                "thread.run.completed" -> {
+                                    Log.d(TAG, "Run completed")
+                                }
+                                "thread.run.failed" -> {
+                                    val errorMsg = "Run failed: ${eventData.delta?.content?.firstOrNull()?.text?.value ?: "Unknown error"}"
+                                    Log.e(TAG, errorMsg)
+                                    onError(Exception(errorMsg))
+                                    eventSource.cancel()
+                                }
+                            }
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Error processing event", e)
+                            onError(e)
+                            eventSource.cancel()
+                        }
+                    }
+                    
+                    override fun onFailure(eventSource: EventSource, t: Throwable?, response: Response?) {
+                        Log.e(TAG, "EventSource failure", t)
+                        onError(t ?: Exception("Unknown error"))
+                    }
+                })
+                
+            // Wait for completion or error
+            withContext(Dispatchers.IO) {
+                while (!isCompleted.get()) {
+                    delay(100)
                 }
             }
-        }
-        
-        if (attempts >= MAX_POLLING_ATTEMPTS) {
-            Log.e(TAG, "Run polling timed out after $MAX_POLLING_ATTEMPTS attempts")
-            throw Exception("Run polling timed out after $MAX_POLLING_ATTEMPTS attempts")
-        }
-        
-        return run ?: throw Exception("Run is null")
-    }
-    
-    /**
-     * Gets the assistant's response from the thread.
-     */
-    private suspend fun getAssistantResponse(threadId: String): ThreadMessage {
-        val response = openAI.threadMessages(threadId)
-        Log.d(TAG, "Thread messages response: ${Json { prettyPrint = true }.encodeToString(List.serializer(ThreadMessage.serializer()), response)}")
-        
-        // Find the most recent assistant message
-        val assistantMessage = response.firstOrNull { it.role == "assistant" }
-            ?: throw Exception("No assistant message found in thread")
             
-        return assistantMessage
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in streaming process", e)
+            onError(e)
+        }
     }
-    
-    /**
-     * Copies text to the clipboard.
-     */
-    private fun copyToClipboard(text: String, context: Context) {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("Refined Text", text)
-        clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
-    }
-} 
+}

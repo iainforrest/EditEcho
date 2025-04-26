@@ -1,7 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose") 
+    id("org.jetbrains.kotlin.plugin.compose")
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
 }
 
 // Import Properties for reading secrets.properties
@@ -56,7 +57,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.6.5"
     }
     packaging {
         resources {
@@ -95,20 +96,20 @@ dependencies {
     implementation(libs.activity.compose)
 
     // Network libraries for API calls
-    implementation("com.aallam.openai:openai-client:3.6.0")  // Downgrade to a more stable version
     implementation("io.github.aakira:napier:2.6.1")   // logger for the client
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("com.squareup.okio:okio:3.9.0")
-    
-    // Ktor dependencies for OpenAI client
-    implementation("io.ktor:ktor-client-core:2.3.7")
-    implementation("io.ktor:ktor-client-android:2.3.7")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+
     
     // Retrofit for Whisper API
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0") // for plain text responses
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.okhttp3:okhttp-sse:4.12.0") // for Server-Sent Events
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     
     // Testing dependencies
     testImplementation("junit:junit:4.13.2")
