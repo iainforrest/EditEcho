@@ -47,6 +47,7 @@ import android.content.res.Configuration
 import com.example.editecho.util.AudioRecorder
 import com.example.editecho.prompt.ToneProfile
 import android.widget.Toast
+import android.util.Log
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -119,27 +120,18 @@ fun EditEchoOverlay(
     
     // Copy both transcribed and refined text to clipboard
     fun copyTextToClipboard() {
-        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-        
-        // Format the text with both sections
-        val formattedText = buildString {
-            if (transcribedText.isNotEmpty()) {
-                append("🎙️ Transcription:\n")
-                append(transcribedText)
-                append("\n\n")
-            }
-            if (refinedText.isNotEmpty()) {
-                append("✨ Edited Message:\n")
-                append(refinedText)
-            }
-        }.trim()
-        
-        // Copy to clipboard
-        val clip = android.content.ClipData.newPlainText("EditEcho Text", formattedText)
-        clipboard.setPrimaryClip(clip)
-        
-        // Show toast confirmation
-        Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+        try {
+            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val formattedText = viewModel.formatExample()
+            Log.d("EditEchoOverlay", "Copying to clipboard (${formattedText.length} chars):\n$formattedText")
+            val clip = android.content.ClipData.newPlainText("EditEcho Text", formattedText)
+            clipboard.setPrimaryClip(clip)
+            Log.d("EditEchoOverlay", "Successfully copied to clipboard")
+            Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            Log.e("EditEchoOverlay", "Failed to copy to clipboard", e)
+            Toast.makeText(context, "Failed to copy text", Toast.LENGTH_SHORT).show()
+        }
     }
     
     // Bottom sheet dialog
@@ -318,7 +310,10 @@ fun EditEchoOverlay(
                         
                         // Settings button
                         Button(
-                            onClick = { /* TODO: Open settings */ },
+                            onClick = { 
+                                copyTextToClipboard()
+                                viewModel.saveExample()
+                            },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = EditEchoColors.Primary
                             )

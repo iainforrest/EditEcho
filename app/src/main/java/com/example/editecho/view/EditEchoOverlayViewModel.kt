@@ -76,6 +76,38 @@ class EditEchoOverlayViewModel @Inject constructor(
     val selectedTone: StateFlow<ToneProfile> = _selectedTone.asStateFlow()
 
     /* ---------- Public helpers ---------- */
+    fun formatExample(): String = buildString {
+        if (_transcribedText.value.isNotEmpty()) {
+            append("🎙️ Transcription:\n")
+            append(_transcribedText.value)
+            append("\n\n")
+        }
+        if (_refinedText.value.isNotEmpty()) {
+            append("✨ Edited Message:\n")
+            append(_refinedText.value)
+        }
+    }.trim().also { formattedText ->
+        Log.d(TAG, "Formatted example text (${formattedText.length} chars):\n$formattedText")
+    }
+
+    fun saveExample() = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            val file = File(context.filesDir, "history.txt")
+            val formattedText = formatExample()
+            Log.d(TAG, "Saving to history.txt at ${file.absolutePath}")
+            file.appendText(formattedText + "\n\n")
+            Log.d(TAG, "Successfully saved to history.txt")
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Example saved", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to save to history.txt", e)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Failed to save example", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     fun onToneSelected(tone: ToneProfile) {
         _selectedTone.value = tone
     }
