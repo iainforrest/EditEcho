@@ -24,8 +24,15 @@ class ChatCompletionClient(
 ) {
     fun streamReply(tone: ToneProfile, userText: String): Flow<String> = callbackFlow {
         val systemPrompt = PromptBuilder.buildSystemPrompt(tone)
+        
+        // Select model based on tone
+        val model = when (tone) {
+            ToneProfile.QUICK, ToneProfile.FRIENDLY -> "gpt-4.1-mini"
+            ToneProfile.POLISHED -> "gpt-4.1"
+        }
+        
         val req = ChatCompletionRequest(
-            model = "o3",
+            model = model,
             stream = true,
             messages = listOf(
                 ChatMessage("system", systemPrompt),
