@@ -121,13 +121,17 @@ fun EditEchoOverlay(
         val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
         
         // Format the text with both sections
-        val formattedText = """
-            🎙️ Transcription:
-            $transcribedText
-
-            ✨ Edited Message:
-            $refinedText
-        """.trimIndent()
+        val formattedText = buildString {
+            if (transcribedText.isNotEmpty()) {
+                append("🎙️ Transcription:\n")
+                append(transcribedText)
+                append("\n\n")
+            }
+            if (refinedText.isNotEmpty()) {
+                append("✨ Edited Message:\n")
+                append(refinedText)
+            }
+        }.trim()
         
         // Copy to clipboard
         val clip = android.content.ClipData.newPlainText("EditEcho Text", formattedText)
@@ -194,34 +198,68 @@ fun EditEchoOverlay(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
-                            .verticalScroll(rememberScrollState())
                     ) {
-                        if (transcribedText.isNotEmpty()) {
-                            Text(
-                                text = "Transcription:",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = EditEchoColors.PrimaryText
-                            )
-                            Text(
-                                text = transcribedText,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = EditEchoColors.SecondaryText,
-                                modifier = Modifier.padding(vertical = 8.dp)
+                        // Transcription box
+                        Text(
+                            text = "Transcription:",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = EditEchoColors.PrimaryText
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(0.3f)
+                        ) {
+                            OutlinedTextField(
+                                value = transcribedText,
+                                onValueChange = { /* Read-only */ },
+                                readOnly = true,
+                                placeholder = { Text("Your transcribed text will appear here...") },
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState()),
+                                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * 0.5
+                                ),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    unfocusedTextColor = EditEchoColors.SecondaryText,
+                                    focusedTextColor = EditEchoColors.SecondaryText,
+                                    unfocusedBorderColor = EditEchoColors.Primary.copy(alpha = 0.5f),
+                                    focusedBorderColor = EditEchoColors.Primary
+                                )
                             )
                         }
 
-                        if (refinedText.isNotEmpty()) {
-                            Text(
-                                text = "Edited Message:",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = EditEchoColors.PrimaryText,
-                                modifier = Modifier.padding(top = 16.dp)
-                            )
-                            Text(
-                                text = refinedText,
-                                style = MaterialTheme.typography.bodyLarge,
-                                color = EditEchoColors.SecondaryText,
-                                modifier = Modifier.padding(vertical = 8.dp)
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Refined text box
+                        Text(
+                            text = "Edited Message:",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = EditEchoColors.PrimaryText
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(0.3f)
+                        ) {
+                            OutlinedTextField(
+                                value = refinedText,
+                                onValueChange = { /* Read-only */ },
+                                readOnly = true,
+                                placeholder = { Text("Your edited message will appear here...") },
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .verticalScroll(rememberScrollState()),
+                                textStyle = MaterialTheme.typography.bodyMedium.copy(
+                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * 0.5
+                                ),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    unfocusedTextColor = EditEchoColors.SecondaryText,
+                                    focusedTextColor = EditEchoColors.SecondaryText,
+                                    unfocusedBorderColor = EditEchoColors.Primary.copy(alpha = 0.5f),
+                                    focusedBorderColor = EditEchoColors.Primary
+                                )
                             )
                         }
                     }

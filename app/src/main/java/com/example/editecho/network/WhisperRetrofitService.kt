@@ -1,10 +1,12 @@
 package com.example.editecho.network
 
+import com.example.editecho.network.dto.WhisperResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import retrofit2.Retrofit
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -17,8 +19,8 @@ interface WhisperRetrofitService {
     @POST("v1/audio/transcriptions")
     suspend fun transcribe(
         @Part file: MultipartBody.Part,
-        @Part("model") model: String = "whisper-1"
-    ): String
+        @Part("model") model: RequestBody
+    ): WhisperResponse
 
     companion object {
         fun create(apiKey: String): WhisperRetrofitService {

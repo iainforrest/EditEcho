@@ -46,7 +46,8 @@
         <service
             android:name=".service.NotificationService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:foregroundServiceType="microphone" />
             
         <receiver
             android:name=".service.BootReceiver"

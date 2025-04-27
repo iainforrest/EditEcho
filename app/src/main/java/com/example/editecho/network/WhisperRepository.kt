@@ -9,6 +9,7 @@ import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.IOException
 
@@ -49,22 +50,15 @@ class WhisperRepository(
                 body
             )
             
+            // Create the model RequestBody
+            val modelRequestBody = "whisper-1".toRequestBody("text/plain".toMediaTypeOrNull())
+            
             Log.d(TAG, "Sending request to Whisper API...")
-            val jsonResponse = service.transcribe(part)
+            val response = service.transcribe(part, modelRequestBody)
             Log.d(TAG, "Received response from Whisper API")
             
-            // Parse the JSON response to extract only the text value
-            val parsed = try {
-                val element = Json.parseToJsonElement(jsonResponse)
-                element.jsonObject["text"]?.jsonPrimitive?.content
-                    ?: jsonResponse
-            } catch (e: Exception) {
-                Log.w(TAG, "Failed to parse JSON response, returning raw response", e)
-                jsonResponse  // fallback if parsing fails
-            }
-            
-            Log.d(TAG, "Parsed transcription: $parsed")
-            parsed
+            Log.d(TAG, "Transcription: ${response.text}")
+            response.text
         } catch (e: Exception) {
             Log.e(TAG, "Error in transcribe", e)
             Log.e(TAG, "Error details: ${e.message}")

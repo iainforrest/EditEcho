@@ -35,7 +35,9 @@ import com.example.editecho.ui.theme.EditEchoColors
 import android.content.res.Configuration
 import com.example.editecho.ui.screens.EditEchoOverlay
 import com.example.editecho.ui.theme.EditEchoTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     
     // State to track if the overlay should be shown
