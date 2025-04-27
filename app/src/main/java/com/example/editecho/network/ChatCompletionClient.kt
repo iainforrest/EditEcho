@@ -17,6 +17,7 @@ import java.io.BufferedReader
 import java.io.Closeable
 import okhttp3.ResponseBody.Companion.asResponseBody
 import okio.BufferedSource
+import android.util.Log
 
 class ChatCompletionClient(
     private val api: OpenAiChatApi,
@@ -37,8 +38,13 @@ class ChatCompletionClient(
             messages = listOf(
                 ChatMessage("system", systemPrompt),
                 ChatMessage("user", userText)
-            )
+            ),
+            temperature = 0.35,
+            topP = 0.95
         )
+        
+        // Log the request for debugging
+        Log.d("ChatCompletionClient", "Request: ${json.encodeToString(ChatCompletionRequest.serializer(), req)}")
         
         var attempts = 0
         val responseBody = run {

@@ -43,6 +43,7 @@ object NetworkModule {
         return Json { 
             ignoreUnknownKeys = true 
             isLenient = true
+            encodeDefaults = true
         }
     }
 

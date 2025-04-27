@@ -36,6 +36,7 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.editecho.ui.components.ToneButton
+import com.example.editecho.ui.components.TonePicker
 import com.example.editecho.ui.theme.EditEchoColors
 import com.example.editecho.view.EditEchoOverlayViewModel
 import com.example.editecho.view.RecordingState
@@ -60,7 +61,7 @@ fun EditEchoOverlay(
     val context = LocalContext.current
     val recordingState by viewModel.recordingState.collectAsState()
     val toneState by viewModel.toneState.collectAsState()
-    val selectedTone = viewModel.selectedTone
+    val selectedTone by viewModel.selectedTone.collectAsState()
     
     // Collect the transcribed and refined text from the ViewModel
     val transcribedText by viewModel.transcribedText.collectAsState()
@@ -266,30 +267,11 @@ fun EditEchoOverlay(
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     
-                    // Tone selection
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        ToneButton(
-                            text = ToneProfile.QUICK.displayName,
-                            isActive = selectedTone == ToneProfile.QUICK,
-                            onClick = { viewModel.setTone(ToneProfile.QUICK) },
-                            modifier = Modifier.weight(1f)
-                        )
-                        ToneButton(
-                            text = ToneProfile.FRIENDLY.displayName,
-                            isActive = selectedTone == ToneProfile.FRIENDLY,
-                            onClick = { viewModel.setTone(ToneProfile.FRIENDLY) },
-                            modifier = Modifier.weight(1f)
-                        )
-                        ToneButton(
-                            text = ToneProfile.POLISHED.displayName,
-                            isActive = selectedTone == ToneProfile.POLISHED,
-                            onClick = { viewModel.setTone(ToneProfile.POLISHED) },
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
+                    // Tone selection using the new TonePicker component
+                    TonePicker(
+                        selectedTone = selectedTone,
+                        onToneSelected = viewModel::onToneSelected
+                    )
                     
                     Spacer(modifier = Modifier.height(16.dp))
                     

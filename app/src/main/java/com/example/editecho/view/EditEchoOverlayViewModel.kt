@@ -73,11 +73,10 @@ class EditEchoOverlayViewModel @Inject constructor(
     val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
     private val _selectedTone = MutableStateFlow(ToneProfile.FRIENDLY)
-    val selectedTone: ToneProfile
-        get() = _selectedTone.value
+    val selectedTone: StateFlow<ToneProfile> = _selectedTone.asStateFlow()
 
     /* ---------- Public helpers ---------- */
-    fun setTone(tone: ToneProfile) {
+    fun onToneSelected(tone: ToneProfile) {
         _selectedTone.value = tone
     }
 
@@ -135,7 +134,7 @@ class EditEchoOverlayViewModel @Inject constructor(
             _refinedText.value = ""
             
             // Use chat completions API directly
-            chatCompletionClient.streamReply(selectedTone, transcript).collect { token ->
+            chatCompletionClient.streamReply(selectedTone.value, transcript).collect { token ->
                 _refinedText.value += token
             }
             
