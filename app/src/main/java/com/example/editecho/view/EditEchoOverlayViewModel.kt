@@ -134,18 +134,37 @@ class EditEchoOverlayViewModel @Inject constructor(
             _refinedText.value = ""
             
             // Use chat completions API directly
+            var finalText = ""
+            Log.d(TAG, "Starting to collect tokens from OpenAI")
+            
+            // Create a StringBuilder to accumulate the text
+            val textBuilder = StringBuilder()
+            
+            // Collect all tokens
             chatCompletionClient.streamReply(selectedTone.value, transcript).collect { token ->
                 _refinedText.value += token
+                textBuilder.append(token)
+                Log.d(TAG, "Received token: '$token', current length: ${textBuilder.length}")
             }
             
+            // Get the final text after the stream is complete
+            finalText = textBuilder.toString()
+            Log.d(TAG, "Stream complete, final text: '$finalText'")
+            
             // Update UI with final text
-            _toneState.value = ToneState.Success(_refinedText.value)
+            _toneState.value = ToneState.Success(finalText)
             
             // Auto-copy to clipboard on main thread
+            Log.d(TAG, "Attempting to copy to clipboard: '$finalText'")
             viewModelScope.launch(Dispatchers.Main) {
-                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                clipboard.setPrimaryClip(ClipData.newPlainText("EditEcho", _refinedText.value))
-                Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+                try {
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setPrimaryClip(ClipData.newPlainText("EditEcho", finalText))
+                    Log.d(TAG, "Successfully copied to clipboard")
+                    Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to copy to clipboard", e)
+                }
             }
             
             _recordingState.value = RecordingState.Idle

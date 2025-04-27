@@ -21,7 +21,10 @@ import android.util.Log
 
 class ChatCompletionClient(
     private val api: OpenAiChatApi,
-    private val json: Json = Json { ignoreUnknownKeys = true }
+    private val json: Json = Json {
+        ignoreUnknownKeys = true
+        encodeDefaults = true   
+    }
 ) {
     fun streamReply(tone: ToneProfile, userText: String): Flow<String> = callbackFlow {
         val systemPrompt = PromptBuilder.buildSystemPrompt(tone)
@@ -67,13 +70,16 @@ class ChatCompletionClient(
                 val line = source.readUtf8Line() ?: break
                 if (line.startsWith("data: ")) {
                     val payload = line.removePrefix("data: ").trim()
-                    if (payload == "[DONE]") continue
+                    if (payload == "[DONE]") {
+                        channel.close()    // explicitly close the Flow's channel
+                        break              // exit the loop
+                    }
                     val resp = json.decodeFromString<ChatCompletionChunk>(payload)
                     resp.choices.firstOrNull()?.delta?.content?.let { trySend(it) }
                 }
             }
         }
-        awaitClose { }
+        awaitClose { /* no-op */ }
     }
 }
 
