@@ -2,13 +2,13 @@
 package com.example.editecho.network
 
 import com.example.editecho.BuildConfig
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
 
 object OpenAiRetrofit {
 
@@ -35,14 +35,15 @@ object OpenAiRetrofit {
         .writeTimeout(30, java.util.concurrent.TimeUnit.SECONDS)
         .build()
 
-    private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
 
     val api: OpenAiAssistantsApi = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(okHttpClient)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         .build()
         .create(OpenAiAssistantsApi::class.java)
 }

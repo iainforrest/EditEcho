@@ -34,8 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.editecho.ui.components.ToneButton
 import com.example.editecho.ui.theme.EditEchoColors
 import com.example.editecho.view.EditEchoOverlayViewModel
@@ -45,7 +44,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import android.content.res.Configuration
 import com.example.editecho.util.AudioRecorder
-import com.example.editecho.view.EditEchoViewModelFactory
 import com.example.editecho.prompt.ToneProfile
 import android.widget.Toast
 
@@ -56,19 +54,17 @@ import android.widget.Toast
  */
 @Composable
 fun EditEchoOverlay(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    viewModel: EditEchoOverlayViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val viewModel: EditEchoOverlayViewModel = viewModel(
-        factory = EditEchoViewModelFactory(context)
-    )
-    val recordingState by viewModel.recordingState.collectAsStateWithLifecycle()
-    val toneState by viewModel.toneState.collectAsStateWithLifecycle()
+    val recordingState by viewModel.recordingState.collectAsState()
+    val toneState by viewModel.toneState.collectAsState()
     val selectedTone = viewModel.selectedTone
     
     // Collect the transcribed and refined text from the ViewModel
-    val transcribedText by viewModel.transcribedText.collectAsStateWithLifecycle()
-    val refinedText by viewModel.refinedText.collectAsStateWithLifecycle()
+    val transcribedText by viewModel.transcribedText.collectAsState()
+    val refinedText by viewModel.refinedText.collectAsState()
     
     val scope = rememberCoroutineScope()
     
@@ -198,93 +194,35 @@ fun EditEchoOverlay(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
+                            .verticalScroll(rememberScrollState())
                     ) {
-                        // Transcribed text section
-                        Text(
-                            text = "🎙️ Transcription:",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = EditEchoColors.PrimaryText,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        
-                        // Transcribed text container with scrolling
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.5f),
-                            shape = RoundedCornerShape(8.dp),
-                            color = EditEchoColors.Surface,
-                            border = BorderStroke(1.dp, EditEchoColors.PrimaryText.copy(alpha = 0.3f))
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(12.dp)
-                            ) {
-                                if (isProcessing && transcribedText.isEmpty()) {
-                                    Text(
-                                        text = "Processing audio...",
-                                        color = EditEchoColors.PrimaryText.copy(alpha = 0.6f),
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                } else {
-                                    // Make transcribed text scrollable
-                                    val transcribedScrollState = rememberScrollState()
-                                    Text(
-                                        text = transcribedText,
-                                        color = EditEchoColors.PrimaryText,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .verticalScroll(transcribedScrollState)
-                                    )
-                                }
-                            }
+                        if (transcribedText.isNotEmpty()) {
+                            Text(
+                                text = "Transcription:",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = EditEchoColors.PrimaryText
+                            )
+                            Text(
+                                text = transcribedText,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = EditEchoColors.SecondaryText,
+                                modifier = Modifier.padding(vertical = 8.dp)
+                            )
                         }
-                        
-                        Spacer(modifier = Modifier.height(16.dp))
-                        
-                        // Refined text section
-                        Text(
-                            text = "✨ Edited Message:",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = EditEchoColors.PrimaryText,
-                            modifier = Modifier.padding(bottom = 8.dp)
-                        )
-                        
-                        // Refined text container with scrolling
-                        Surface(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.5f),
-                            shape = RoundedCornerShape(8.dp),
-                            color = EditEchoColors.Surface,
-                            border = BorderStroke(1.dp, EditEchoColors.Primary.copy(alpha = 0.5f))
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(12.dp)
-                            ) {
-                                if (isProcessing && refinedText.isEmpty()) {
-                                    Text(
-                                        text = "Refining text...",
-                                        color = EditEchoColors.PrimaryText.copy(alpha = 0.6f),
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
-                                } else {
-                                    // Make refined text scrollable
-                                    val refinedScrollState = rememberScrollState()
-                                    Text(
-                                        text = refinedText,
-                                        color = EditEchoColors.PrimaryText,
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .verticalScroll(refinedScrollState)
-                                    )
-                                }
-                            }
+
+                        if (refinedText.isNotEmpty()) {
+                            Text(
+                                text = "Edited Message:",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = EditEchoColors.PrimaryText,
+                                modifier = Modifier.padding(top = 16.dp)
+                            )
+                            Text(
+                                text = refinedText,
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = EditEchoColors.SecondaryText,
+                                modifier = Modifier.padding(vertical = 8.dp)
+                            )
                         }
                     }
                     

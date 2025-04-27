@@ -1,10 +1,13 @@
 // MessageRequestBody.kt
 package com.example.editecho.network.dto
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MessageRequestBody(
+    @SerialName("role")
     val role: String = "user",
+    @SerialName("content")
     val content: String
 )

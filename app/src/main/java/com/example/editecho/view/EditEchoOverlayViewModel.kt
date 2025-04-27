@@ -9,9 +9,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.editecho.data.SettingsRepository
 import com.example.editecho.network.AssistantApiClient
+import com.example.editecho.network.ChatCompletionClient
 import com.example.editecho.network.WhisperRepository
 import com.example.editecho.prompt.ToneProfile
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.IOException
+import javax.inject.Inject
 
 /* ---------- UI state wrappers ---------- */
 sealed class RecordingState {
@@ -37,10 +42,13 @@ sealed class ToneState {
 }
 
 /* ---------- ViewModel ---------- */
-class EditEchoOverlayViewModel(
-    private val context: Context,
-    private val whisperRepo: WhisperRepository = WhisperRepository(),
-    private val assistant: AssistantApiClient = AssistantApiClient(),
+@HiltViewModel
+class EditEchoOverlayViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val whisperRepo: WhisperRepository,
+    private val assistant: AssistantApiClient,
+    private val chatCompletionClient: ChatCompletionClient,
+    private val settings: SettingsRepository
 ) : ViewModel() {
 
     companion object {
@@ -126,34 +134,23 @@ class EditEchoOverlayViewModel(
             // Clear previous refined text
             _refinedText.value = ""
             
-            // Use streaming API
-            assistant.startRunStreaming(
-                tone = selectedTone.fullLabel,
-                rawText = transcript,
-                onToken = { token ->
-                    // Update UI with each token as it arrives
-                    _refinedText.value += token
-                },
-                onDone = { finalText ->
-                    // Update UI with final text
-                    _refinedText.value = finalText
-                    _toneState.value = ToneState.Success(finalText)
-                    
-                    // Auto-copy to clipboard on main thread
-                    viewModelScope.launch(Dispatchers.Main) {
-                        val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                        clipboard.setPrimaryClip(ClipData.newPlainText("EditEcho", finalText))
-                        Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
-                    }
-                    
-                    _recordingState.value = RecordingState.Idle
-                },
-                onError = { error ->
-                    Log.e(TAG, "Streaming error", error)
-                    _recordingState.value = RecordingState.Error("Processing error: ${error.message}")
-                    _toneState.value = ToneState.Error("Processing error: ${error.message}")
-                }
-            )
+            // Use chat completions API directly
+            chatCompletionClient.streamReply(selectedTone, transcript).collect { token ->
+                _refinedText.value += token
+            }
+            
+            // Update UI with final text
+            _toneState.value = ToneState.Success(_refinedText.value)
+            
+            // Auto-copy to clipboard on main thread
+            viewModelScope.launch(Dispatchers.Main) {
+                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                clipboard.setPrimaryClip(ClipData.newPlainText("EditEcho", _refinedText.value))
+                Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
+            }
+            
+            _recordingState.value = RecordingState.Idle
+            
         } catch (e: Exception) {
             Log.e(TAG, "Processing failed", e)
             _recordingState.value = RecordingState.Error("Processing error: ${e.message}")

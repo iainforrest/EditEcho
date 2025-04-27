@@ -1,12 +1,16 @@
 package com.example.editecho.network.dto
 
-import com.squareup.moshi.Json
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MessageResponse(
+    @SerialName("id")
     val id: String,
+    @SerialName("role")
     val role: String,
+    @SerialName("content")
     val content: List<ContentBlock>
 ) {
     val text: String
@@ -17,14 +21,18 @@ data class MessageResponse(
             ?: ""
 }
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class ContentBlock(
+    @SerialName("type")
     val type: String,
+    @SerialName("text")
     val text: TextValue
 )
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class TextValue(
+    @SerialName("value")
     val value: String,
-    val annotations: List<Any> = emptyList()
+    @SerialName("annotations")
+    val annotations: List<JsonElement> = emptyList()
 ) 

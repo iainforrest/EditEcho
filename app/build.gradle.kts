@@ -1,120 +1,105 @@
+// app/build.gradle.kts
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.0"
+    id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.dagger.hilt.android")
+    id("org.jetbrains.kotlin.kapt")
 }
 
-// Import Properties for reading secrets.properties
 import java.util.Properties
 
-// Load the real API key from secrets.properties and inject into BuildConfig
+// Load OPENAI_API_KEY from secrets.properties
 val secretsFile = rootProject.file("secrets.properties")
 val openAiKey: String = Properties().apply {
     if (secretsFile.exists()) load(secretsFile.inputStream())
 }.getProperty("OPENAI_API_KEY", "").also {
-    if (it.isBlank()) logger.warn("⚠️ OPENAI_API_KEY is blank in secrets.properties")
+    if (it.isBlank()) logger.warn("⚠️  OPENAI_API_KEY is blank in secrets.properties")
 }
 
 android {
-    namespace = "com.example.editecho"
-    compileSdk = 34
+    namespace   = "com.example.editecho"
+    compileSdk  = 34
 
     defaultConfig {
         applicationId = "com.example.editecho"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        minSdk        = 31
+        targetSdk     = 34
+        versionCode   = 1
+        versionName   = "0.1.0"
 
-        // Inject the API key into BuildConfig
-        buildConfigField("String", "OPENAI_API_KEY", "\"$openAiKey\"")
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        buildConfigField(
+            "String",
+            "OPENAI_API_KEY",
+            "\"$openAiKey\""
+        )
     }
 
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
     buildFeatures {
+        compose     = true
         buildConfig = true
-        compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.5"
+        kotlinCompilerExtensionVersion = "1.5.8"
     }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+    }
+
+    // Kotlin JVM target must match Java target
+    kotlinOptions {
+        jvmTarget = "21"
     }
 }
 
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+}
+
+kotlin {
+    jvmToolchain(21)
+}
+
 dependencies {
-    implementation("androidx.core:core-ktx:1.12.0")
+    // ─── Core AndroidX & Compose ───────────────────────────────────────────
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
-    // Compose UI dependencies
     implementation(libs.compose.ui)
-    implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.compose.runtime)
     implementation(libs.compose.material3)
     implementation(libs.compose.material.icons.extended)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.util)
-    
-    // Update lifecycle dependencies to latest versions
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-common:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
-    
-    // Saved state components
-    implementation(libs.savedstate)
-    implementation(libs.savedstate.ktx)
-
-    // Activity components with back handler support
-    implementation(libs.activity)
-    implementation(libs.activity.ktx)
     implementation(libs.activity.compose)
 
-    // Network libraries for API calls
-    implementation("io.github.aakira:napier:2.6.1")   // logger for the client
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
-    implementation("com.squareup.okio:okio:3.9.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    // Compose tooling & previews
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.tooling.preview)
 
-    
-    // Retrofit for Whisper API
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-scalars:2.9.0") // for plain text responses
-    implementation("com.squareup.okhttp3:okhttp:4.11.0")
-    implementation("com.squareup.okhttp3:okhttp-sse:4.12.0") // for Server-Sent Events
-    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
-    
-    // Testing dependencies
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
-    debugImplementation(libs.compose.ui.test.manifest)
+    // ─── Lifecycle & ViewModel ────────────────────────────────────────────
+    implementation(libs.lifecycle.runtime)
+    implementation(libs.lifecycle.viewmodel.ktx)
+    implementation(libs.lifecycle.viewmodel.compose)
+    implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.savedstate)
+
+    // ─── DataStore Preferences ─────────────────────────────────────────────
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // ─── Hilt / Dagger ─────────────────────────────────────────────────────
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+    implementation(libs.hilt.navigation.compose)
+
+    // ─── Networking & JSON ────────────────────────────────────────────────
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+    implementation(libs.okhttp.sse)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.serialization)
+    implementation(libs.kotlinx.serialization.json)
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 }

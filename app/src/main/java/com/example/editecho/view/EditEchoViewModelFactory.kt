@@ -3,21 +3,37 @@ package com.example.editecho.view
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.editecho.data.SettingsRepository
 import com.example.editecho.network.AssistantApiClient
+import com.example.editecho.network.ChatCompletionClient
 import com.example.editecho.network.WhisperRepository
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
-class EditEchoViewModelFactory(
-    private val context: Context
+class EditEchoViewModelFactory @AssistedInject constructor(
+    @Assisted private val context: Context,
+    private val whisperRepository: WhisperRepository,
+    private val assistantApiClient: AssistantApiClient,
+    private val chatCompletionClient: ChatCompletionClient,
+    private val settings: SettingsRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EditEchoOverlayViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
             return EditEchoOverlayViewModel(
                 context,
-                WhisperRepository(),
-                AssistantApiClient()          // ← no more OpenAIProvider.client
+                whisperRepository,
+                assistantApiClient,
+                chatCompletionClient,
+                settings
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(context: Context): EditEchoViewModelFactory
     }
 }

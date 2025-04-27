@@ -1,7 +1,11 @@
 // ThreadResponse.kt
 package com.example.editecho.network.dto
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
-data class ThreadResponse(val id: String)
+@Serializable
+data class ThreadResponse(
+    @SerialName("id")
+    val id: String
+)

@@ -1,19 +1,27 @@
 package com.example.editecho
 
 import android.app.Application
+import android.app.NotificationManager
 import android.util.Log
-import com.example.editecho.service.NotificationService
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
+@HiltAndroidApp
 class EditEchoApplication : Application() {
     companion object {
         private const val TAG = "EditEchoApplication"
     }
 
+    @Inject
+    lateinit var notificationManager: NotificationManager
+
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "onCreate")
-        
-        // Create notification channel once at app startup
-        NotificationService.createNotificationChannel(this)
+        Log.d(TAG, "Application onCreate")
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        Log.d(TAG, "Application onTerminate")
     }
 } 

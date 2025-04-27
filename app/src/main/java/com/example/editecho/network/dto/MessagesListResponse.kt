@@ -1,9 +1,11 @@
 // MessagesListResponse.kt
 package com.example.editecho.network.dto
 
-import com.squareup.moshi.JsonClass
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonClass(generateAdapter = true)
+@Serializable
 data class MessagesListResponse(
+    @SerialName("data")
     val data: List<MessageResponse>
 )
