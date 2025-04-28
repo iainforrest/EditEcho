@@ -19,11 +19,11 @@ val openAiKey: String = Properties().apply {
 }
 
 android {
-    namespace   = "com.example.editecho"
+    namespace   = "com.editecho"
     compileSdk  = 34
 
     defaultConfig {
-        applicationId = "com.example.editecho"
+        applicationId = "com.editecho"
         minSdk        = 31
         targetSdk     = 34
         versionCode   = 1
