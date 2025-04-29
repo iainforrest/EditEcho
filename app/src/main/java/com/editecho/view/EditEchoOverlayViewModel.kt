@@ -72,7 +72,7 @@ class EditEchoOverlayViewModel @Inject constructor(
     private val _refinedText = MutableStateFlow("")
     val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
-    private val _selectedTone = MutableStateFlow(ToneProfile.FAMILIAR)
+    private val _selectedTone = MutableStateFlow(ToneProfile.DIRECT)
     val selectedTone: StateFlow<ToneProfile> = _selectedTone.asStateFlow()
 
     /* ---------- Public helpers ---------- */
@@ -147,6 +147,8 @@ class EditEchoOverlayViewModel @Inject constructor(
             val file = audioFile ?: error("No audio file")
             val transcript = withContext(Dispatchers.IO) { whisperRepo.transcribe(file) }
             
+            // Set both states to Processing to show "Editing" state
+            _recordingState.value = RecordingState.Idle
             _toneState.value = ToneState.Processing
             
             // Clear previous refined text
@@ -185,8 +187,6 @@ class EditEchoOverlayViewModel @Inject constructor(
                     Log.e(TAG, "Failed to copy to clipboard", e)
                 }
             }
-            
-            _recordingState.value = RecordingState.Idle
             
         } catch (e: Exception) {
             Log.e(TAG, "Processing failed", e)

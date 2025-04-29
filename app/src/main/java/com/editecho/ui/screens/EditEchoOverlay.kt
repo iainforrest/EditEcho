@@ -48,6 +48,7 @@ import com.editecho.util.AudioRecorder
 import com.editecho.prompt.ToneProfile
 import android.widget.Toast
 import android.util.Log
+import com.editecho.ui.components.EditedMessageBox
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -159,7 +160,7 @@ fun EditEchoOverlay(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(8.dp),
+                        .padding(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // Header with title and close button
@@ -198,29 +199,14 @@ fun EditEchoOverlay(
                                 .weight(0.85f)
                                 .fillMaxHeight()
                         ) {
-                            // Refined text box
-                            Box(
+                            EditedMessageBox(
+                                recordingState = recordingState,
+                                toneState = toneState,
+                                editedText = refinedText,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .weight(1f)
-                            ) {
-                                OutlinedTextField(
-                                    value = refinedText,
-                                    onValueChange = { /* Read-only */ },
-                                    readOnly = true,
-                                    placeholder = { Text("Your edited message will appear here...") },
-                                    modifier = Modifier
-                                        .fillMaxSize()
-                                        .verticalScroll(rememberScrollState()),
-                                    textStyle = MaterialTheme.typography.bodyLarge,
-                                    colors = OutlinedTextFieldDefaults.colors(
-                                        unfocusedTextColor = EditEchoColors.SecondaryText,
-                                        focusedTextColor = EditEchoColors.SecondaryText,
-                                        unfocusedBorderColor = EditEchoColors.Primary.copy(alpha = 0.5f),
-                                        focusedBorderColor = EditEchoColors.Primary
-                                    )
-                                )
-                            }
+                            )
                             
                             Spacer(modifier = Modifier.height(8.dp))
                             
