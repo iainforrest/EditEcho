@@ -118,13 +118,11 @@ fun EditEchoOverlay(
         viewModel.stopRecording()
     }
     
-    // Copy both transcribed and refined text to clipboard
+    // Copy refined text to clipboard
     fun copyTextToClipboard() {
         try {
             val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
-            val formattedText = viewModel.formatExample()
-            Log.d("EditEchoOverlay", "Copying to clipboard (${formattedText.length} chars):\n$formattedText")
-            val clip = android.content.ClipData.newPlainText("EditEcho Text", formattedText)
+            val clip = android.content.ClipData.newPlainText("EditEcho Text", refinedText)
             clipboard.setPrimaryClip(clip)
             Log.d("EditEchoOverlay", "Successfully copied to clipboard")
             Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
@@ -150,7 +148,7 @@ fun EditEchoOverlay(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.7f)
+                    .fillMaxHeight(0.4f)
                     .align(Alignment.BottomCenter)
                     .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                     .clickable(enabled = false) { },
@@ -161,18 +159,20 @@ fun EditEchoOverlay(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp),
+                        .padding(8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    // Header
+                    // Header with title and close button
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 2.dp),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "EditEcho",
-                            style = MaterialTheme.typography.titleLarge,
+                            text = "Edit Echo",
+                            style = MaterialTheme.typography.titleMedium,
                             color = EditEchoColors.PrimaryText
                         )
                         IconButton(onClick = onDismiss) {
@@ -184,146 +184,99 @@ fun EditEchoOverlay(
                         }
                     }
                     
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
                     
-                    // Text display area with both transcribed and refined text
-                    Column(
+                    // Main content area with two columns
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
                     ) {
-                        // Transcription box
-                        Text(
-                            text = "Transcription:",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = EditEchoColors.PrimaryText
-                        )
-                        Box(
+                        // Left column - Text and tone selector
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.3f)
+                                .weight(0.85f)
+                                .fillMaxHeight()
                         ) {
-                            OutlinedTextField(
-                                value = transcribedText,
-                                onValueChange = { /* Read-only */ },
-                                readOnly = true,
-                                placeholder = { Text("Your transcribed text will appear here...") },
+                            // Refined text box
+                            Box(
                                 modifier = Modifier
-                                    .fillMaxSize()
-                                    .verticalScroll(rememberScrollState()),
-                                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * 0.5
-                                ),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    unfocusedTextColor = EditEchoColors.SecondaryText,
-                                    focusedTextColor = EditEchoColors.SecondaryText,
-                                    unfocusedBorderColor = EditEchoColors.Primary.copy(alpha = 0.5f),
-                                    focusedBorderColor = EditEchoColors.Primary
+                                    .fillMaxWidth()
+                                    .weight(1f)
+                            ) {
+                                OutlinedTextField(
+                                    value = refinedText,
+                                    onValueChange = { /* Read-only */ },
+                                    readOnly = true,
+                                    placeholder = { Text("Your edited message will appear here...") },
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .verticalScroll(rememberScrollState()),
+                                    textStyle = MaterialTheme.typography.bodyLarge,
+                                    colors = OutlinedTextFieldDefaults.colors(
+                                        unfocusedTextColor = EditEchoColors.SecondaryText,
+                                        focusedTextColor = EditEchoColors.SecondaryText,
+                                        unfocusedBorderColor = EditEchoColors.Primary.copy(alpha = 0.5f),
+                                        focusedBorderColor = EditEchoColors.Primary
+                                    )
                                 )
-                            )
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        // Refined text box
-                        Text(
-                            text = "Edited Message:",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = EditEchoColors.PrimaryText
-                        )
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(0.3f)
-                        ) {
-                            OutlinedTextField(
-                                value = refinedText,
-                                onValueChange = { /* Read-only */ },
-                                readOnly = true,
-                                placeholder = { Text("Your edited message will appear here...") },
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .verticalScroll(rememberScrollState()),
-                                textStyle = MaterialTheme.typography.bodyMedium.copy(
-                                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * 0.5
-                                ),
-                                colors = OutlinedTextFieldDefaults.colors(
-                                    unfocusedTextColor = EditEchoColors.SecondaryText,
-                                    focusedTextColor = EditEchoColors.SecondaryText,
-                                    unfocusedBorderColor = EditEchoColors.Primary.copy(alpha = 0.5f),
-                                    focusedBorderColor = EditEchoColors.Primary
-                                )
-                            )
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    // Tone selection using the new TonePicker component
-                    TonePicker(
-                        selectedTone = selectedTone,
-                        onToneSelected = viewModel::onToneSelected
-                    )
-                    
-                    Spacer(modifier = Modifier.height(16.dp))
-                    
-                    // Action buttons
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceEvenly
-                    ) {
-                        // Record button
-                        Button(
-                            onClick = { if (isRecording) stopRecording() else startRecording() },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = if (isRecording) EditEchoColors.Error
-                                else EditEchoColors.Primary
-                            )
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Mic,
-                                contentDescription = if (isRecording) "Stop Recording"
-                                else "Start Recording"
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = if (isRecording) "Stop"
-                                else "Record"
+                            }
+                            
+                            Spacer(modifier = Modifier.height(8.dp))
+                            
+                            // Tone selection with increased height
+                            TonePicker(
+                                selectedTone = selectedTone,
+                                onToneSelected = viewModel::onToneSelected,
+                                modifier = Modifier.height(60.dp)  // Increased from 40.dp to 60.dp
                             )
                         }
                         
-                        // Copy button
-                        Button(
-                            onClick = { copyTextToClipboard() },
-                            enabled = transcribedText.isNotEmpty() || refinedText.isNotEmpty(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = EditEchoColors.Primary
-                            )
+                        // Right column - Vertical buttons
+                        Column(
+                            modifier = Modifier
+                                .weight(0.15f)
+                                .fillMaxHeight()
+                                .padding(start = 8.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Icon(
-                                imageVector = Icons.Default.ContentCopy,
-                                contentDescription = "Copy Text"
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "Copy")
-                        }
-                        
-                        // Settings button
-                        Button(
-                            onClick = { 
-                                copyTextToClipboard()
-                                viewModel.saveExample()
-                            },
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = EditEchoColors.Primary
-                            )
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Settings,
-                                contentDescription = "Settings"
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "Settings")
+                            // Settings button
+                            IconButton(
+                                onClick = { /* Settings functionality removed */ },
+                                modifier = Modifier.size(48.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Settings,
+                                    contentDescription = "Settings",
+                                    tint = EditEchoColors.Primary
+                                )
+                            }
+                            
+                            // Copy button
+                            IconButton(
+                                onClick = { copyTextToClipboard() },
+                                enabled = refinedText.isNotEmpty(),
+                                modifier = Modifier.size(48.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.ContentCopy,
+                                    contentDescription = "Copy Text",
+                                    tint = if (refinedText.isNotEmpty()) EditEchoColors.Primary else EditEchoColors.Primary.copy(alpha = 0.5f)
+                                )
+                            }
+                            
+                            // Record button
+                            IconButton(
+                                onClick = { if (isRecording) stopRecording() else startRecording() },
+                                modifier = Modifier.size(48.dp)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Mic,
+                                    contentDescription = if (isRecording) "Stop Recording" else "Start Recording",
+                                    tint = if (isRecording) EditEchoColors.Error else EditEchoColors.Primary
+                                )
+                            }
                         }
                     }
                 }

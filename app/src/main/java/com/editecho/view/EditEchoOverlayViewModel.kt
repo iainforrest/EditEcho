@@ -76,19 +76,7 @@ class EditEchoOverlayViewModel @Inject constructor(
     val selectedTone: StateFlow<ToneProfile> = _selectedTone.asStateFlow()
 
     /* ---------- Public helpers ---------- */
-    fun formatExample(): String = buildString {
-        if (_transcribedText.value.isNotEmpty()) {
-            append("🎙️ Transcription:\n")
-            append(_transcribedText.value)
-            append("\n\n")
-        }
-        if (_refinedText.value.isNotEmpty()) {
-            append("✨ Edited Message:\n")
-            append(_refinedText.value)
-        }
-    }.trim().also { formattedText ->
-        Log.d(TAG, "Formatted example text (${formattedText.length} chars):\n$formattedText")
-    }
+    fun formatExample(): String = _refinedText.value
 
     fun saveExample() = viewModelScope.launch(Dispatchers.IO) {
         try {
@@ -158,8 +146,7 @@ class EditEchoOverlayViewModel @Inject constructor(
         try {
             val file = audioFile ?: error("No audio file")
             val transcript = withContext(Dispatchers.IO) { whisperRepo.transcribe(file) }
-
-            _transcribedText.value = transcript
+            
             _toneState.value = ToneState.Processing
             
             // Clear previous refined text

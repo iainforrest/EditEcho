@@ -29,7 +29,7 @@ fun TonePicker(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+            .padding(horizontal = 8.dp, vertical = 4.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.Top
     ) {
@@ -78,7 +78,7 @@ fun TonePicker(
         }
         
         // Spacer between dropdown and description (5% width)
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(8.dp))
         
         // Tone description (45% width)
         Text(
@@ -87,7 +87,7 @@ fun TonePicker(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             maxLines = 3,
             overflow = TextOverflow.Ellipsis,
-            fontSize = 12.sp,
+            fontSize = 10.sp,
             modifier = Modifier.weight(0.45f)
         )
     }
