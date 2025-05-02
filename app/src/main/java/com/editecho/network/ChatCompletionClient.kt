@@ -33,6 +33,7 @@ class ChatCompletionClient(
         val model = when (tone) {
             ToneProfile.FAMILIAR, ToneProfile.DIRECT -> "gpt-4.1-mini"
             ToneProfile.COLLABORATIVE, ToneProfile.PROFESSIONAL -> "gpt-4.1"
+            ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("ChatCompletionClient should not be called for TRANSCRIBE_ONLY tone")
         }
         
         val req = ChatCompletionRequest(

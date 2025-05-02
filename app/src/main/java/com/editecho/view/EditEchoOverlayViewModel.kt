@@ -173,7 +173,15 @@ class EditEchoOverlayViewModel @Inject constructor(
             // Clear previous refined text
             _refinedText.value = ""
             
-            // Use chat completions API directly
+            // Handle TRANSCRIBE_ONLY case
+            if (selectedTone.value == ToneProfile.TRANSCRIBE_ONLY) {
+                _refinedText.value = transcript
+                _toneState.value = ToneState.Success(transcript)
+                appendToHistory("Edited", transcript)
+                return@launch
+            }
+            
+            // Use chat completions API directly for other tones
             var finalText = ""
             Log.d(TAG, "Starting to collect tokens from OpenAI")
             

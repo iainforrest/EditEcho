@@ -27,6 +27,7 @@ object PromptBuilder {
                 ToneProfile.DIRECT        -> PromptAssets.Briefs.DIRECT
                 ToneProfile.COLLABORATIVE -> PromptAssets.Briefs.COLLABORATIVE
                 ToneProfile.PROFESSIONAL  -> PromptAssets.Briefs.PROFESSIONAL
+                ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
             }
         ).append("\n\n")
 
@@ -37,6 +38,7 @@ object PromptBuilder {
             ToneProfile.DIRECT        -> PromptAssets.Examples.DIRECT
             ToneProfile.COLLABORATIVE -> PromptAssets.Examples.COLLABORATIVE
             ToneProfile.PROFESSIONAL  -> PromptAssets.Examples.PROFESSIONAL
+            ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
         }
         examples.forEach { sb.append("* ").append(it).append('\n') }
         sb.append("\n")
