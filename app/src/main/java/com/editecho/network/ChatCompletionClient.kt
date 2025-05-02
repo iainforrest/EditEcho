@@ -40,7 +40,7 @@ class ChatCompletionClient(
             stream = true,
             messages = listOf(
                 ChatMessage("system", systemPrompt),
-                ChatMessage("user", userText)
+                ChatMessage("user", PromptBuilder.wrapUserInput(userText))
             ),
             temperature = 0.25,
             topP = 0.9

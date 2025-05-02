@@ -78,6 +78,22 @@ class EditEchoOverlayViewModel @Inject constructor(
     /* ---------- Public helpers ---------- */
     fun formatExample(): String = _refinedText.value
 
+    private fun appendToHistory(prefix: String, text: String) = viewModelScope.launch(Dispatchers.IO) {
+        try {
+            val file = File(context.filesDir, "history.txt")
+            val timestamp = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault())
+                .format(java.util.Date())
+            // Format as CSV: timestamp,type,text
+            // Replace any commas in the text with semicolons to avoid breaking CSV format
+            val sanitizedText = text.replace(",", ";")
+            val entry = "$timestamp,$prefix,$sanitizedText\n"
+            file.appendText(entry)
+            Log.d(TAG, "Successfully appended to history.txt")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to append to history.txt", e)
+        }
+    }
+
     fun saveExample() = viewModelScope.launch(Dispatchers.IO) {
         try {
             val file = File(context.filesDir, "history.txt")
@@ -147,6 +163,9 @@ class EditEchoOverlayViewModel @Inject constructor(
             val file = audioFile ?: error("No audio file")
             val transcript = withContext(Dispatchers.IO) { whisperRepo.transcribe(file) }
             
+            // Log the transcription to history
+            appendToHistory("Transcription", transcript)
+            
             // Set both states to Processing to show "Editing" state
             _recordingState.value = RecordingState.Idle
             _toneState.value = ToneState.Processing
@@ -171,6 +190,9 @@ class EditEchoOverlayViewModel @Inject constructor(
             // Get the final text after the stream is complete
             finalText = textBuilder.toString()
             Log.d(TAG, "Stream complete, final text: '$finalText'")
+            
+            // Log the edited text to history
+            appendToHistory("Edited", finalText)
             
             // Update UI with final text
             _toneState.value = ToneState.Success(finalText)
