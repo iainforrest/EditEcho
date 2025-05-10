@@ -3,6 +3,7 @@ package com.editecho.di
 import android.app.NotificationManager
 import android.content.Context
 import com.editecho.data.SettingsRepository
+import com.editecho.data.SessionCounterRepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.WhisperRepository
 import dagger.Module
@@ -41,5 +42,11 @@ object AppModule {
         @ApplicationContext context: Context
     ): NotificationManager {
         return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    }
+
+    @Provides
+    @Singleton
+    fun provideSessionCounterRepository(): SessionCounterRepository {
+        return SessionCounterRepository()
     }
 } 

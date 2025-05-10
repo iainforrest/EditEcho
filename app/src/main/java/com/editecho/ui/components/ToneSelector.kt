@@ -27,7 +27,7 @@ fun ToneSelector(
             .padding(horizontal = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        val tones = listOf("Professional", "Casual", "Friendly", "Formal")
+        val tones = listOf("Friendly", "Engaged", "Direct", "Reflective")
         tones.forEach { tone ->
             ToneButton(
                 text = tone,

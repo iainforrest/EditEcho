@@ -20,26 +20,12 @@ object PromptBuilder {
         sb.append(PromptAssets.BASE_SYSTEM).append("\n\n")
 
         // 2️⃣ tone header + brief
-        sb.append("## TONE\n${tone.systemLabel}\n\n")
-        sb.append(
-            when (tone) {
-                ToneProfile.FAMILIAR      -> PromptAssets.Briefs.FAMILIAR
-                ToneProfile.DIRECT        -> PromptAssets.Briefs.DIRECT
-                ToneProfile.COLLABORATIVE -> PromptAssets.Briefs.COLLABORATIVE
-                ToneProfile.PROFESSIONAL  -> PromptAssets.Briefs.PROFESSIONAL
-                ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
-            }
-        ).append("\n\n")
+        sb.append("## TONE\n${tone.category}\n\n")
+        sb.append(getToneBrief(tone)).append("\n\n")
 
         // 3️⃣ authentic examples
         sb.append("## EXAMPLES\n")
-        val examples = when (tone) {
-            ToneProfile.FAMILIAR      -> PromptAssets.Examples.FAMILIAR
-            ToneProfile.DIRECT        -> PromptAssets.Examples.DIRECT
-            ToneProfile.COLLABORATIVE -> PromptAssets.Examples.COLLABORATIVE
-            ToneProfile.PROFESSIONAL  -> PromptAssets.Examples.PROFESSIONAL
-            ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
-        }
+        val examples = getToneExamples(tone)
         examples.forEach { sb.append("* ").append(it).append('\n') }
         sb.append("\n")
 
@@ -52,4 +38,18 @@ object PromptBuilder {
     /** Wrap raw user text so the model clearly sees the payload that must be edited. */
     fun wrapUserInput(raw: String): String =
         "Here's the raw message to improve:\n$raw"
+
+    private fun getToneBrief(tone: ToneProfile): String = when (tone) {
+        ToneProfile.FRIENDLY    -> PromptAssets.Briefs.FRIENDLY
+        ToneProfile.ENGAGED     -> PromptAssets.Briefs.ENGAGED
+        ToneProfile.DIRECT      -> PromptAssets.Briefs.DIRECT
+        ToneProfile.REFLECTIVE  -> PromptAssets.Briefs.REFLECTIVE
+    }
+
+    private fun getToneExamples(tone: ToneProfile): List<String> = when (tone) {
+        ToneProfile.FRIENDLY    -> PromptAssets.Examples.FRIENDLY
+        ToneProfile.ENGAGED     -> PromptAssets.Examples.ENGAGED
+        ToneProfile.DIRECT      -> PromptAssets.Examples.DIRECT
+        ToneProfile.REFLECTIVE  -> PromptAssets.Examples.REFLECTIVE
+    }
 }

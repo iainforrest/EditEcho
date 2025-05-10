@@ -6,17 +6,16 @@ package com.editecho.prompt
  */
 enum class ToneProfile(
     val displayName: String,
-    val systemLabel: String,
+    val category: String,
     val description: String
 ) {
-    FAMILIAR("Familiar", "Casual/Personal", "Warm, relaxed tone for messages to family or close friends."),
-    DIRECT("Direct", "Direct/Operational", "Short, clear updates for fast decisions or logistics."),
-    COLLABORATIVE("Collaborative", "Collaborative/Planning", "Helpful and contextual tone for coordinating plans."),
-    PROFESSIONAL("Professional", "Professional/Structured", "Respectful and clear communication for external or formal contacts."),
-    TRANSCRIBE_ONLY("Transcribe Only", "Raw/Unedited", "Get the raw transcription without any AI editing.");
+    FRIENDLY("Friendly", "Casual/Personal", "A warm, upbeat tone used when speaking to close friends or peers."),
+    ENGAGED("Engaged", "Balanced/Informative", "A balanced and informative tone conveying organized thought with a friendly twist."),
+    DIRECT("Direct", "Professional/Concise", "A straightforward and professional tone for clear and concise communication."),
+    REFLECTIVE("Reflective", "Thoughtful/Introspective", "A thoughtful and introspective tone with a touch of warmth and sincerity.");
 
     companion object {
-        fun fromDisplayName(name: String) =
-            values().firstOrNull { it.displayName == name } ?: FAMILIAR
+        fun fromName(name: String): ToneProfile =
+            values().firstOrNull { it.displayName == name } ?: FRIENDLY
     }
 }

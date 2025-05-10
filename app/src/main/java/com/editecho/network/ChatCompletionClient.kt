@@ -30,11 +30,7 @@ class ChatCompletionClient(
         val systemPrompt = PromptBuilder.buildSystemPrompt(tone)
         
         // Select model based on tone
-        val model = when (tone) {
-            ToneProfile.FAMILIAR, ToneProfile.DIRECT -> "gpt-4.1-mini"
-            ToneProfile.COLLABORATIVE, ToneProfile.PROFESSIONAL -> "gpt-4.1"
-            ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("ChatCompletionClient should not be called for TRANSCRIBE_ONLY tone")
-        }
+        val model = selectModel(tone)
         
         val req = ChatCompletionRequest(
             model = model,
@@ -81,6 +77,11 @@ class ChatCompletionClient(
             }
         }
         awaitClose { /* no-op */ }
+    }
+
+    private fun selectModel(tone: ToneProfile): String = when (tone) {
+        ToneProfile.FRIENDLY, ToneProfile.DIRECT -> "gpt-4.1-mini"
+        ToneProfile.ENGAGED, ToneProfile.REFLECTIVE -> "gpt-4.1"
     }
 }
 

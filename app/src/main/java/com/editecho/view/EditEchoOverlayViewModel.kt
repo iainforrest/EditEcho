@@ -72,7 +72,7 @@ class EditEchoOverlayViewModel @Inject constructor(
     private val _refinedText = MutableStateFlow("")
     val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
-    private val _selectedTone = MutableStateFlow(ToneProfile.DIRECT)
+    private val _selectedTone = MutableStateFlow(ToneProfile.FRIENDLY)
     val selectedTone: StateFlow<ToneProfile> = _selectedTone.asStateFlow()
 
     /* ---------- Public helpers ---------- */
@@ -173,15 +173,7 @@ class EditEchoOverlayViewModel @Inject constructor(
             // Clear previous refined text
             _refinedText.value = ""
             
-            // Handle TRANSCRIBE_ONLY case
-            if (selectedTone.value == ToneProfile.TRANSCRIBE_ONLY) {
-                _refinedText.value = transcript
-                _toneState.value = ToneState.Success(transcript)
-                appendToHistory("Edited", transcript)
-                return@launch
-            }
-            
-            // Use chat completions API directly for other tones
+            // Use chat completions API directly for all tones
             var finalText = ""
             Log.d(TAG, "Starting to collect tokens from OpenAI")
             

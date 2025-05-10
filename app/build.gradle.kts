@@ -6,6 +6,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
     id("com.google.dagger.hilt.android")
     id("org.jetbrains.kotlin.kapt")
+    id("com.google.gms.google-services") version "4.4.2"
 }
 
 import java.util.Properties
@@ -41,29 +42,44 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.8"
+        kotlinCompilerExtensionVersion = "1.5.12"
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    packaging {
+        resources {
+            pickFirsts += setOf(
+                "/META-INF/AL2.0",
+                "/META-INF/LGPL2.1"
+            )
+        }
     }
 
     // Kotlin JVM target must match Java target
     kotlinOptions {
-        jvmTarget = "21"
+        jvmTarget = "17"
     }
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(17)
 }
 
 dependencies {
+    // ─── Firebase (version-aligned via BoM) ────────────────────────────────
+    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    // Add other Firebase libs here, no version tags needed
+
     // ─── Core AndroidX & Compose ───────────────────────────────────────────
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -75,31 +91,35 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
     implementation(libs.activity.compose)
 
-    // Compose tooling & previews
+    // ─── Compose tooling & previews (debug only) ───────────────────────────
     debugImplementation(libs.compose.ui.tooling)
     debugImplementation(libs.compose.ui.tooling.preview)
 
-    // ─── Lifecycle & ViewModel ────────────────────────────────────────────
+    // ─── Lifecycle & ViewModel ─────────────────────────────────────────────
     implementation(libs.lifecycle.runtime)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.savedstate)
 
-    // ─── DataStore Preferences ─────────────────────────────────────────────
+    // ─── Jetpack DataStore ────────────────────────────────────────────────
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
-    // ─── Hilt / Dagger ─────────────────────────────────────────────────────
+    // ─── Dependency Injection (Hilt) ───────────────────────────────────────
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
-    // ─── Networking & JSON ────────────────────────────────────────────────
-    implementation(libs.okhttp)
-    implementation(libs.okhttp.logging)
-    implementation(libs.okhttp.sse)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.serialization)
+    // ─── KotlinX JSON & Coroutines ────────────────────────────────────────
     implementation(libs.kotlinx.serialization.json)
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+
+    // ─── Retrofit & OkHttp ────────────────────────────────────────────────
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.okhttp3:okhttp-sse:4.12.0")
 }
+
