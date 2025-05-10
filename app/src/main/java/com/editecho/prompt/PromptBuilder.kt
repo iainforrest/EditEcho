@@ -44,6 +44,7 @@ object PromptBuilder {
         ToneProfile.ENGAGED     -> PromptAssets.Briefs.ENGAGED
         ToneProfile.DIRECT      -> PromptAssets.Briefs.DIRECT
         ToneProfile.REFLECTIVE  -> PromptAssets.Briefs.REFLECTIVE
+        ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
     }
 
     private fun getToneExamples(tone: ToneProfile): List<String> = when (tone) {
@@ -51,5 +52,6 @@ object PromptBuilder {
         ToneProfile.ENGAGED     -> PromptAssets.Examples.ENGAGED
         ToneProfile.DIRECT      -> PromptAssets.Examples.DIRECT
         ToneProfile.REFLECTIVE  -> PromptAssets.Examples.REFLECTIVE
+        ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
     }
 }

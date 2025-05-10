@@ -173,7 +173,15 @@ class EditEchoOverlayViewModel @Inject constructor(
             // Clear previous refined text
             _refinedText.value = ""
             
-            // Use chat completions API directly for all tones
+            // Handle TRANSCRIBE_ONLY case
+            if (selectedTone.value == ToneProfile.TRANSCRIBE_ONLY) {
+                _refinedText.value = transcript
+                _toneState.value = ToneState.Success(transcript)
+                appendToHistory("Edited", transcript)
+                return@launch
+            }
+            
+            // Use chat completions API directly for other tones
             var finalText = ""
             Log.d(TAG, "Starting to collect tokens from OpenAI")
             
@@ -191,8 +199,8 @@ class EditEchoOverlayViewModel @Inject constructor(
             finalText = textBuilder.toString()
             Log.d(TAG, "Stream complete, final text: '$finalText'")
             
-            // Log the edited text to history
-            appendToHistory("Edited", finalText)
+            // Log the edited text to history with tone
+            appendToHistory("Edited,${selectedTone.value}", finalText)
             
             // Update UI with final text
             _toneState.value = ToneState.Success(finalText)
