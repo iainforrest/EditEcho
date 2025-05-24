@@ -2,7 +2,7 @@ package com.editecho.data
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -16,26 +16,26 @@ private val Context.dataStore by preferencesDataStore(name = "settings")
 class SettingsRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
-    private val apiKeyKey = stringPreferencesKey("api_key")
-    private val modelKey = stringPreferencesKey("model")
+    private val formalityKey = intPreferencesKey("formality")
+    private val polishKey = intPreferencesKey("polish")
 
-    val apiKey: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[apiKeyKey]
+    val formality: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[formalityKey] ?: 3
     }
 
-    val model: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[modelKey]
+    val polish: Flow<Int> = context.dataStore.data.map { preferences ->
+        preferences[polishKey] ?: 3
     }
 
-    suspend fun setApiKey(apiKey: String) {
+    suspend fun setFormality(value: Int) {
         context.dataStore.edit { preferences ->
-            preferences[apiKeyKey] = apiKey
+            preferences[formalityKey] = value
         }
     }
 
-    suspend fun setModel(model: String) {
+    suspend fun setPolish(value: Int) {
         context.dataStore.edit { preferences ->
-            preferences[modelKey] = model
+            preferences[polishKey] = value
         }
     }
 } 

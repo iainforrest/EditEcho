@@ -12,14 +12,17 @@ import androidx.lifecycle.viewModelScope
 import com.editecho.data.SettingsRepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
+import com.editecho.network.ClaudeCompletionClient
 import com.editecho.network.WhisperRepository
-import com.editecho.prompt.ToneProfile
+// import com.editecho.prompt.ToneProfile
+import com.editecho.prompt.VoiceSettings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -48,6 +51,7 @@ class EditEchoOverlayViewModel @Inject constructor(
     private val whisperRepo: WhisperRepository,
     private val assistant: AssistantApiClient,
     private val chatCompletionClient: ChatCompletionClient,
+    private val claudeCompletionClient: ClaudeCompletionClient,
     private val settings: SettingsRepository
 ) : ViewModel() {
 
@@ -72,8 +76,24 @@ class EditEchoOverlayViewModel @Inject constructor(
     private val _refinedText = MutableStateFlow("")
     val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
-    private val _selectedTone = MutableStateFlow(ToneProfile.FRIENDLY)
-    val selectedTone: StateFlow<ToneProfile> = _selectedTone.asStateFlow()
+    // Updated voice settings state
+    private val _voiceSettings = MutableStateFlow(VoiceSettings(formality = 3, polish = 3))
+    val voiceSettings: StateFlow<VoiceSettings> = _voiceSettings.asStateFlow()
+
+    init {
+        // Load saved voice settings from SettingsRepository
+        viewModelScope.launch {
+            combine(
+                settings.formality,
+                settings.polish
+            ) { formality, polish ->
+                VoiceSettings(formality = formality, polish = polish)
+            }.collect { savedSettings ->
+                Log.d(TAG, "Loaded saved voice settings: Formality ${savedSettings.formality}, Polish ${savedSettings.polish}")
+                _voiceSettings.value = savedSettings
+            }
+        }
+    }
 
     /* ---------- Public helpers ---------- */
     fun formatExample(): String = _refinedText.value
@@ -112,9 +132,31 @@ class EditEchoOverlayViewModel @Inject constructor(
         }
     }
 
-    fun onToneSelected(tone: ToneProfile) {
-        _selectedTone.value = tone
+    // New voice settings update functions
+    fun onFormalityChanged(value: Int) {
+        Log.d(TAG, "Formality changed to: $value")
+        _voiceSettings.value = _voiceSettings.value.copy(formality = value)
+        // Save to settings repository
+        viewModelScope.launch {
+            settings.setFormality(value)
+            Log.d(TAG, "Saved formality setting: $value")
+        }
     }
+    
+    fun onPolishChanged(value: Int) {
+        Log.d(TAG, "Polish changed to: $value")
+        _voiceSettings.value = _voiceSettings.value.copy(polish = value)
+        // Save to settings repository
+        viewModelScope.launch {
+            settings.setPolish(value)
+            Log.d(TAG, "Saved polish setting: $value")
+        }
+    }
+
+    // Commented out old tone selection function
+    // fun onToneSelected(tone: ToneProfile) {
+    //     _selectedTone.value = tone
+    // }
 
     fun startRecording() = viewModelScope.launch {
         try {
@@ -163,6 +205,9 @@ class EditEchoOverlayViewModel @Inject constructor(
             val file = audioFile ?: error("No audio file")
             val transcript = withContext(Dispatchers.IO) { whisperRepo.transcribe(file) }
             
+            // Set transcribed text for UI display
+            _transcribedText.value = transcript
+            
             // Log the transcription to history
             appendToHistory("Transcription", transcript)
             
@@ -173,44 +218,68 @@ class EditEchoOverlayViewModel @Inject constructor(
             // Clear previous refined text
             _refinedText.value = ""
             
-            // Handle TRANSCRIBE_ONLY case
-            if (selectedTone.value == ToneProfile.TRANSCRIBE_ONLY) {
-                _refinedText.value = transcript
-                _toneState.value = ToneState.Success(transcript)
-                appendToHistory("Edited", transcript)
-                return@launch
-            }
+            /* 
+            // COMMENTED OUT: Old streaming GPT implementation
+            // Commented out TRANSCRIBE_ONLY check for now
+            // if (selectedTone.value == ToneProfile.TRANSCRIBE_ONLY) {
+            //     _refinedText.value = transcript
+            //     _toneState.value = ToneState.Success(transcript)
+            //     appendToHistory("Edited", transcript)
+            //     return@launch
+            // }
             
             // Use chat completions API directly for other tones
             var finalText = ""
             Log.d(TAG, "Starting to collect tokens from OpenAI")
             
+            // Temporarily comment out chat completion call until new system is ready
             // Create a StringBuilder to accumulate the text
-            val textBuilder = StringBuilder()
+            // val textBuilder = StringBuilder()
             
             // Collect all tokens
-            chatCompletionClient.streamReply(selectedTone.value, transcript).collect { token ->
-                _refinedText.value += token
-                textBuilder.append(token)
-                Log.d(TAG, "Received token: '$token', current length: ${textBuilder.length}")
-            }
+            // chatCompletionClient.streamReply(selectedTone.value, transcript).collect { token ->
+            //     _refinedText.value += token
+            //     textBuilder.append(token)
+            //     Log.d(TAG, "Received token: '$token', current length: ${textBuilder.length}")
+            // }
+            
+            // For now, just use the transcript as final text
+            finalText = transcript
+            _refinedText.value = finalText
             
             // Get the final text after the stream is complete
-            finalText = textBuilder.toString()
+            // finalText = textBuilder.toString()
             Log.d(TAG, "Stream complete, final text: '$finalText'")
+            */
             
-            // Log the edited text to history with tone
-            appendToHistory("Edited,${selectedTone.value}", finalText)
+            // NEW: Use Claude API with Voice DNA
+            Log.d(TAG, "Using Claude API with Voice DNA - Formality: ${voiceSettings.value.formality}, Polish: ${voiceSettings.value.polish}")
+            
+            val edited = try {
+                claudeCompletionClient.complete(voiceSettings.value, transcript)
+            } catch (e: Exception) {
+                Log.e(TAG, "Claude API failed, falling back to transcript", e)
+                // Fall back to original transcript if Claude fails
+                transcript
+            }
+            
+            // Update refined text
+            _refinedText.value = edited
+            
+            Log.d(TAG, "Claude editing complete. Original: '$transcript' -> Edited: '$edited'")
+            
+            // Log the edited text to history with voice settings
+            appendToHistory("Edited,F${voiceSettings.value.formality}P${voiceSettings.value.polish}", edited)
             
             // Update UI with final text
-            _toneState.value = ToneState.Success(finalText)
+            _toneState.value = ToneState.Success(edited)
             
             // Auto-copy to clipboard on main thread
-            Log.d(TAG, "Attempting to copy to clipboard: '$finalText'")
+            Log.d(TAG, "Attempting to copy to clipboard: '$edited'")
             viewModelScope.launch(Dispatchers.Main) {
                 try {
                     val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboard.setPrimaryClip(ClipData.newPlainText("EditEcho", finalText))
+                    clipboard.setPrimaryClip(ClipData.newPlainText("EditEcho", edited))
                     Log.d(TAG, "Successfully copied to clipboard")
                     Toast.makeText(context, "Text copied to clipboard", Toast.LENGTH_SHORT).show()
                 } catch (e: Exception) {

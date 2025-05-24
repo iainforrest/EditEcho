@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.editecho.data.SettingsRepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
+import com.editecho.network.ClaudeCompletionClient
 import com.editecho.network.WhisperRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
@@ -16,6 +17,7 @@ class EditEchoViewModelFactory @AssistedInject constructor(
     private val whisperRepository: WhisperRepository,
     private val assistantApiClient: AssistantApiClient,
     private val chatCompletionClient: ChatCompletionClient,
+    private val claudeCompletionClient: ClaudeCompletionClient,
     private val settings: SettingsRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -26,6 +28,7 @@ class EditEchoViewModelFactory @AssistedInject constructor(
                 whisperRepository,
                 assistantApiClient,
                 chatCompletionClient,
+                claudeCompletionClient,
                 settings
             ) as T
         }

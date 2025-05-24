@@ -35,8 +35,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.editecho.ui.components.ToneButton
-import com.editecho.ui.components.TonePicker
+import com.editecho.ui.components.VoiceSliders
 import com.editecho.ui.theme.EditEchoColors
 import com.editecho.view.EditEchoOverlayViewModel
 import com.editecho.view.RecordingState
@@ -45,7 +44,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import android.content.res.Configuration
 import com.editecho.util.AudioRecorder
-import com.editecho.prompt.ToneProfile
 import android.widget.Toast
 import android.util.Log
 import com.editecho.ui.components.EditedMessageBox
@@ -63,7 +61,7 @@ fun EditEchoOverlay(
     val context = LocalContext.current
     val recordingState by viewModel.recordingState.collectAsState()
     val toneState by viewModel.toneState.collectAsState()
-    val selectedTone by viewModel.selectedTone.collectAsState()
+    val voiceSettings by viewModel.voiceSettings.collectAsState()
     
     // Collect the transcribed and refined text from the ViewModel
     val transcribedText by viewModel.transcribedText.collectAsState()
@@ -210,11 +208,13 @@ fun EditEchoOverlay(
                             
                             Spacer(modifier = Modifier.height(8.dp))
                             
-                            // Tone selection with increased height
-                            TonePicker(
-                                selectedTone = selectedTone,
-                                onToneSelected = viewModel::onToneSelected,
-                                modifier = Modifier.height(60.dp)  // Increased from 40.dp to 60.dp
+                            // Voice sliders for formality and polish control
+                            VoiceSliders(
+                                formality = voiceSettings.formality,
+                                polish = voiceSettings.polish,
+                                onFormalityChange = viewModel::onFormalityChanged,
+                                onPolishChange = viewModel::onPolishChanged,
+                                modifier = Modifier.height(80.dp)  // Slightly more height for two sliders
                             )
                         }
                         

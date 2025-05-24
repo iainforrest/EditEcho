@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,10 +36,16 @@ import com.editecho.ui.theme.EditEchoColors
 import android.content.res.Configuration
 import com.editecho.ui.screens.EditEchoOverlay
 import com.editecho.ui.theme.EditEchoTheme
+import com.editecho.network.ClaudeCompletionClient
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    
+    @Inject
+    lateinit var claudeCompletionClient: ClaudeCompletionClient
     
     // State to track if the overlay should be shown
     private var showOverlay by mutableStateOf(false)
@@ -88,7 +95,8 @@ class MainActivity : ComponentActivity() {
             EditEchoTheme {
                 MainActivityContent(
                     showOverlay = showOverlay,
-                    onDismissOverlay = { showOverlay = false }
+                    onDismissOverlay = { showOverlay = false },
+                    claudeCompletionClient = claudeCompletionClient
                 )
             }
         }
@@ -170,7 +178,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainActivityContent(
     showOverlay: Boolean,
-    onDismissOverlay: () -> Unit
+    onDismissOverlay: () -> Unit,
+    claudeCompletionClient: ClaudeCompletionClient? = null
 ) {
     // Surface using the 'background' color from the theme
     Surface(
@@ -182,7 +191,7 @@ fun MainActivityContent(
             EditEchoOverlay(onDismiss = onDismissOverlay)
         } else {
             // Show the main screen
-            MainScreen()
+            MainScreen(claudeCompletionClient = claudeCompletionClient)
         }
     }
 }
@@ -191,7 +200,11 @@ fun MainActivityContent(
  * The main screen of the app.
  */
 @Composable
-fun MainScreen() {
+fun MainScreen(claudeCompletionClient: ClaudeCompletionClient? = null) {
+    val scope = rememberCoroutineScope()
+    var testResult by remember { mutableStateOf("") }
+    var isTestRunning by remember { mutableStateOf(false) }
+    
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -211,6 +224,51 @@ fun MainScreen() {
             text = "Tap the notification to start recording",
             style = MaterialTheme.typography.bodyLarge
         )
+        
+        if (claudeCompletionClient != null) {
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            Button(
+                onClick = {
+                    isTestRunning = true
+                    scope.launch {
+                        try {
+                            Log.d("MainActivity", "Testing Claude API...")
+                            val result = claudeCompletionClient.testComplete()
+                            testResult = "✅ Claude API Test Successful!\nResult: ${result.take(100)}..."
+                        } catch (e: Exception) {
+                            Log.e("MainActivity", "Claude API test failed", e)
+                            testResult = "❌ Claude API Test Failed: ${e.message}"
+                        } finally {
+                            isTestRunning = false
+                        }
+                    }
+                },
+                enabled = !isTestRunning
+            ) {
+                Text(if (isTestRunning) "Testing..." else "Test Claude API")
+            }
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Button(
+                onClick = {
+                    Log.d("MainActivity", "🔧 Testing Settings Persistence...")
+                    testResult = "Settings persistence test - check logs for details.\n\nTo test:\n1. Open app overlay\n2. Set sliders to 1,5\n3. Close app\n4. Reopen app\n5. Check if sliders are still at 1,5"
+                }
+            ) {
+                Text("Info: Test Settings Persistence")
+            }
+            
+            if (testResult.isNotEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = testResult,
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
+            }
+        }
     }
 }
 
@@ -231,7 +289,8 @@ fun MainActivityDarkPreview() {
     EditEchoTheme(darkTheme = true) {
         MainActivityContent(
             showOverlay = false,
-            onDismissOverlay = {}
+            onDismissOverlay = {},
+            claudeCompletionClient = null
         )
     }
 } 

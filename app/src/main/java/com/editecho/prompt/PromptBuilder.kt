@@ -10,6 +10,7 @@ package com.editecho.prompt
  *   3. Authentic examples for that tone
  *   4. OUTPUT_GUIDELINES   – always last (stop‑token + fallback)
  */
+@Deprecated("Replaced by VoicePromptBuilder")
 object PromptBuilder {
 
     /** Assemble the system prompt for the chosen tone. */

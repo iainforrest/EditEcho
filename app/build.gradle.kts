@@ -11,12 +11,18 @@ plugins {
 
 import java.util.Properties
 
-// Load OPENAI_API_KEY from secrets.properties
+// Load API keys from secrets.properties
 val secretsFile = rootProject.file("secrets.properties")
-val openAiKey: String = Properties().apply {
+val properties = Properties().apply {
     if (secretsFile.exists()) load(secretsFile.inputStream())
-}.getProperty("OPENAI_API_KEY", "").also {
+}
+
+val openAiKey: String = properties.getProperty("OPENAI_API_KEY", "").also {
     if (it.isBlank()) logger.warn("⚠️  OPENAI_API_KEY is blank in secrets.properties")
+}
+
+val claudeKey: String = properties.getProperty("CLAUDE_API_KEY", "").also {
+    if (it.isBlank()) logger.warn("⚠️  CLAUDE_API_KEY is blank in secrets.properties")
 }
 
 android {
@@ -34,6 +40,12 @@ android {
             "String",
             "OPENAI_API_KEY",
             "\"$openAiKey\""
+        )
+        
+        buildConfigField(
+            "String",
+            "CLAUDE_API_KEY",
+            "\"$claudeKey\""
         )
     }
 

@@ -4,6 +4,7 @@ package com.editecho.prompt
 /**
  * Intent–based tone categories.
  */
+@Deprecated("Replaced by VoiceSettings")
 enum class ToneProfile(
     val displayName: String,
     val category: String,
