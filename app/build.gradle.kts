@@ -27,14 +27,56 @@ android {
         applicationId = "com.editecho"
         minSdk        = 31
         targetSdk     = 34
-        versionCode   = 1
-        versionName   = "0.1.0"
+        versionCode   = 2
+        versionName   = "0.2.0"
 
         buildConfigField(
             "String",
             "OPENAI_API_KEY",
             "\"$openAiKey\""
         )
+    }
+
+    // ─── Build Types ───────────────────────────────────────────────────────
+    buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+            isDebuggable = true
+            isMinifyEnabled = false
+            
+            // Add a build config field to identify debug builds
+            buildConfigField("boolean", "IS_DEBUG_BUILD", "true")
+        }
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+            
+            buildConfigField("boolean", "IS_DEBUG_BUILD", "false")
+        }
+    }
+
+    // ─── Product Flavors ───────────────────────────────────────────────────
+    flavorDimensions += "version"
+    productFlavors {
+        create("stable") {
+            dimension = "version"
+            // Uses base applicationId and versionName
+            buildConfigField("String", "FLAVOR_NAME", "\"stable\"")
+        }
+        create("dev") {
+            dimension = "version"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            
+            // Increment version code for dev builds
+            versionCode = (defaultConfig.versionCode ?: 1) + 1000
+            
+            buildConfigField("String", "FLAVOR_NAME", "\"dev\"")
+        }
     }
 
     buildFeatures {

@@ -1,0 +1,869 @@
+2025-05-10 13:14:38,Transcription,Nope. Just heading to the shower now; actually. It's fine. I don't mind having less time out there and just riding back.
+2025-05-10 13:14:39,Edited,FRIENDLY,Nope; just heading to the shower now. It’s all good. Don’t mind having less time out there and just riding back.
+2025-05-10 13:14:59,Transcription,Nope; just heading to the shower now. It's fine; I don't mind having less time out there and just riding back. Sorry for being a bit snappy before; I'm not 100% I don't think.
+2025-05-10 13:15:01,Edited,FRIENDLY,No worries; just heading to the shower now. It’s all good; I don’t mind having less time out there and just riding back. Sorry for being a bit snappy earlier; I’m probably not 100%.
+2025-05-10 20:25:12,Transcription,Yeah; that unpacking game looks pretty good; I'll give that a go; see how they like it. In terms of the other ones; I showed them the Lego ones; they weren't that keen; I bought Animal Crossing for them because they both really wanted it; and I just asked them how that was going and they both said they kind of enjoyed the gameplay but they hated that every time they sort of got started on something they felt like they had to chat to another character and it interrupted the gameplay that they were actually enjoying.
+2025-05-10 20:25:14,Edited,FRIENDLY,Yeah; that unpacking game looks pretty good. I’ll give it a go and see how they like it.
+
+I showed them the Lego ones; but they weren’t that keen. I bought Animal Crossing because they both really wanted it. When I asked how it was going; they said they kind of enjoyed the gameplay but hated how every time they got started on something; they had to chat to another character; which interrupted the gameplay they were actually enjoying.
+2025-05-10 20:29:34,Transcription,My little universe looks pretty good but I see that it's free so what's the monetization on it? Is it full of ads or in-app purchases?
+2025-05-10 20:29:35,Edited,FRIENDLY,My little universe looks pretty good; but I see it’s free. How’s the monetisation handled? Is it full of ads or in-app purchases?
+2025-05-11 09:29:19,Transcription,you
+2025-05-11 09:29:20,Edited,FRIENDLY,You
+2025-05-11 09:29:39,Transcription,Just checking the transcribe only tone. I wonder if it does the umms. Transcribe only tone. Just testing it.
+2025-05-11 09:29:39,Edited,Just checking the transcribe only tone. I wonder if it does the umms. Transcribe only tone. Just testing it.
+2025-05-11 15:11:33,Transcription,Don't have anything planned but we're probably getting pretty close to maxing out the amount of quiet time that will exist in the house but up to you I guess I'll try and talk Evelyn into coming out with Sita with me or something.
+2025-05-11 15:11:35,Edited,FRIENDLY,Don’t have anything planned; but we’re probably close to maxing out the quiet time in the house.  
+
+Up to you though. I’ll try to talk Evelyn into coming out with Sita and me or something.
+2025-05-11 15:13:56,Transcription,Yeah; I had a look ahead at the end of last week to try and start getting numbers below 50. The problem is that the Haven resource is set to 104 and has been overridden to 54 for the next few months. You can't mass delete overrides. You have to go through manually and change them one by one; or you delete them one by one and then you can redo a mass override. You can create them en masse; you can't delete them en masse. So if you have spare time; if you want to start going forward; you have to basically click on an override that says 54; change it to 50; hit save; wait 30 seconds or so until that does it. When it's done; that hit cancels; so it removes the bit at the top; then click on the next date and change that to 50 and repeat. It's a fairly slow process.
+2025-05-11 15:13:58,Edited,ENGAGED,Yeah; I had a look ahead at the end of last week to try and start getting numbers below 50. The issue is that the Haven resource is set to 104; but it’s been overridden to 54 for the next few months.
+
+You can’t mass delete overrides—you have to go through and change them manually; one by one. Alternatively; you can delete them one at a time and then redo a mass override. You can create overrides en masse; but you can’t delete them en masse.
+
+So if you’ve got spare time and want to start working ahead; you basically need to click on each override that says 54; change it to 50; hit save; and wait about 30 seconds for it to process. Once it’s done; the override clears from the top; then you move to the next date and repeat the process. It’s a pretty slow job.
+2025-05-11 17:17:54,Transcription,It's a yearly meeting that we have before the ski season with the NZTA and the police and the ski fields and the other coach operators that go up ski fields. It's a big safety and what's happening and heads up thing. Two hours from one till three. It's a pretty big one for me to miss.
+2025-05-11 17:17:57,Edited,FRIENDLY,It’s a yearly meeting we have before the ski season with NZTA; the police; the ski fields; and other coach operators heading up to the ski fields.  
+
+It’s all about safety; what’s happening; and giving everyone a heads-up.  
+
+Runs for two hours; from one to three.  
+
+It’s a pretty big one for me to miss.
+2025-05-11 17:25:06,Transcription,If you can; that'd be great; but it is what it is. I didn't think about it leading up to it because it's normally held in the morning; so I thought it'd be over by 1 or 2 o'clock in the afternoon. Only found out the time for it late last week.
+2025-05-11 17:25:08,Edited,FRIENDLY,If you can; that’d be great; but no worries if not. I didn’t think much about the timing beforehand since it’s usually in the morning; so I figured it’d be done by 1 or 2 in the afternoon. Only found out the actual time late last week.
+2025-05-12 12:52:19,Transcription,Thank you; I'll see if I can track it down. Sorry for disturbing you; hope you enjoy the rest of your break; and thanks again for everything at the end of last week.
+2025-05-12 12:52:20,Edited,ENGAGED,Thanks; I’ll see if I can track it down.  
+Sorry to bother you—hope you enjoy the rest of your break; and thanks again for everything at the end of last week.
+2025-05-12 12:53:49,Transcription,OK; thanks. Just FYI; 316 is now ready to go; so when you head down there you'll just be swapping it out. Thanks.
+2025-05-12 12:53:51,Edited,FRIENDLY,OK; thanks. Just FYI; 316’s ready to go now; so when you head down there; you’ll just be swapping it out. Thanks.
+2025-05-12 15:45:25,Transcription,Geez; they've definitely cut back on the number of flights; haven't they? Let's go with Wednesday and send Paulie up. Ryan has quite a lot of work next week; so Paulie's hours will probably be lower than his at a guess.
+2025-05-12 15:45:27,Edited,FRIENDLY,Geez; they’ve definitely cut back on flights; haven’t they? Let’s go with Wednesday and send Paulie up. Ryan’s got a lot on next week; so Paulie’s hours will probably be less than his; I’d guess.
+2025-05-12 15:46:39,Transcription,For a 3 p.m. flight he's going to want to get up there by 1.30 and you kind of want to give yourself seven hours to get there so that'll be like a 6.30 7 a.m. departure to be safe
+2025-05-12 15:46:41,Edited,FRIENDLY,For a 3 p.m. flight; he’ll want to be there by 1:30.  
+
+You want to give yourself about seven hours to get there; so leaving around 6:30 or 7 a.m. would be safest.
+2025-05-12 16:32:35,Transcription,Hey Phil; great to see you at the meeting today. Thanks for your time. As I mentioned; we're doing our training the week of the 26th of May with our new drivers; and it'd be really awesome to get you in front of them; just to talk about; you know; what you do; the operations that get run; why they get run; the outcomes from it; the reasons why they exist now; just a bit of overview and an opportunity for them to ask any questions. The perfect time from my end would be on Friday the 30th. We'll be doing a sort of an admin day with them all. Most likely up Kadrona might be in Wanaka; still finalizing location on that one. If that doesn't work; then the Monday the 26th we will have all of them there as well. We could make some time maybe in at the bottom of Kadrona or in Wanaka or something like that. So yeah; a couple options there. The Friday would be better because we're doing admin day that day; but happy to work with you if that doesn't work out. Thanks; Ian.
+2025-05-12 16:32:39,Edited,ENGAGED,Hey Phil;
+
+Great to see you at the meeting today; and thanks for your time.
+
+As I mentioned; we’re running our training with the new drivers the week of 26 May. It’d be awesome to have you come in and talk to them—just a bit about what you do; how the operations run; why things are set up the way they are; and the outcomes we’re aiming for. Mainly; it’s a chance for them to get an overview and ask any questions.
+
+The ideal time from my end would be Friday the 30th; as we’re planning an admin day with everyone. Most likely we’ll be up at Cardrona; but there’s a chance it could be in Wānaka—we’re still finalising the location.
+
+If Friday doesn’t work; Monday the 26th is another option. We’ll have everyone together then as well; so we could tee something up either at the bottom of Cardrona or in Wānaka.
+
+Friday would be best; but I’m happy to work in with you if that doesn’t suit.
+
+Thanks;
+Iain
+2025-05-12 16:47:06,Transcription,Yeah; alright; that makes sense. Just delete the message to Paulie and say cancel that; say that the flight's too expensive so we're just going to get Disco to drive it up.
+2025-05-12 16:47:08,Edited,FRIENDLY,Yeah; that makes sense. Just delete the message to Paulie and say it’s cancelled because the flight’s too expensive. We’ll get Disco to drive it up instead.
+2025-05-12 16:49:39,Transcription,it doesn't really make sense to send you up there with poorly I'll find him another job to do down here so if you want to grab 317 and take it up there that works
+2025-05-12 16:49:41,Edited,FRIENDLY,Doesn't really make sense to send you up there feeling crook. I'll find him another job to do down here. If you want to grab 317 and take it up there; that works.
+2025-05-12 16:50:18,Transcription,It doesn't really make sense to send you up; it doesn't really make sense to send Paulie up to Christchurch and 317 if you're heading that way anyway especially including the cost of the flight so I'll just find him some other yard work to do down here and yeah you can grab 317 and take it up thanks mate
+2025-05-12 16:50:20,Edited,FRIENDLY,It doesn’t really make sense to send you or Paulie up to Christchurch and 317 if you’re heading that way anyway; especially with the cost of the flight. I’ll just find Paulie some other yard work to do down here.  
+
+Yeah; you can grab 317 and take it up. Thanks; mate.
+2025-05-12 16:51:45,Transcription,There's a box of stuff that showed up at Terry's workshop; with my name on it; which I think will be the new solar LED lights for the yard. So that can be a good job for Paulie and Ryan on Wednesday to swap those ones out.
+2025-05-12 16:51:46,Edited,FRIENDLY,A box showed up at Terry’s workshop with my name on it—probably the new solar LED lights for the yard. That could be a good job for Paulie and Ryan on Wednesday to swap them out.
+2025-05-12 16:56:04,Transcription,Ha ha ha; I've heard about those ping pong shows; never been to one and have no interest in them; to be frank; but yeah; travel; one thing about it is it definitely opens up your eyes to the privilege of living in the wealthy society that we live in; even being poor over here you have significantly more opportunities than some people do over there; and then also there's just different tastes as well; I got in a bit of a fight with one of my friends when we were traveling around Spain; they all wanted to go to a bullfighting show and yeah; when I you know; I'd heard about the sort of romance of it and then when I found out more about how it actually works I refused to go in; yeah; it's good to learn what's important to you and what's worth fighting for or not supporting with your dollar.
+2025-05-12 16:56:07,Edited,FRIENDLY,Ha ha; I’ve heard about those ping pong shows but never been to one and honestly; I’m not interested.  
+
+Travel definitely opens your eyes to the privilege of living in a wealthy society. Even being poor here; you’ve got way more opportunities than some people do over there.  
+
+There’s also just different tastes. I got into a bit of a fight with a mate when we were travelling around Spain. Everyone wanted to go to a bullfighting show; and I’d heard about the romance of it; but once I found out how it actually works; I refused to go.  
+
+It’s good to learn what’s important to you and what’s worth standing up for—or not supporting with your dollar.
+2025-05-12 17:02:28,Transcription,I've never actually done it so I'm not a hundred percent sure on how it works but my guess is that what you've done is created an availability for a coach special on those two days but you haven't actually booked one so I'm guessing it's probably a two-step process. You've created the availability and then you actually have to create the booking and it's only when there's a booking that it would show up on the coach specials calendar. If you're on the coach specials calendar and you unchecked the box to hide zero bookings I'm guessing it'll probably show up then.
+2025-05-12 17:02:32,Edited,FRIENDLY,I've never actually done it; so I'm not totally sure how it works. But I reckon what you've done is created availability for a coach special on those two days without actually booking one.  
+
+I'm guessing it's a two-step process: first you create the availability; then you make the booking. Only when there's a booking would it show up on the coach specials calendar.  
+
+If you're on that calendar and you untick the box to hide zero bookings; it’ll probably show up then.
+2025-05-12 21:10:03,Transcription,Hey team; just want to do a big shout out to Allie tonight; who has had her last shift with us. Allie has been our longest standing cleaner with us for two and a half years now and was one of the sort of original ones as we came out of Covid. So a massive thank you from me and the whole team for all your hard work and dedication over the last few years. It's been great having you on the team and we'll be sad to see you go. Thank you.
+2025-05-12 21:10:08,Edited,FRIENDLY,Hey team; just want to give a big shout out to Allie tonight; who’s had her last shift with us.  
+
+Allie’s been our longest-standing cleaner for two and a half years and was one of the originals as we came out of Covid.  
+
+Massive thanks from me and the whole team for all your hard work and dedication over the years. It’s been great having you with us; and we’ll be sad to see you go.  
+
+Thank you.
+2025-05-13 10:01:07,Transcription,On Apple; they don't show up as little numbers on top of the app like other messaging apps do; but you will get a notification at the top of the notification screen; so you pull down from the top; you'll see there'll be a notification there; but it doesn't show up as one of those little numbers on the apps that Apple does.
+2025-05-13 10:01:09,Edited,DIRECT,On Apple; you won’t see little numbers on the app icon like other messaging apps. Instead; you’ll get a notification at the top of the notification screen when you pull down from the top.
+2025-05-13 10:24:54,Transcription,We're trying not to post info too far in advance because it keeps changing at the moment. Plan for you tomorrow is to grab 220 from the Top Yard; take it down to Te Anau; and swap it out for 219. While you're down there; 301; we relocated that down to Te Anau as our backup bus last night; but didn't realize that it had got missed off a wash list at some point; so peanut. Noticed that it was dirty on the outside inside. So while you're down there; could you please give that a clean? That'll be our backup for the next little while. And then; yeah; jump into 219 and bring that back up to Queenstown. Thanks.
+2025-05-13 10:24:58,Edited,DIRECT,We're avoiding posting info too far ahead since plans keep changing.  
+
+Tomorrow; grab 220 from the Top Yard and take it down to Te Anau to swap for 219.  
+
+While you're there; 301 was relocated to Te Anau last night as our backup bus; but it missed a wash and is dirty inside and out. Please give it a clean while you're down there.  
+
+Then jump into 219 and bring it back to Queenstown.  
+
+Thanks.
+2025-05-13 10:26:42,Transcription,As discussed; the vehicle from Walter Peak needs to go back to GWD; Turda; to get looked at; so if you want to drop your car off in that area; then just walk to Easy Rentals and pick up the car that you're taking over to Walter Peak; and that way you'll be next to your car again at the end of the night.
+2025-05-13 10:26:44,Edited,FRIENDLY,As we talked about; the vehicle from Walter Peak needs to go back to GWD; Turda; for a check-up. If you want; you can drop your car off around there; then just walk to Easy Rentals to pick up the car you're taking over to Walter Peak. That way; you’ll be right next to your car again at the end of the night.
+2025-05-13 10:31:49,Transcription,Hey; back out at the property. The grass had grown long again; but Tristan noticed it yesterday when they did the rest of the lawns. So he's actually back out here and was just tidying it all up now. They're also in behind the deer fences; tidying up the plantation areas as well. So just so you're aware; if you see a bill for that coming through. I was gonna do it during my lunch break; but he's already basically done it. So yeah; it's looking good. I'll give the place a vacuum though before I head off today.
+2025-05-13 10:31:52,Edited,FRIENDLY,Hey; back out at the property. The grass had grown long again; but Tristan spotted it yesterday when they did the other lawns. He’s actually back here now; tidying it all up.  
+
+They’re also working behind the deer fences; sorting out the plantation areas. Just so you know; if a bill comes through for that; it’s covered.  
+
+I was going to do it during my lunch break; but he’s pretty much finished already.  
+
+It’s looking good. I’ll give the place a vacuum before I head off today.
+2025-05-13 10:37:06,Transcription,Hey Hamish; Ian Forrest here from Rearlands Ed. I just wanted to touch base about the seminar stuff. Let me know when you're free for a call. Thanks; Ian.
+2025-05-13 10:37:08,Edited,FRIENDLY,Hey Hamish; Ian Forrest here from Rearlands Ed.  
+
+Just wanted to touch base about the seminar stuff. Let me know when you’re free for a call.
+2025-05-13 10:42:40,Transcription,Hey Cam; yeah I just double checked on that bus and it's actually wired up the original way which is the way that it was recommended by the manufacturer which is that the cameras only operate when the ignition is turned on. They are primarily a incident recording device for if there's an accident or something bad happens on the roads. We have flagged this and we are in the process of changing it slightly so that it should be recording whilst the master switch for the bus is on; which is different. But we haven't got to all the vehicles yet so in this instance there is zero footage from every time the bus is stopped because in line with our sort of sustainability practices and also guest experience we try to make sure we turn the buses off at all the stops so that they can enjoy being in the wilderness and we're burning less diesel.
+2025-05-13 10:42:43,Edited,FRIENDLY,Hey Cam; I just double-checked the bus and it’s wired the original way; like the manufacturer recommended. The cameras only work when the ignition’s on. They’re mainly for recording incidents if something goes wrong on the road.
+
+We’ve flagged this and are working on changing it so the cameras record while the master switch is on; which is different. But we haven’t updated all the buses yet; so for now there’s no footage when the bus is stopped.
+
+We turn the buses off at stops to save diesel and let guests enjoy the wilderness; which fits with our sustainability and guest experience goals.
+2025-05-13 11:14:36,Transcription,Hey team; I know we've said multiple times that we should be reviewing our taxi costs. The cost of them has been increasing this summer; I mean we were taking some more people but I think the cost of them in themselves is going up quite a lot. I've attached a couple of examples from back in March; we paid $35 to get two families of four from the Novotel to Qvis; we paid nearly $25 to get someone from Melbourne Lodge down to Beach Street; the standard is about $11 for a couple of people from the Novotel to Beach Street; paying between $9 and $11 to get a couple down from the St Moritz. We had another booking where the guests thought it was the next day and they were getting a taxi from the Heritage; so they rang us back saying they were late because they thought it was the next day; and asked if we could send the taxi to Frankton Bush Shelter instead which we did but that cost us $45. So yeah; the cost of this does keep adding up; the whole month of March was over $5;000 in taxi charges. One of the things I always thought made the most sense was user pays style; and this would also help solve the problem of people not getting taxis back at the end of the day; where we can drop the price by $5 across all of our bookings; so that we're slightly more competitive in the market if you want; or even just keep them the same if we want to seeing as inflation and everything is going up; and then have an option to purchase taxis and so we could partially subsidise it. So if we're paying between $8 and $11 for Hotel St Moritz; we could say it's $10 each way for a subsidised taxi; and then they can book one way just in the morning or they can book both ways; morning and afternoon; morning and night; and then have it scale out for different areas to help remove some of these ridiculous ones; like the Novotel and the St Moritz; and the St Moritz is a steep road and in the winter that makes sense; but in the summer that's a five minute walk downhill and costing us $12. So yeah; just thought I'd want to flag it with you guys; have a look at it from a sales perspective and yeah; sort of see where we end up.
+2025-05-13 11:14:44,Edited,ENGAGED,Hey team;
+
+I know we’ve talked a few times about reviewing our taxi costs. The price has definitely been creeping up this summer. Yes; we’ve had a few more people; but the fares themselves are noticeably higher.
+
+I’ve attached a couple of examples from March. We paid $35 to get two families of four from the Novotel to Qvis. Nearly $25 for someone from Melbourne Lodge down to Beach Street. The standard fare is about $11 for a couple from the Novotel to Beach Street; and we’re paying between $9 and $11 for a couple from the St Moritz. There was another booking where guests thought their trip was the next day; so they called us late and asked if we could send the taxi to Frankton Bush Shelter instead of the Heritage. That ended up costing $45.
+
+These costs really add up. March alone was over $5;000 in taxi charges.
+
+One thing I’ve always thought made sense is a user-pays approach. This could also help with the issue of people not getting taxis back at the end of the day. We could drop our prices by $5 across all bookings to be a bit more competitive; or just keep them as they are given inflation. Then; offer taxis as an optional extra—partially subsidised.
+
+For example; if we’re paying $8–$11 for St Moritz; we could set a $10 each way subsidised taxi. Guests could book just the morning; or both ways; and we could scale the price for different areas. This would help avoid some of the more ridiculous fares—like $12 for a five-minute downhill walk from St Moritz in summer; which just doesn’t make sense.
+
+Just wanted to flag this for you all to look at from a sales perspective and see where we end up.
+2025-05-13 11:16:50,Transcription,Actually; one thing I was going to say was that I looked over the timesheets yesterday for the first time in about a month or so. So first of all; you're doing an absolutely amazing job on that; and there were basically no errors with any of it. It is really nice on my end; and takes a lot of pressure off to know that the timesheets are all being done accurately. So thank you very much for doing that. One small critique for some of those other ones is just copying in the notes what those shifts were. So I think there was a couple that went to R&M; and a couple other ones; just making sure that in the shift notes; or the manager notes; there's a note or some information as to what they actually did on that shift. So if you're doing notes in the roster; then you can literally just copy and paste that into the shift; just so that we can line it up with what the work actually is if we need to go back and double-check it.
+2025-05-13 11:16:52,Edited,FRIENDLY,I had a look over the timesheets yesterday for the first time in about a month. Honestly; you’re doing an amazing job—there were basically no errors at all. It’s really great on my end and takes a lot of pressure off knowing the timesheets are all accurate. So; thanks heaps for that.
+
+One small thing though—could you copy the notes about what each shift involved? I noticed a couple went to R&M and a few others. Just make sure the shift or manager notes include what actually happened on that shift. If you’re already putting notes in the roster; you can just copy and paste them into the shift notes. That way; if we need to double-check later; it’s easy to line up the work with the timesheet.
+2025-05-13 11:18:30,Transcription,Hey Ryan; I'm actually working remotely at the moment. I'm feeling a bit sick and under the weather today; so I won't be able to meet you there. But feel free to pop down and have a look at the housing and see what you think. And yeah; you can either give me a call or just flick me a message or say what you're thinking.
+2025-05-13 11:18:31,Edited,FRIENDLY,Hey Ryan; I’m working remotely today and feeling a bit under the weather; so I won’t be able to meet you there.  
+
+But feel free to pop down; have a look at the housing; and see what you think. You can give me a call or just flick me a message with your thoughts.
+2025-05-13 12:11:10,Transcription,Just spoke with Hamish from insurance stuff. He's put together what looks like pretty cool course actually. He's doing; I thought he was doing fatigue with some rollover stuff added into it but he's doing; he's going to do a vehicle rollover and prevention workshop and tie fatigue into all of that as well. So it's going to be about four hours all up which will be really cool. So we're going to rejig the day a little bit. We'll basically get him starting at 10 a.m.; pausing for lunch and then wrapping up afterwards and then I'll do the admin piece after that. So it'll make it a reasonably full day but it sounds like some really useful; really good content to work through with everybody. So I'll get all that set up.
+2025-05-13 12:11:13,Edited,ENGAGED,Just spoke with Hamish from insurance. He’s put together what looks like a pretty cool course; actually.
+
+I thought he was just doing fatigue with a bit of rollover content; but he’s going to run a full vehicle rollover and prevention workshop; and tie fatigue into it as well. It’ll be about four hours all up; which is great.
+
+We’ll rejig the day a bit—he’ll start at 10 a.m.; we’ll break for lunch; then finish up the workshop; and I’ll do the admin bit afterwards. So it’ll be a reasonably full day; but sounds like some really useful content to work through with everyone.
+
+I’ll get all that set up.
+2025-05-13 12:14:07,Transcription,The training plan is one day of skills-based stuff like we've done in the past; i.e. the skid pan chain fitting and reversing pieces. And then the second day was the drive around town up for this workshop seminar; some admin; and if we had time; emergency responses; but we'll probably have to cut that one a little bit short. So if we are going to get everybody through; then we'll need to be running every day for all of that. So; yeah; just because the po-fitting is on; we'll have to still do some workshop stuff that day; and we'll still be doing some skid pan stuff; I think; that day. Otherwise; we won't get everybody through at all.
+2025-05-13 12:14:09,Edited,ENGAGED,The training plan’s split over two days. Day one is all skills-based; like we’ve done before—skid pan; chain fitting; and reversing.
+
+Day two is the drive around town; plus the workshop seminar; some admin; and; if there’s time; emergency response training. We’ll probably have to cut the emergency response bit a bit short.
+
+To get everyone through; we’ll need to run training every day. Even with the po-fitting happening; we’ll still need to do some workshop and skid pan stuff that day; otherwise we just won’t get everyone through.
+2025-05-13 12:17:11,Transcription,Looking at Pete's work; we have three groups; A; B and C; so they'll be on skid pan Tuesday; Wednesday; Thursday; and then they'll do this workshop on Wednesday; Thursday; Friday. So we'll still need to find the space for the Friday; and we'll just have to make sure we line up people who aren't needed for driving the Pofri; and who are okay missing it; but otherwise we won't be able to fit it all in.
+2025-05-13 12:17:13,Edited,ENGAGED,Looking at Pete’s work; we’ve got three groups: A; B; and C. They’ll be on the skid pan Tuesday; Wednesday; and Thursday; then doing the workshop Wednesday; Thursday; and Friday.
+
+We still need to find space for the Friday session. We’ll also need to make sure we line up people who aren’t needed for driving the Pofri and who are okay to miss it; otherwise we just won’t be able to fit everything in.
+2025-05-13 14:00:17,Transcription,But I've got some really great good work done I'm just gonna probably pause now and have a half-hour nap and then get back into it and then go to Scouts
+2025-05-13 14:00:19,Edited,FRIENDLY,I’ve got some really good work done; so I’m just gonna pause now for a half-hour nap. Then I’ll get back into it before heading to Scouts.
+2025-05-13 15:54:10,Transcription,Hey team; just wanted to touch base around the fatigue review in Doubtful Sound with the Queenstown drivers attached is a copy of every graph for January; February and March. As well as a review of what we got the drivers to do; we've broken that into three columns; either just a single run over the pass; there was a double run over the pass where they had a 30 minute break before the second one; so basically over on the boat; straight into a bus; take those guests over to Deep Cove; drop them off; come back to West Arm; have a half hour break and then do another run back over the pass; and then also just the double runs which caused the main problems; which is over on the boat; straight into a bus over to Deep Cove; drop those guests; come straight back to West Arm; pick up the next load of guests and straight back over; and then getting a break after that third trip over the pass. Looking at all of that; you know the majority of runs were just the single ones; the double runs with 30 minute breaks; we had about 20% of the time; and those triple runs; or double run with no break; we only did six times for the three month period; so definitely not something that we're doing all the time. Anyway; good information to get things started; and we can catch up at some point soon and talk about the rest of it. Thanks; Ian.
+2025-05-13 15:54:13,Edited,ENGAGED,Hey team;
+
+Just wanted to touch base about the fatigue review in Doubtful Sound with the Queenstown drivers. Attached is a copy of every graph for January; February; and March.
+
+We’ve also included a review of what we got the drivers to do; broken into three columns:
+- Single run over the pass.
+- Double run over the pass with a 30-minute break before the second one. That’s where they go over on the boat; straight into a bus; take guests to Deep Cove; drop them off; come back to West Arm; have a half-hour break; then do another run back over the pass.
+- Double runs with no break; which caused the main problems. That’s over on the boat; straight into a bus to Deep Cove; drop guests; come straight back to West Arm; pick up the next load; and straight back over—then getting a break after that third trip over the pass.
+
+Looking at the data; the majority of runs were just single ones. Double runs with a 30-minute break happened about 20% of the time. The double runs with no break only happened six times over the three-month period; so it’s definitely not something we’re doing all the time.
+
+Good info to get things started. We can catch up soon and talk about the rest.
+
+Thanks;
+Iain
+2025-05-13 17:45:41,Transcription,Hey; Lachie. I was just out at mum and dad's property this afternoon and noticed two things you might want to look at before the Masterbuild judging thing this week. The base of the spout on the tap on the sink in the kitchen is loose. The whole thing is swivelling; not just the head. And the automatic blind that lowers and raises in the snug is getting caught about 80% of the way down. It won't go down any further. I'm not sure what's happening with that. Here's a link to two videos to show you what I'm talking about. Thanks; Ian.
+2025-05-13 17:45:43,Edited,ENGAGED,Hey Lachie.
+
+I was out at Mum and Dad's place this afternoon and spotted a couple of things you might want to check before the Masterbuild judging this week.
+
+The base of the spout on the kitchen sink tap is loose—the whole thing swivels; not just the head.
+
+Also; the automatic blind in the snug is getting stuck about 80% of the way down and won't go any further. Not sure what's causing it.
+
+Here's a link to two videos showing what I mean.
+
+Thanks; Iain.
+2025-05-13 17:55:24,Transcription,Pete should still be on 4 days on; 3 days off as a base; so his 7 days of leave should cover nearly 77 hours. The last 3 hours would just be leave without pay to his 80 hour minimum. Can you please double check that; because it sounds like you've got him loaded up as 5 and 2.
+2025-05-13 17:55:25,Edited,ENGAGED,Pete should still be on a 4 days on; 3 days off base; so his 7 days of leave should cover nearly 77 hours. The last 3 hours would just be leave without pay to get him up to his 80 hour minimum.
+
+Can you please double check that? It sounds like you’ve got him loaded as 5 and 2.
+2025-05-13 18:06:00,Transcription,Hey staff; just a quick heads up really. Rosie is on a back-to-work plan after her back injury a while ago. For the next couple of weeks we just want to keep her off vacuuming; she's just a bit concerned about carrying the backpack and the twisting motion attached with that. She's quite comfortable doing everything else; but for tomorrow night if you could please do the vacuuming on all the buses that would be appreciated. Thank you.
+2025-05-13 18:06:02,Edited,ENGAGED,Hey staff;
+
+Just a quick heads up. Rosie’s on a back-to-work plan after her back injury a while ago.
+
+For the next couple of weeks; we want to keep her off vacuuming—she’s a bit concerned about carrying the backpack and the twisting motion that comes with it. She’s happy to do everything else.
+
+For tomorrow night; if you could please handle the vacuuming on all the buses; that’d be appreciated.
+
+Thank you.
+2025-05-14 08:25:59,Transcription,Thanks Cam. I'll put a message out to the team. The standard response or thing that they should say as they're coming into Milford Sound is; you know; they take all their belongings with them; especially any valuables. If they want to leave things on board the bus they're more than welcome to; however we can't take any responsibility for those. Never really had any problems but you never know; so if something's valuable to you; please take it with you.
+2025-05-14 08:26:01,Edited,ENGAGED,Thanks Cam. I'll put a message out to the team.
+
+The standard thing they should say as they're coming into Milford Sound is: please take all your belongings with you; especially any valuables. If people want to leave things on the bus; they're more than welcome to; but we can't take responsibility for them.
+
+We've never really had any problems; but you never know—so if something's valuable to you; please take it with you.
+2025-05-14 08:29:31,Transcription,Hey team; just a reminder we had some guests lose a reasonable amount of cash on the trip a few days ago; potentially taken from their bag on the bus; but of course no proof around any of that. Just a reminder though that when you are coming into Milford you should be saying something along the lines of; hey team please make sure you've got everything you need to take with you for the cruise; you want to take your lunch obviously; your phone; your rain jacket and sunscreen; and also any valuables with you. If you do want to leave anything on the bus you're more than welcome to do so; there will be people in and out and moving around though; generally not too far away; but we cannot take any responsibility for your gear. So if you want to leave stuff on the bus that's totally fine; I've never really had any problems down here; but we can't guarantee anything. Thanks.
+2025-05-14 08:29:33,Edited,ENGAGED,Hey team;
+
+Just a reminder – we had some guests lose a fair bit of cash on a trip a few days ago; possibly taken from their bag on the bus. There’s no proof either way; but it’s a good prompt to be clear with everyone.
+
+When you’re coming into Milford; make sure to say something like: “Hey team; please check you’ve got everything you need for the cruise – your lunch; phone; rain jacket; sunscreen; and any valuables.” Encourage them to take valuables with them.
+
+If they want to leave anything on the bus; that’s totally fine – people will be coming and going; usually not far away; but we can’t take responsibility for their gear. I’ve never really had issues down here; but we can’t guarantee anything.
+
+Thanks.
+2025-05-14 09:06:04,Transcription,Hey David; thanks for your message and photos this morning. A bit disappointing to see some old habits creeping in. Alicia's back on deck after this weekend; might be worthwhile doing a bit of a blitz on cleaning quality control for the next couple of weeks; maybe starting from Sunday or Monday next week. Could you ask your drivers to please double check the outsides and the windows; windows probably in particular; just for a couple of weeks and take any photos of any smudges or report any; just so that we can instill some good habits in the team for the winter. How does that sound? Thanks; Ian.
+2025-05-14 09:06:08,Edited,ENGAGED,Hey David; thanks for your message and the photos this morning. Bit disappointing to see some old habits creeping back in.
+
+Alicia’s back on deck after this weekend; so it might be worthwhile doing a bit of a blitz on cleaning quality control for the next couple of weeks—maybe starting Sunday or Monday.
+
+Could you ask your drivers to double check the outsides and especially the windows; just for a couple of weeks? If they spot any smudges; get them to take photos or report them; so we can really instill some good habits in the team for winter.
+
+How does that sound?
+
+Thanks; Iain.
+2025-05-14 09:20:16,Transcription,No problem at all; I've been through a few of those times in my life as well; so totally understand and get it. The office is always open if you do want to help out or get involved; we'd love to help have you. But also if you don't; totally fine too. If you ever need anything; always feel free to reach out and if I can help I always will. I'm glad things are looking up for you.
+2025-05-14 09:20:23,Edited,FRIENDLY,No worries at all; I’ve been through a few of those times myself; so I totally get it. The office is always open if you want to help out or get involved—we’d love to have you. But if not; that’s completely fine too.  
+
+If you ever need anything; just reach out and I’ll help if I can.  
+
+Really glad to hear things are looking up for you.
+2025-05-14 09:27:26,Transcription,So; Disco is the Discovery guests; that's the 7 day trip on board the Wanderer down Fiordland from Doubtful Sound to... I forget which one. Preservation Inlet? I don't know. Ah Dusky Sound. These guys are coming home; so they'll get in at about 3 o'clock into Te Anau. What we'll probably do is send you down in the morning in 2.20 or 2.19; whatever we have. So you'll take the Doubtful Sound guests straight to Manapoti in the morning; just so that helps keep that pit moving smoothly. You'll then have a few hours off to yourself; and we might get you to go to the workshop and help out there. I'll see if they have anything they need doing. Otherwise it's back at Manapoti by about 2.30. And then the guests should get in at 3; and then it's just bringing them back to Queenstown and dropping them off at their accommodation if you can. Some of them might need taxis; I'll double check on that for you.
+2025-05-14 09:27:30,Edited,ENGAGED,So; “Disco” refers to the Discovery guests – that’s the 7-day trip on the Wanderer down Fiordland; from Doubtful Sound to… I think it’s Dusky Sound; not Preservation Inlet. These guys are coming home and should get into Te Anau around 3 o’clock.
+
+What we’ll probably do is send you down in the morning in either 2.20 or 2.19; whichever coach we’ve got available. You’ll take the Doubtful Sound guests straight to Manapouri in the morning; just to help keep that run moving smoothly.
+
+After that; you’ll have a few hours off. We might get you to head over to the workshop and help out there – I’ll check if they need anything done. Otherwise; just be back at Manapouri by about 2.30.
+
+The Discovery guests should get in at 3; then it’s just a matter of bringing them back to Queenstown and dropping them at their accommodation if you can. Some might need taxis – I’ll double check that for you.
+2025-05-14 09:30:48,Transcription,They're in a box at Terry's I think at the moment. Yeah probably installed the same way. I might need to; we might need to get some of those like concrete anchor style screws from Mitre 10. I haven't actually opened the box yet. I think of the same type but not 100% sure. So I'll come check it out with you and see where we end up. We'll need to test the ones that are there and see which ones work or not. You do that just by putting your hand over the top of the solar panels which makes it think it's dark and see which ones turn on.
+2025-05-14 09:30:53,Edited,ENGAGED,They're in a box at Terry's at the moment; I think.  
+They'll probably be installed the same way.
+
+We might need to grab some of those concrete anchor-style screws from Mitre 10; but I haven't actually opened the box yet.  
+I think they're the same type as before; but I'm not 100% sure.
+
+I'll come check it out with you and we can see where we end up.  
+We'll need to test the ones that are there and see which ones work.
+
+You just do that by putting your hand over the top of the solar panels—makes it think it's dark; and you can see which ones turn on.
+2025-05-14 09:36:54,Transcription,Hey Hamish; thanks for your time on the phone yesterday. Actually reviewed what we're doing for the week and I had it slightly wrong. We'll only need the three days; which means that you can enjoy your whole long weekend and just come down on the Monday. So we're doing three groups; just at the moment called Group A; B and C; and they will start their skills driving; as I said they're doing a two-day thing now; so skills on the first day and the admin and your session on the second day. So that's all starting on the Tuesday; Wednesday; Thursday. So their day twos will be the Wednesday; Thursday; Friday. So we'll just need you down for the Wednesday; Thursday; Friday; the 4th; 5th and 6th. So yeah; you can enjoy your long weekend; come down on the Tuesday and we can dive into it on the Wednesday. I've got a room now booked out in Kedrona; up the top; it's inside one of the cafes and area up the top there; but it should hold 10 quite nicely and we'll have a projector and a screen up so we can talk up there and we'll have the space to ourselves and shouldn't get interrupted too much; which will be good. As discussed; we'll aim to start that at 10 o'clock; so I'll try to get the teams up there by about 9.30; quarter to 10; so they can have a quick break and then we'll get stuck in. We'll do a couple of hours; we'll do lunch with the whole team; so there'll be another 12 or so drivers doing the skills course that day and we'll get them; we'll all join up for lunch and then you can do the second half after lunch and then I'll do some other admin stuff with them after you're done. So I would expect; yeah; your piece will start at 10 o'clock; have a lunch break; so maybe finish by like 2.30; 3 o'clock. If you need any help with organising accommodation or anything like that; just let me know; but anything on the Kadrona side of Wanaka would be probably easiest or best. As I say; it would be about a 40 minute drive to the top from the outskirts of Wanaka. Give me a call if you need anything else. Thanks. 
+2025-05-14 09:36:59,Edited,REFLECTIVE,Hey Hamish; thanks for your time on the phone yesterday.
+
+I’ve had another look at the plan for the week and realised I had it slightly wrong. We’ll only need you for three days; so you can actually enjoy your whole long weekend and just come down on the Monday.
+
+We’re running three groups at the moment—just calling them Group A; B; and C for now. Each group will do a two-day block: skills driving on the first day; then admin and your session on the second. That all kicks off Tuesday; Wednesday; and Thursday; so their second days will be Wednesday; Thursday; and Friday.
+
+So; we’ll just need you for Wednesday; Thursday; and Friday—the 4th; 5th; and 6th. You can head down on the Tuesday and we’ll dive in on the Wednesday.
+
+I’ve booked a room up at Cardrona; inside one of the cafes at the top. It should fit 10 comfortably; and we’ll have a projector and screen set up so we can talk through everything without too many interruptions.
+
+As we discussed; we’ll aim to start at 10am. I’ll try to get the teams up there by 9.30 or quarter to 10; so they can have a quick break before we get started. We’ll do a couple of hours in the morning; then lunch with the whole team—there’ll be about 12 other drivers doing the skills course that day; so we’ll all join up for lunch. After lunch; you can run the second half of your session; then I’ll take over with some admin bits once you’re done.
+
+I’d expect your part to start at 10; break for lunch; and probably wrap up around 2.30 or 3.
+
+If you need help sorting accommodation or anything else; just let me know. Anything on the Cardrona side of Wanaka would be easiest—it’s about a 40 minute drive up to the top from the outskirts of Wanaka.
+
+Give me a call if you need anything else. Thanks.
+2025-05-14 09:42:39,Transcription,Hey Thomas; thanks for reaching back out. Just wrapping up recruiting at the moment. I'm kind of in a spot where I'm okay; but for the right person I would still have room on the team; so might be worth us catching up for a coffee sooner rather than later. We can start with just a bit of an unofficial one; have a coffee and a catch-up; talk through everything the job involves; find a little bit more about you and see if there's a potential fit there and if there is then we can look at doing something a bit more formal. How does that sound and how are you placed for the rest of this week?
+2025-05-14 09:42:41,Edited,ENGAGED,Hey Thomas;
+
+Thanks for reaching out again. I’m just wrapping up recruiting at the moment. I’m in a spot where I’m pretty comfortable; but for the right person I’d still have room on the team; so it might be worth us catching up for a coffee sooner rather than later.
+
+We could start with an informal chat—just a coffee and a catch-up; talk through what the job involves; get to know a bit more about you; and see if there’s a potential fit. If there is; we can look at doing something a bit more formal after that.
+
+How does that sound; and how are you placed for the rest of this week?
+2025-05-14 09:47:12,Transcription,Hi; Andrew. Thanks for reaching out. It sounds like a pretty cool idea. I'm a bit of a fan of using tech to solve problems. I'm not actually involved in the marine team; though. I'm the transport manager with the buses and coaches. Russell is a great person to talk to; but he is pretty tied up at the moment. I'm not sure if you followed the news; but one of our staff went missing in Milford Sound whilst climbing Mitre Peak about 10 days ago. They've been doing search and rescue and everything down there since then; so Russell is very tied up with that team at the moment. I'm sure he'll get back to you at some point when things down there have settled down. So thanks again for reaching out; and I'm sure we'll be in touch.
+2025-05-14 09:47:14,Edited,ENGAGED,Hi Andrew.
+
+Thanks for reaching out. Sounds like a pretty cool idea—I’m a bit of a fan of using tech to solve problems.
+
+Just to clarify; I’m not actually involved with the marine team. I’m the transport manager; looking after the buses and coaches. Russell’s definitely the right person to talk to; but he’s pretty tied up at the moment.
+
+Not sure if you’ve seen the news; but one of our staff went missing in Milford Sound while climbing Mitre Peak about 10 days ago. The team’s been heavily involved in search and rescue down there since; so Russell’s flat out with that right now.
+
+I’m sure he’ll get back to you once things settle down a bit.
+
+Thanks again for getting in touch; and I’m sure we’ll be in touch.
+2025-05-14 09:47:15,Transcription,You
+2025-05-14 09:47:16,Edited,ENGAGED,[VOICE-MATCH-ERROR]
+2025-05-14 09:48:39,Transcription,Hey Andrew; thanks for reaching out; sounds like a pretty cool concept and idea; I'm a massive fan of leveraging technology to help solve problems myself; I'm actually involved mostly in the coaches and buses though; not the marine side of the business; but Russell would be a great person to talk to. Just a FYI for you though; it might take a while for him to get back to you; I'm not sure if you followed the news at all; but one of our staff went missing when trying to climb Mitre Peak down in Milford last week; so there's been fairly extensive search and rescue efforts going on down there; and obviously it's hit the team pretty hard; so Russell's tied up with that at the moment; and will be for a while no doubt; so I'm sure he'll get back to you in the near future. But thanks for thinking about us with this; and yeah; might get to meet you at some point; that'd be great. Thanks; Ian.
+2025-05-14 09:48:41,Edited,ENGAGED,Hey Andrew;
+
+Thanks for reaching out. Sounds like a pretty cool concept—I’m a massive fan of leveraging technology to help solve problems myself.
+
+Just so you know; I’m mostly involved with the coaches and buses; not the marine side of the business. Russell’s definitely the right person to talk to.
+
+Quick heads up though; it might take a while for him to get back to you. Not sure if you’ve seen the news; but one of our staff went missing while climbing Mitre Peak in Milford last week. There’s been a big search and rescue effort down there; and it’s hit the team pretty hard. Russell’s tied up with all that at the moment; and probably will be for a while; but I’m sure he’ll get back to you when he can.
+
+Thanks for thinking of us with this. Would be great to meet you at some point.
+
+Thanks;
+Iain
+2025-05-14 09:51:32,Transcription,Gutted to hear that you're leaving JT. It has been an absolute pleasure working with you over the years. I have always highly regarded your input. I love your practical approach to health and safety and actually working on ways to provide the best outcomes rather than just trying to tick boxes. We've definitely achieved some great things over the years and I hope you should be really proud of all the work and changes you've made in this place. Very sad to see that you're leaving. Definitely need to catch up for a beer before you do. you
+2025-05-14 09:51:34,Edited,ENGAGED,Gutted to hear that you’re leaving; JT. It’s been an absolute pleasure working with you over the years. I’ve always really valued your input.
+
+I love your practical approach to health and safety—actually working on ways to get the best outcomes; not just ticking boxes. We’ve definitely achieved some great things together; and you should be really proud of all the work and changes you’ve made here.
+
+Very sad to see you go. We definitely need to catch up for a beer before you do.
+2025-05-14 09:55:20,Transcription,Nice one; thanks LB. Do you think the damage to the front left of the Richie's bus; so to be the door and the wheel arch; is going to come anywhere near $10;000? Just wondering if we need to get the insurance claim worked out for that one. Thanks.
+2025-05-14 09:55:23,Edited,REFLECTIVE,Nice one; thanks LB.
+
+Do you reckon the damage to the front left of Richie’s bus—the door and the wheel arch—might get anywhere near $10;000?  
+Just wondering if we need to get the insurance claim sorted for that one.
+
+Thanks.
+2025-05-14 09:59:18,Transcription,Hey Hudson; great to hear from you. Thanks so much for reaching out. Yeah; things down here have been; well; crazy as you would normally expect. I got three weeks off in March; which was amazing. I hear that Alicia rang you once or twice instead of disturbing me; so thank you very much for taking those phone calls. They did a great job trying to keep me out of everything; but I did tell them when I got back there were a couple of things that would have been better; probably just to give me a two-minute phone call on. But all in all; they're working out. Mel's obviously taken some time to get up to speed on everything; as we expected; but she's been really good at it; and they're starting to figure out all of the idiosyncrasies. Just in time for us to throw a ski at her; so that'll be the next big challenge. And yeah; Alicia's died headfirst into everything; as you saw when you were still here. Definitely miss having you around; though; and your name does pop up in conversations all the time. So yeah; you are missed down here. I'm glad things are starting to fall into place for you up there. Nothing wrong with waking up too early. Gives you some quiet time to yourself when the rest of the house is quiet. And glad things are working out with Jill and everybody else up there. Any other news from down here? Really just sort of gearing up for winter. Luke has moved on. He's going over to Australia with his partner. Barbara has taken on the job as the 2IC for Sudden Discoveries to Dave Osborne; so good luck to both of them for that one; I guess.
+2025-05-14 09:59:23,Edited,FRIENDLY,Hey Hudson; great to hear from you and thanks for reaching out. Things down here have been pretty crazy; as you’d expect. I got three weeks off in March; which was amazing.  
+
+I hear Alicia rang you a couple of times instead of disturbing me; so cheers for taking those calls. They did a good job trying to keep me out of it; though I did tell them when I got back that a quick two-minute call on a couple of things would’ve been better. But all in all; they’re managing.  
+
+Mel’s taken some time to get up to speed; as we expected; but she’s been really good at it. They’re starting to figure out all the quirks—just in time for us to throw a ski at her; so that’ll be the next big challenge. Alicia’s dived headfirst into everything too; as you saw when you were here.  
+
+Definitely miss having you around. Your name pops up in conversations all the time—you’re definitely missed down here.  
+
+Glad things are starting to settle for you up there. Nothing wrong with waking up early; it gives you some quiet time when the rest of the house is still asleep. Good to hear things are working out with Jill and everyone else.  
+
+Any other news from down here? Just gearing up for winter. Luke’s moved on—he’s heading to Australia with his partner. Barbara’s taken on the 2IC role for Sudden Discoveries under Dave Osborne; so good luck to both of them with that.
+2025-05-14 10:03:30,Transcription,Can't think of too much else at the moment really; the new bus is ticking along; no real updates on that for a while actually. Family wise; Ellie's doing well; she actually just finished up cleaning coaches; so quite happy with that actually; it will be better for our family life with a few more evenings where the whole family is in the house together. Her last shift was just Monday this week actually. The girls are still growing; Charlotte just turned 13 last week so had a nice big celebration for that; did 13 activities in 13 days; sorry; 13 activities in 13 hours with 5 of her friends; which was hectic but a whole lot of fun. Bunch of Scout stuff going along well; the ice cream trailer actually that the Freemasons helped with is basically ready to go now; hopefully next weekend we should be out selling our first ice creams; so that's been really cool to see all that come together and yeah; can't believe it's kind of finally happened. Yeah; other than that; life's sort of ticking along; so yeah; thanks for reaching out again and I'm going to make sure I get to relocate the next coach back down and I'll make some time to swing by when we come through Wellington.
+2025-05-14 10:03:34,Edited,FRIENDLY,Can’t think of much else at the moment. The new bus is ticking along; but no real updates on that for a while.
+
+Family-wise; Ellie’s doing well. She just finished cleaning coaches; which is great for us—means more evenings with the whole family at home. Her last shift was Monday this week.
+
+The girls are still growing fast. Charlotte just turned 13 last week and had a big celebration—13 activities in 13 hours with five of her friends. It was hectic but heaps of fun.
+
+Scout stuff is going well too. The ice cream trailer the Freemasons helped with is basically ready to go. Hopefully; we’ll be selling our first ice creams next weekend. It’s been awesome to see it all come together.
+
+Other than that; life’s ticking along. Thanks for reaching out again. I’ll make sure to relocate the next coach back down and try to swing by when we’re through Wellington.
+2025-05-14 10:12:42,Transcription,Hey Lloyd; thanks for reaching out. No problem with this on my end. I just want to say thank you for everything that you've done for the company over the years and the times that you have helped us out since I've been back in the transport role. It's been super helpful and yeah really enjoyed having you be part of the team. It seems like a lifetime ago that I did a familiar trip with you before I started driving for real journeys all those years ago. So thanks very much for everything and everything you've given to the company. Yeah it's been great. I hope things are going okay for you and look forward to seeing you around town.
+2025-05-14 10:12:45,Edited,REFLECTIVE,Hey Lloyd;
+
+Thanks for reaching out. No problem with this on my end.
+
+I just want to say thanks for everything you’ve done for the company over the years; and for all the times you’ve helped us out since I’ve been back in the transport role. It’s made a real difference; and I’ve genuinely enjoyed having you as part of the team.
+
+Feels like a lifetime ago now; but I still remember that familiarisation trip with you before I started driving for Real Journeys. Those early days really stuck with me.
+
+So yeah; thanks again for everything you’ve given to the company. It’s been great working alongside you.
+
+Hope things are going well for you; and I’m sure I’ll see you around town.
+2025-05-14 10:55:44,Transcription,There will be; hasn't gone live yet; probably in about three or four weeks; we'll make sure we put out an update to everyone at head office. We are able to whitelist some vehicle registrations; and we won't be advertising the fact because I don't want everybody using it; but if somebody does need to use that space; they'll be able to go into Frontline and they can flick off a message to the company running it to ignore a number plate that's out there at a certain time.
+2025-05-14 10:55:46,Edited,ENGAGED,It hasn’t gone live yet; but it will in about three or four weeks. We’ll make sure to send an update to everyone at head office when it does.
+
+We can whitelist certain vehicle registrations. We’re not going to advertise this widely; as we don’t want everyone using it; but if someone needs to use that space; they can go into Frontline and send a message to the company running it. They’ll be able to request that a specific number plate is ignored at a certain time.
+2025-05-14 10:57:18,Transcription,I've been a bit slack on comms for this Cosgrove course this weekend. Have you sent out an email to everybody attending with more information? I just don't want to double up on what you've already done; if you have. Otherwise I'll send something out today.
+2025-05-14 10:57:20,Edited,FRIENDLY,I’ve been a bit slack on comms for the Cosgrove course this weekend. Have you already sent out an email to everyone attending with more info? Just don’t want to double up if you have. Otherwise; I’ll send something out today.
+2025-05-14 12:12:49,Transcription,Cat did another shit in that plant with the spider plants in the bathroom; got it all over a couple of the plants; so I ended up basically scooping a bunch of them up and throwing them out. Sorry; but I figured you probably wouldn't want them after that.
+2025-05-14 12:12:51,Edited,FRIENDLY,Cat did another poo in the spider plants in the bathroom; got it all over a couple of them. I ended up scooping a bunch out and chucking them. Sorry; but figured you probably wouldn’t want them after that.
+2025-05-14 12:37:51,Transcription,You guys do trial shifts over at Walter Peak; don't you? How does that work?
+2025-05-14 12:37:52,Edited,ENGAGED,You guys do trial shifts over at Walter Peak; don’t you?  
+How does that work?
+2025-05-14 12:41:10,Transcription,I generally operate under the ideally no damage to any vehicle policy; but yes I get what you mean.
+2025-05-14 12:41:11,Edited,FRIENDLY,I usually stick to a no-damage policy for any vehicle; but yeah; I get what you mean.
+2025-05-14 13:05:12,Transcription,Going to run out to Mitre 10 and grab some supplies for these reflectors which look awesome. Can you please make sure that both the AEG battery packs are charged up? Just ask Terry; he'll know what I'm talking about. And then grab a lunch break and I'll meet you after that.
+2025-05-14 13:05:15,Edited,DIRECT,Heading to Mitre 10 to grab supplies for the reflectors—they look great.  
+
+Please make sure both AEG battery packs are fully charged. Ask Terry; he’ll know what I mean.  
+
+Take a lunch break; and I’ll meet you after.
+2025-05-14 14:19:12,Transcription,The first week isn't exactly rookie training; it's what we do for anybody who's doing their first ski season with us. So for example; Blake and Danny; who have been driving for us all summer and have driven over the Wilmot Pass; both have actually done a ski season for Info and Snow up in Queenstown; but they're new to us. So we'll send them along that week. Odds are they'll only end up doing one day; because they do have some skills behind them; and then other people who are newer to us and don't have as many skills end up doing sort of the whole week. The goal of that week is to get everybody up to a level. So we start quite generalised on the day one; and we have a big group and we talk through all of the information and go out driving; and then it's dealing with chains and stuff like that. And then based on how everybody is doing; they either come back the next day or the next day; and then once they're sort of at a point; we send them home; and then they all join into the skidpan training the following week. So yeah; not specifically rookie; but it's just general alpine mountain skills. And if they already come with skills; then they need less time. But it's a good grounding in sort of all things driving mountains in the snow and fitting chains. Does that make sense?
+2025-05-14 14:19:18,Edited,ENGAGED,The first week isn’t strictly rookie training—it’s what we do for anyone doing their first ski season with us. For example; Blake and Danny have both driven for us all summer and have experience over the Wilmot Pass. They’ve each done a ski season for Info and Snow up in Queenstown; but they’re new to our team; so they’ll come along that week too.
+
+Chances are; they’ll only need to do a day or so since they already have some skills. Others who are newer to us and have less experience usually end up doing the whole week. The aim is to get everyone up to a certain standard.
+
+We start off pretty general on day one with a big group session—covering all the info; heading out for some driving; and working on things like fitting chains. Depending on how everyone’s going; they might come back for another day or two. Once they’re up to speed; we send them home; and then everyone joins the skidpan training the following week.
+
+So it’s not specifically for rookies—it’s more about general alpine and mountain driving skills. If someone comes in with experience; they just need less time. It’s a solid grounding in everything from mountain driving in the snow to fitting chains.
+
+Does that make sense?
+2025-05-14 15:16:35,Transcription,I hardly ever do during the day time but I've just sent her an email as well so I'll let you know as soon as I hear anything.
+2025-05-14 15:16:37,Edited,FRIENDLY,I hardly ever do stuff during the day; but I’ve just sent her an email too. I’ll let you know as soon as I hear back.
+2025-05-14 16:12:00,Transcription,I assume around 5.30am to 5.40pm. As for her glasses; did she check at school and did she ever use them in your car? Did you guys go anywhere? I'm trying to think where she might have taken them or used them.
+2025-05-14 16:12:02,Edited,FRIENDLY,I’m guessing around 5:30 to 5:40. Did she check for her glasses at school? Has she ever used them in your car? Did you guys go anywhere? Just trying to figure out where she might have taken or used them.
+2025-05-14 16:44:57,Transcription,I guess so. She's due a check and potentially an update anyway so let's just book her in ASAP and see what they say. I feel like the lens upgrade or change was included and we might just need to pay for the frame.
+2025-05-14 16:44:59,Edited,FRIENDLY,Sounds good. She’s due for a check and maybe an update anyway; so let’s book her in ASAP and see what they say. I think the lens upgrade or change is included; and we might just need to pay for the frame.
+2025-05-14 16:46:34,Transcription,All good. It's a good call. Can't imagine what it's been like for those two over the last two weeks.
+2025-05-14 16:46:35,Edited,FRIENDLY,All good. Good call. Can’t imagine what those two have been through the last couple of weeks.
+2025-05-14 16:48:52,Transcription,Hey team; are we able to get this coded to vehicle lease costs please and load it up for payment? Thank you.
+2025-05-14 16:48:53,Edited,ENGAGED,Hey team;
+
+Are we able to get this coded to vehicle lease costs; and loaded up for payment please?
+
+Thank you.
+2025-05-15 10:39:24,Transcription,Hey Neil; thanks for your input on this. My apologies if my wording wasn't the best on that; it's just more of a shorthand I guess. I personally believe that the time on the boat is quite riskful if you do it properly. There are a few drivers who don't; that's part of what's up for debate. What is not up for debate is that legally the boat is a rest period. We have had that confirmed by the NZTA and the CVST. So drivers are 100% compliant logging a break from the moment they lock up their bus in Manipoti to the time they arrive at a bus in West Arm. The question I guess that has been driven is is that a fatigue restful break as compared to a legal rest break. So we know it's a legal rest break; the question is whether it is good enough from a fatigue standpoint. I'll be very clear that the team is divided on that. It's very much not everybody thinks the same way. We as a company need to decide where we stand on that and then look into what risks we're willing or where we're willing to stand on the issue. I think the best bet for next is us sitting down around a table and probably talking it through more than emailing it. I just wanted to get some information on the table so we knew what we were talking about in terms of the number of times this happened; which as we know now we can see is quite rare. And then I guess the question is is that easier just to remove that or do we think that it's fine. So yeah I can probably make some time in the next couple of weeks to come down and we can sit around and talk about it and see see where we land.
+2025-05-15 10:39:29,Edited,REFLECTIVE,Hey Neil; thanks for your input on this.
+
+Sorry if my wording wasn’t the best earlier – it was more of a shorthand; I guess. I genuinely believe that time on the boat can be pretty risky if you’re doing it properly. There are a few drivers who don’t see it that way; and that’s part of what’s up for debate.
+
+What’s not up for debate is that; legally; the boat is considered a rest period. We’ve had that confirmed by both NZTA and CVST. So drivers are 100% compliant logging a break from the moment they lock up their bus in Manipoti to when they arrive at a bus in West Arm.
+
+The real question is whether that’s actually a restful break from a fatigue point of view; as opposed to just ticking the legal box. We know it’s a legal rest break; but is it good enough for managing fatigue? I want to be clear that the team’s divided on this – not everyone sees it the same way.
+
+As a company; we need to decide where we stand and what risks we’re willing to accept. I reckon the best next step is to sit down together and talk it through; rather than going back and forth over email.
+
+I just wanted to get some info out there so we’re all on the same page about how often this actually happens – which; as we’ve seen; is pretty rare.
+
+So the question is; do we just remove that option; or are we comfortable with how things are? I can probably make some time in the next couple of weeks to come down; have a proper chat; and see where we land.
+2025-05-15 10:43:42,Transcription,Hey Josh; great to hear back from you. Sorry to hear that your stepfather isn't doing well either. And I hope the surgery went well. Fingers crossed for the results in a few weeks. We can definitely catch up at the end of May; or start of June if you'd prefer to wait for the results. I'm pretty flexible on that really; so just let me know what works well for you. I'm thinking early morning for us and late night for you is probably the easiest option. 8am our time is 9pm your time; so I'm sure we can make that work on one of the dates. So yeah; have a look forward and let me know what sort of dates you're thinking would be good to catch up and I'll pull the team together and let them know. Thanks mate; best of luck with it all.
+2025-05-15 10:43:45,Edited,REFLECTIVE,Hey Josh; great to hear back from you.
+
+Sorry to hear your stepfather’s not doing well. I hope the surgery went as well as it could; and I’ve got my fingers crossed for the results in a few weeks.
+
+We can definitely catch up at the end of May; or wait until early June if you’d rather have the results first. I’m pretty flexible; so just let me know what suits you best.
+
+Early morning for us and late night for you seems easiest—8am here is 9pm your time; so I’m sure we can make that work on one of those dates.
+
+Have a think and let me know what dates you reckon would be good to catch up; and I’ll pull the team together and let them know.
+
+Thanks mate; and all the best with everything.
+2025-05-15 10:44:38,Transcription,What location did we end up getting for Friday the 30th; sort of onboarding for the newbies?
+2025-05-15 10:44:39,Edited,DIRECT,What location did we settle on for the onboarding of the newbies on Friday the 30th?
+2025-05-15 10:45:15,Transcription,What location have you booked or room for our onboarding on the 30th. I've also managed to get Phil from the CVST to come along. I just want to let him know where we're going to be. Great opportunity for him to meet the new guys on the team.
+2025-05-15 10:45:17,Edited,DIRECT,What location or room have you booked for our onboarding on the 30th?  
+
+I’ve also got Phil from the CVST coming along. I just want to confirm where we’ll be so I can let him know.  
+
+It’s a great opportunity for him to meet the new team members.
+2025-05-15 10:46:54,Transcription,Sorry Alex; I've started to reply to this a half dozen times over the last two weeks and keep getting interrupted by other things. Peanut was working on this; I'm not sure where she got up to though; I will reach out to her today and see where she landed.
+2025-05-15 10:46:56,Edited,ENGAGED,Sorry Alex; I’ve started to reply to this about half a dozen times over the past couple of weeks but keep getting interrupted by other things.
+
+Peanut was working on it; though I’m not sure how far she got. I’ll reach out to her today and see where things are at.
+2025-05-15 10:48:50,Transcription,Hey Peanut; I had Alex from the experience team that we met up with the other month reach out and ask where we're at with the talking points summary for the business class Milford trip. This isn't full written commentary; it's more a series of headlines or a flow of storyline that would work well on the business class product. I know you're working on that when the trips didn't run. Can you just let me know where you're up to please and share what you've got with me. Thanks Ian.
+2025-05-15 10:48:51,Edited,ENGAGED,Hey Peanut;
+
+Alex from the experience team—the one we caught up with the other month—got in touch asking where we’re at with the talking points summary for the business class Milford trip.
+
+Just to clarify; they’re not after a full written commentary; more a set of headlines or a storyline flow that would suit the business class product.
+
+I know you were working on this when the trips didn’t run. Can you let me know how you’re getting on and share what you’ve got so far?
+
+Thanks;
+Iain
+2025-05-15 13:09:03,Transcription,Before you head to Teano; are you able to pop up to the yard please and have a quick look at the pressure water blaster? Some reports from the cleaners that it wasn't working properly. Thanks.
+2025-05-15 13:09:04,Edited,ENGAGED,Before you head to Te Anau; could you pop up to the yard and have a quick look at the pressure water blaster? The cleaners mentioned it wasn’t working properly. Thanks.
+2025-05-15 16:19:13,Transcription,just had a call from ASB because it was a new document they needed you to sign it as well I think so I think she's going to call you to log in and sign that one as well thanks
+2025-05-15 16:19:15,Edited,FRIENDLY,Just had a call from ASB. They need you to sign a new document too; so I think she’ll call you to log in and sign it. Thanks.
+2025-05-15 17:06:00,Transcription,Hi there; would you consider selling this for any less at all? I'm just looking for something for the Queenstown Scout group that we can put in the hall mostly used for playing games like musical chairs and that sort of thing but yeah as we're a volunteer organisation we don't have a whole lot of funds. Thank you
+2025-05-15 17:06:02,Edited,ENGAGED,Hi there;
+
+Would you consider selling this for a bit less? I’m looking for something for the Queenstown Scout group to use in our hall; mainly for games like musical chairs and similar activities.
+
+As we’re a volunteer organisation; our budget’s pretty limited. Thanks for considering it.
+2025-05-15 18:39:50,Transcription,So it's fairly easy work; I'm just going to replacing some of the LED lights at the yard. Do you want to meet me at the yard at say 10.30 and I'll show you what we're doing and then probably get you to relocate the car in the afternoon. Thanks see you then.
+2025-05-15 18:39:51,Edited,ENGAGED,It’s pretty straightforward work – I’ll just be replacing some of the LED lights at the yard.
+
+Do you want to meet me there around 10.30? I’ll show you what we’re doing; and then I’ll probably get you to relocate the car in the afternoon.
+
+Thanks; see you then.
+2025-05-16 07:30:20,Transcription,Definitely option number two. Option number one was never on the cards because everybody has their favorite keyboard or thing installed and I don't want them having to overwrite that. I think it would create more friction than that would solve. So yeah option two. I want you to review the github repo for EditECHO and have a look at all the code and then give me an outline step-by-step of the tasks or the steps that we would have to take to refactor this and make it work. Don't include any code at this stage just a list of steps.
+2025-05-16 07:30:20,Edited,Definitely option number two. Option number one was never on the cards because everybody has their favorite keyboard or thing installed and I don't want them having to overwrite that. I think it would create more friction than that would solve. So yeah option two. I want you to review the github repo for EditECHO and have a look at all the code and then give me an outline step-by-step of the tasks or the steps that we would have to take to refactor this and make it work. Don't include any code at this stage just a list of steps.
+2025-05-16 08:51:36,Transcription,Hi Vanessa and Eunice. My name is Ian Forrest. I'm the group leader for the Queenstown Scout Group. I just want to say thank you very much for awarding us the grant. We really appreciate the support and it'll very much help us develop the next generation of leaders here in Queenstown and help us achieve our goals; teaching them invaluable life and leadership skills. I look forward to meeting you both on the 21st and I'll fill out the forms as soon as it comes through. Thanks again. I really appreciate the support. I feel very privileged. Nā mihi; Ian.
+2025-05-16 08:51:40,Edited,ENGAGED,Hi Vanessa and Eunice.
+
+My name’s Iain Forrest and I’m the group leader for the Queenstown Scout Group. Just wanted to say a huge thank you for awarding us the grant—we really appreciate the support.
+
+This will make a real difference for us; helping develop the next generation of leaders here in Queenstown and supporting our goal of teaching invaluable life and leadership skills.
+
+I’m looking forward to meeting you both on the 21st; and I’ll get the forms filled out as soon as they come through.
+
+Thanks again; I really do appreciate it and feel very privileged.
+
+Nā mihi;  
+Iain
+2025-05-16 08:57:36,Transcription,Could do; I noticed that they had glass jars available as well; so we could use that as the cheaper option and have a 50 cent upgrade for a cone; something like that.
+2025-05-16 08:57:38,Edited,ENGAGED,Could do. I noticed they’ve got glass jars available too; so we could use those as the cheaper option; then offer a 50 cent upgrade for a cone or something along those lines.
+2025-05-16 09:02:45,Transcription,Thanks for letting me know Mira. I'll make sure we get it covered. I hope you recover quickly.
+2025-05-16 09:02:46,Edited,FRIENDLY,Thanks for letting me know; Mira. I’ll make sure we get it covered. Hope you recover quickly.
+2025-05-16 09:03:18,Transcription,Hey there; Mira is out sick. Are you able to come in tonight to cover the driving spot? Thanks; Ian.
+2025-05-16 09:03:19,Edited,FRIENDLY,Hey there; Mira’s out sick. Can you come in tonight to cover the driving spot? Thanks; Ian.
+2025-05-16 09:07:28,Transcription,My mirror; the driver; the cleaner is off sick tonight. Is anybody able to come in and cover her for a minimum probably two and a half hours; maybe three from seven o'clock. Thanks.
+2025-05-16 09:07:30,Edited,ENGAGED,My mirror driver and cleaner is off sick tonight.  
+Is anyone able to come in and cover her for at least two and a half; maybe three hours from 7pm?  
+Thanks.
+2025-05-16 09:12:10,Transcription,Are you able to load this up this morning at all? I'd like to go and try and pick it up today.
+2025-05-16 09:12:12,Edited,FRIENDLY,Are you able to load this up this morning? I’d like to try and pick it up today.
+2025-05-16 09:21:41,Transcription,Thanks Wally. I'll probably just ask our drivers to talk to the SD drivers rather than go through Osborne. Might create some unnecessary headaches and it won't be too big an issue if you're back on our buses anyway as they can clean the first ones while they're in the wash bay and if it ends up being you I'll just get another cleaner in anyway just to help everything move super quick. Thanks for the offer. Appreciate it.
+2025-05-16 09:21:43,Edited,ENGAGED,Thanks Wally.
+
+I'll probably just get our drivers to talk directly to the SD drivers rather than go through Osborne. Going through him might create unnecessary headaches; and it shouldn't be a big issue if you're back on our buses anyway. They can clean the first ones while they're in the wash bay; and if it ends up being you; I'll just bring in another cleaner to help things move along quickly.
+
+Thanks for the offer—really appreciate it.
+2025-05-16 09:58:58,Transcription,I've got spare drivers basically every day for the next week or so so when you talk to her just figure out whatever days work and I'll swap the other shifts around between different people and spread out the hours that way.
+2025-05-16 09:59:00,Edited,ENGAGED,I’ve got spare drivers pretty much every day for the next week or so.  
+When you talk to her; just work out which days suit; and I’ll shuffle the other shifts around between the team to spread out the hours.
+2025-05-16 10:13:36,Transcription,Hey team; is anybody free to come in and help out tonight?
+2025-05-16 10:13:38,Edited,FRIENDLY,Hey team; anyone free to come in and help out tonight?
+2025-05-16 10:19:05,Transcription,Thank you. You'll be working with Ryan. Mira is out sick so I've actually got one of the drivers; Paulie; coming in to do the driving of the vehicles. He'll be in on one of the Milford buses though a little bit late. So I just get stuck in cleaning with Ryan and when Paulie shows up he'll move all the vehicles around. Thank you.
+2025-05-16 10:19:07,Edited,ENGAGED,Thank you. You’ll be working with Ryan.
+
+Mira’s out sick; so I’ve got one of the drivers; Paulie; coming in to handle the vehicles. He’ll be in a bit late on one of the Milford buses.
+
+Just get stuck into cleaning with Ryan; and when Paulie arrives he’ll move all the vehicles around.
+
+Thank you.
+2025-05-16 10:20:20,Transcription,Hey mate; just a heads up that Mira is out sick; none of the other drivers were free to come in so I've lined up Paulie one of the coach drivers he's doing another mission today but we'll be coming in on one of them one of our Milford coaches this evening you'll have Alicia with you to help clean so just get stuck into the buses that show up in the wash bay and Paulie should be there to move them by the time you finish the first two. Thanks
+2025-05-16 10:20:23,Edited,ENGAGED,Hey mate;
+
+Just a heads up; Mira’s out sick and none of the other drivers were free to come in. I’ve lined up Paulie; one of the coach drivers—he’s on another run today but he’ll be coming in this evening on one of our Milford coaches.
+
+You’ll have Alicia with you to help clean; so just get stuck into the buses that show up in the wash bay. Paulie should be there to move them by the time you’ve finished the first two.
+
+Thanks.
+2025-05-16 10:41:56,Transcription,Sorry Kate; looks like half the conversation happened in a different thread. This was definitely a Real Journeys expense; so I requested the invoice to get cancelled and just charged internally. Sorry for the stuff around.
+2025-05-16 10:41:58,Edited,ENGAGED,Sorry Kate; looks like half the conversation happened in a different thread. This was definitely a Real Journeys expense; so I’ve asked for the invoice to be cancelled and just charged it internally.
+
+Sorry for the hassle.
+2025-05-16 10:51:00,Transcription,Yeah; no worries. Because we're a larger company; the application process is reasonably involved. And so for this role; because it's only part time; even though it's permanent; I have found it easier to post on Facebook like this; collect interest and work through the applicants to determine who might be the best fit for it. And then when we've got a good fit; we put it through the whole official recruitment process. So this is; you can think of this as kind of like a pre-screening to save you and myself time.
+2025-05-16 10:51:03,Edited,ENGAGED,Yeah; no worries. Because we're a larger company; the application process is reasonably involved.
+
+For this role; since it's part time but still permanent; I've found it easier to post on Facebook; collect interest; and work through the applicants to figure out who might be the best fit. Once we've found someone who looks like a good match; we put them through the full official recruitment process.
+
+You can think of this as a bit of pre-screening to save both you and me some time.
+2025-05-16 10:53:50,Transcription,There's also no scope in the official platform for me to be able to ask questions like heavy vehicle experience and how it lines up with other jobs which you'll find in the form.
+2025-05-16 10:53:53,Edited,ENGAGED,There’s also no way in the official platform for me to ask questions about heavy vehicle experience; or how that lines up with other jobs — you’ll see those in the form.
+2025-05-16 10:56:00,Transcription,Hey Sian; do you have time to create a Google sheet just mapping out every weekend between now and the 20th of September? We're going to need to get the ice cream trailer working full time to get us to Melbourne and then can we chuck in the dates that Matthew has got us at the markets and then we need to find a location for all of the other weekends; thanks.
+2025-05-16 10:56:02,Edited,ENGAGED,Hey Sian;
+
+Do you have time to set up a Google Sheet mapping out every weekend from now until 20 September? We’ll need to get the ice cream trailer running full time to help us get to Melbourne.
+
+Can you add in the dates Matthew’s booked us for the markets; and then we’ll need to find locations for all the other weekends.
+
+Thanks.
+2025-05-16 10:57:57,Transcription,Matt; do you have time to do a little design work please. We'll need a menu which we have to submit for the markets as well; but then also just some designs with prices and what they have; what we're doing; that we can put on the front of the trailer when we're parked up somewhere so that people can see what we're doing. Preferably in Canberra as I can download it and then I can print it out on like A3 sheets or something like that and we can just stick it on for now.
+2025-05-16 10:57:59,Edited,ENGAGED,Matt; do you have time to do a bit of design work please?
+
+We’ll need a menu to submit for the markets; and also some designs with prices and details about what we’re offering. The idea is to have something we can stick on the front of the trailer when we’re parked up; so people can see what we’re doing.
+
+Ideally; if you can do it in Canva; I can download and print it out on A3 sheets or similar; and we can just stick it on for now.
+2025-05-16 13:05:28,Transcription,Just copying it into here that Brandon might go down to Milford for a few days next week to help out the team down there and relieve the pressure on some of the crew. The biggest problem at the moment is finding a bed so Dan Dan is going to get back to us tomorrow with where they're at with that.
+2025-05-16 13:05:30,Edited,ENGAGED,Just copying this in – Brandon might head down to Milford for a few days next week to help out the team and take some pressure off the crew.
+
+The main issue right now is finding him a bed. Dan Dan’s going to get back to us tomorrow with an update on that.
+2025-05-16 14:01:26,Transcription,hey team we've swapped out all of the solar LED things half of them were broken the other ones were getting a bit rough as we put in new ones which are better quality and also have reflecting strips in them too so they should make things a little bit easier got a couple of new ones on the ramp and we put some of the old ones on the SD parks too so all in all should make parking a whole lot easier
+2025-05-16 14:01:28,Edited,ENGAGED,Hey team;
+
+We’ve swapped out all the solar LED markers—about half were broken and the rest were getting pretty rough. The new ones are better quality and have reflective strips as well; so they should make things a bit easier.
+
+We’ve put a couple of new ones on the ramp; and some of the old ones have gone onto the SD parks too.
+
+All up; parking should be a whole lot easier now.
+2025-05-16 14:06:06,Transcription,Could we also please make sure that the buses are going all the way back. If they're too far forward it makes it harder for the other buses to get out in the morning. The cones should be set up just inside the yellow line about a meter off the fence. The idea is that you can see that and if you're reversing along the yellow line you should be able to just see the cone and if you touch the cone with the bus you'll see it tilt backwards in the mirror and you'll know you've gone far enough. But ideally you want to be getting back to the cone and probably not quite touching it. Thanks
+2025-05-16 14:06:09,Edited,ENGAGED,Could we also please make sure the buses are going all the way back. If they're too far forward; it makes it harder for the other buses to get out in the morning.
+
+The cones should be set up just inside the yellow line; about a metre off the fence. The idea is that as you're reversing along the yellow line; you should be able to see the cone. If you touch the cone with the bus; you'll see it tilt backwards in the mirror; so you'll know you've gone far enough. But ideally; you want to get back to the cone without actually touching it.
+
+Thanks.
+2025-05-16 14:14:30,Transcription,I hope you had an amazing trip and a lot of fun. Just an FYI I'm trading in my car for the Sprinter for the weekend so my car is at the yard with the keys on the board if you need it for whatever reason. I'll be out at Cromwell for the weekend with a scout thing but should have reception and contactable if you need anything.
+2025-05-16 14:14:33,Edited,FRIENDLY,Hope you had an awesome trip and heaps of fun.  
+
+Just a heads-up—I’m swapping my car for the Sprinter this weekend; so my car’s at the yard with the keys on the board if you need it for anything.  
+
+I’ll be out at Cromwell for a scout thing but should have reception and be contactable if you need me.
+2025-05-16 14:26:14,Transcription,Hi there; hope this finds you well. We're doing another little bus shuffle to Invercargill next week. Would it be possible to rent a car again to pick up Tuesday afternoon and return on Friday; please? Thanks; Ian.
+2025-05-16 14:26:17,Edited,ENGAGED,Hi there;
+
+Hope this finds you well. We’re doing another bus shuffle to Invercargill next week.
+
+Would it be possible to rent a car again – pick up Tuesday afternoon and return Friday?
+
+Thanks;
+Iain
+2025-05-19 10:18:40,Transcription,It's a bit better now. I sat her down and had some fairly strong words with her around what was appropriate and not appropriate; and she capitulated on that and ended up apologizing and we had a hug and she's a bit better. And then also I couldn't stop laughing when she kept coming out trying to tell me that she was fine; so that helped alleviate some of the tension after a bit. So yeah; I guess we'll just see where the day goes. Love you.
+2025-05-19 10:18:42,Edited,FRIENDLY,It’s a bit better now. I sat her down and had some pretty strong words about what’s appropriate and what’s not. She came around; ended up apologising; and we had a hug. She’s feeling a bit better.
+
+I couldn’t stop laughing when she kept coming out trying to tell me she was fine; which helped ease the tension after a while.
+
+So yeah; I guess we’ll just see how the day goes. Love you.
+2025-05-19 11:57:52,Transcription,Hey Lucky; hope you're doing well. I need to get up; get five more signs made for some different sponsors that have helped us get our new ice cream truck up and going. Each sign would take up a space of about 450 by 450 mm; stacked vertically; so it could do two of them on one strip and three just on another strip; top to bottom. Could you give me an idea please of how much these would cost to get done? I'm guessing easiest is just on a white background and just put the whole square on or rectangle down the side of the trailer. We can apply it ourselves to reduce the cost. Thanks again.
+2025-05-19 11:57:54,Edited,ENGAGED,Hey Lucky; hope you’re doing well.
+
+I need to get five more signs made for some different sponsors who’ve helped us get the new ice cream truck up and running. Each sign would be about 450 by 450 mm; stacked vertically. We could do two on one strip and three on another; top to bottom.
+
+Could you give me an idea of how much these would cost to get done? I’m thinking the easiest option is just a white background; with each square or rectangle running down the side of the trailer. We can apply them ourselves to keep costs down.
+
+Thanks again.
+2025-05-19 16:57:21,Transcription,Sorry; thought he said he was going to leave here at midday; but he said he'd like to pick up the rental at midday; so he's going to leave in the morning from up here. So yeah; is it ok if he picks it up at midday tomorrow instead?
+2025-05-19 16:57:23,Edited,ENGAGED,Sorry; I thought he was leaving here at midday; but actually he wants to pick up the rental at midday. He’ll be leaving from up here in the morning.
+
+Is it ok if he picks it up at midday tomorrow instead?
+2025-05-19 17:01:35,Transcription,Just pushed out the roster this afternoon actually; although if you're looking at it on a phone the problem is that the name changes will kick in from this weekend and so you'll notice in a couple of days time there's another list of names which is the updated ones so after Sunday the shifts don't line up with the names locked on the left. Once we get to the weekend I can switch those over so it lines up and makes sense again. Here's a copy of what I've got you down for the training period. In the first week you might not be needed on the Wednesday or Thursday depending on how your training goes on the Monday and Tuesday.
+2025-05-19 17:01:38,Edited,ENGAGED,Just pushed out the roster this afternoon. If you’re checking it on your phone; you’ll notice the name changes kick in from this weekend. In a couple of days; there’ll be another list of names—the updated ones—so after Sunday; the shifts won’t line up with the names locked on the left.
+
+Once we hit the weekend; I’ll switch those over so everything lines up and makes sense again.
+
+Here’s a copy of what I’ve got you down for during the training period. In the first week; you might not be needed on Wednesday or Thursday; depending on how your training goes on Monday and Tuesday.
+2025-05-19 17:07:21,Transcription,Am I supposed to have prepared anything for this transport review tomorrow? Is it you guys asking me questions and me answering? Or am I supposed to be presenting and telling you how I think the season went? Or have some talking points or something?
+2025-05-19 17:07:23,Edited,ENGAGED,Am I meant to have anything prepared for the transport review tomorrow? Is it just you guys asking me questions and I answer; or am I supposed to be presenting and giving my take on how the season went? Should I have some talking points ready or anything like that?
+2025-05-19 17:11:32,Transcription,Hey Bruce; thanks for reaching out and the extra information and the offer. We'll be catching public transport everywhere. A lot of the kids don't have experience with public transport and so a huge part of the trip and going to a big city is doing everything by public transport and getting them to log in to the apps and do the planning and we'll get them the MetPass card things and yeah so everything will be done by public transport so thanks on that front. And yeah the pizza's sounding good we might do that for the first night there's something a bit easy and then yeah after that we also we get them to plan; order online every meal and all the food for each day and then prepare the meals. Actually a good question I guess is what's the closest supermarket is there a supermarket you can order online from that's within walking distance of the Scout Hall? Other than that we'll be getting the Scouts to do most of the planning on the lead up and just matching up the activities with the public transport that we need and yeah should be good. I can't remember if I mentioned actually in another email but if you guys have stretches that would be amazing be about 20 of us I think all up just under they would definitely make things significantly easier and more comfortable for them yeah if you had access to about 20 odd stretches. If I think of anything else I'll let you know thanks again for reaching out and the offer we can't wait to get over there and see it all. Oh just a bit of background information I'm actually from Melbourne originally myself grew up mostly down around Beaumaris so reasonably familiar with the city and the weather and layout and stuff like that so looking forward to getting back across there actually
+2025-05-19 17:11:39,Edited,ENGAGED,Hey Bruce; thanks for reaching out; the extra info; and the offer.
+
+We’ll be catching public transport everywhere. A lot of the kids haven’t used public transport much; so a big part of the trip is getting them around the city this way—using the apps; planning routes; and sorting out MetPass cards. Everything will be done by public transport; so we’re all sorted on that front.
+
+The pizza idea sounds good—we might do that for the first night; just to keep things easy. After that; we’ll get the kids to plan and order all their meals online; sort the food for each day; and prepare the meals themselves.
+
+Quick question—what’s the closest supermarket to the Scout Hall? Is there one within walking distance that we can order online from?
+
+Other than that; we’ll have the Scouts doing most of the planning in the lead-up; matching activities to the public transport options. Should be good.
+
+I can’t remember if I mentioned this in another email; but if you’ve got access to stretchers; that would be amazing. We’ll have about 20 people all up; so if you’ve got around 20 stretchers; it’d make things a lot easier and more comfortable.
+
+If I think of anything else; I’ll let you know. Thanks again for the help and the offer—we can’t wait to get over there and see it all.
+
+Bit of background—I’m actually from Melbourne originally; mostly grew up around Beaumaris; so I’m reasonably familiar with the city; weather; and layout. Looking forward to getting back over there; actually.
+2025-05-19 17:19:33,Transcription,Always happy to add another hard worker that comes from a good referral to the casuals team. Can't say that there'll be much work over the winter months; but happy to get them in there and have them trained up basically and good to go for when we'll have a lot more shifts next summer.
+2025-05-19 17:19:35,Edited,ENGAGED,Always happy to add another hard worker to the casuals team; especially when they come with a good referral.
+
+Can’t promise there’ll be much work over winter; but keen to get them on board; trained up; and ready to go for when we’ve got a lot more shifts next summer.
+2025-05-19 17:25:46,Transcription,We're actually recruiting at the moment; I just want to post that on Facebook to cover a permanent spot on the team for Friday Saturday night because Mira is going to shift to Monday; Sunday Monday; covering Ellie's shifts. I'll get that job up in Snapire when I do that and we'll just flip you the link and you can apply through that and it's the same link for the permanent as for the casuals; so we may use the opportunity; I think you'd probably use the opportunity to bring on a couple of new casuals anyway; so yep; lines up well.
+2025-05-19 17:25:49,Edited,FRIENDLY,We’re recruiting right now and I want to post on Facebook about a permanent spot for Friday and Saturday nights. Mira’s moving to cover Ellie’s shifts on Sunday and Monday.  
+
+I’ll put the job up on Snapire and send you the link so you can apply through that. It’s the same link for both permanent and casual roles; so we might as well use this chance to bring on a couple of new casuals too.  
+
+So yeah; it all lines up pretty well.
+2025-05-19 17:31:24,Transcription,Might be three people hitching a ride with you back to Queenstown; some people involved in a crash or something. Chantelle just gave me a call; she's talking to the police again; get back to me. I told them they had to be at Kiwi Country within the next 10 minutes.
+2025-05-19 17:31:27,Edited,DIRECT,Might be three people hitching a ride with you back to Queenstown. Some were involved in a crash or something.  
+
+Chantelle just called and is talking to the police again. She’ll get back to me.  
+
+I told them they need to be at Kiwi Country within the next 10 minutes.
+2025-05-20 08:41:37,Transcription,You can refuel in Invercargill; but ultimately the fuel card and the rental car will be going back down when we pick 115 up; so not a big drama if you don't; but probably better safe than sorry; so yeah; just fill it up in Invercargill.
+2025-05-20 08:41:39,Edited,ENGAGED,You can refuel in Invercargill. The fuel card and rental car will be heading back down when we pick up 115; so it’s not a big deal if you don’t; but probably better to play it safe. Just fill it up in Invercargill.
+2025-05-20 08:47:01,Transcription,Thanks; Rob. I've sent this to our treasurer to ask for it to be loaded up and paid. It should be done pretty soon. Just wondering if you wrote the information around what was wrong and needed replacing. I'd still really like to get that to the manufacturer to try to get some money back out of them for the changes that we had to make. Thanks; Ian.
+2025-05-20 08:47:03,Edited,ENGAGED,Thanks; Rob. I’ve sent this to our treasurer to get it loaded up and paid; so it should be sorted pretty soon.
+
+Just wondering if you’ve written up the info on what was wrong and what needed replacing. I’d still really like to get that to the manufacturer and see if we can get some money back for the changes we had to make.
+
+Thanks;
+Iain
+2025-05-20 08:51:25,Transcription,Hey mate; are you free for a base transfer tomorrow night?
+2025-05-20 08:51:26,Edited,FRIENDLY,Hey mate; you free for a base transfer tomorrow night?
+2025-05-20 08:56:43,Transcription,thanks mate all paid up now been awesome having you help out as well this summer and yes it did go very very fast sounds like it might be even busier next summer with Bayes they're putting an extra two coaches on when I get the dates I will definitely let you know thanks mate see you around
+2025-05-20 08:56:45,Edited,FRIENDLY,Thanks mate; all paid up now. It’s been awesome having you help out this summer.  
+
+Yeah; it did go really fast. Sounds like next summer might be even busier with Bayes—they’re adding two extra coaches.  
+
+When I get the dates; I’ll definitely let you know. Thanks again; mate. See you around.
+2025-05-20 18:30:51,Transcription,Hey mate; for the second week of training; would I be able to swing you over to Tuesday Wednesday training and then driving into Milford on Thursday? I just need to try and get all the returning drivers over to Wanaka on Thursday for a re-boarding for people who've done previous seasons.
+2025-05-20 18:30:54,Edited,ENGAGED,Hey mate;
+
+For the second week of training; would I be able to shift you to Tuesday and Wednesday for training; then have you drive into Milford on Thursday? I’m trying to get all the returning drivers over to Wanaka on Thursday for a re-boarding session for those who’ve done previous seasons.
+2025-05-21 08:36:08,Transcription,Hey everybody; just a reminder that the Polar Plunge is a month away on Matariki; June 20th. Please make sure you accept or decline the invite in Mahitahi. Thanks Ian.
+2025-05-21 08:36:10,Edited,ENGAGED,Hey everybody;
+
+Just a reminder that the Polar Plunge is a month away on Matariki; June 20th.
+
+Please make sure you accept or decline the invite in Mahitahi.
+
+Thanks; Iain.
+2025-05-21 08:37:32,Transcription,Hey team; still a bunch of sections that haven't accepted the Polar Plunge invite; it's one month away now; we would love to see you all over here and it would be a fun opportunity to get everybody together and have a little fun; hope you accept the invites and put it out to your groups so that they have the opportunity to come along as well.
+2025-05-21 08:37:35,Edited,ENGAGED,Hey team;
+
+There are still quite a few sections that haven’t accepted the Polar Plunge invite yet. It’s only a month away now; and we’d love to see you all over here. It’s a great chance to get everyone together and have a bit of fun.
+
+Hope you can accept the invites and share it with your groups so they’ve got the opportunity to come along too.
+2025-05-21 08:41:02,Transcription,Can you please send me the receipt for the online shopping yesterday?
+2025-05-21 08:41:03,Edited,FRIENDLY,Can you send me the receipt for the online shopping from yesterday; please?
+2025-05-21 10:32:29,Transcription,Hey Jason just playing around with the camera system we have up at the bus yard that we inherited from the previous owners I'd really like to get it online it has the ability to do so I just need to plug the ethernet cable into the box that we have up here but obviously I imagine there's some firewalls and security bits and things that you'd like to do with that how hard is this and is there something that we can get done thanks Ian
+2025-05-21 10:32:32,Edited,ENGAGED,Hey Jason;
+
+Just having a play with the camera system up at the bus yard—the one we inherited from the previous owners. I’d really like to get it online. It looks like it’s capable; and I just need to plug the ethernet cable into the box we’ve got up here.
+
+Obviously; I’m guessing there’ll be some firewalls or security steps you’ll want to sort out first. How tricky is this; and is it something we can get sorted?
+
+Thanks;
+Iain
+2025-05-21 10:49:24,Transcription,Okay; so he should have 47 people on his bus right now; of which three people are one way from Queenstown into Milford; so that would give him 44 coming back home. There's another three though who are supposed to be flying back; so if they fly he'll have 41 on board; which gives him nine seats. If the planes aren't flying then he'll only have six seats; but we could squeeze somebody in the courier seat if we had to. We're not supposed to; legally; but if that's the only option we've got we can probably make that work. But if the planes are flying; these people flying in; then I assume the planes are flying; so then we should be fine; and he'll have nine seats from Milford back to Teano. He drops off 15 people from the Teano crews there and picks up another eight; so then he should have nearly 16 seats from Teano back to Queenstown. So your seven people should be totally fine the whole way through; assuming that the planes are flying today.
+2025-05-21 10:49:27,Edited,DIRECT,He should have 47 people on his bus right now; with three travelling one way from Queenstown to Milford; leaving 44 for the return trip.  
+
+Another three are supposed to be flying back; so if they do; he’ll have 41 on board; giving him nine seats free.  
+
+If the planes aren’t flying; he’ll only have six seats; but we could squeeze someone into the courier seat if needed. It’s not legal; but it’s an option if necessary.  
+
+Assuming the planes are flying; he’ll have nine seats from Milford back to Te Anau. He drops off 15 from the Te Anau crews and picks up another eight; so he should have nearly 16 seats from Te Anau back to Queenstown.  
+
+Your seven people should be fine the whole way; assuming the planes are flying today.
+2025-05-21 15:29:43,Transcription,Scouts will be at the hall tonight as well; so I'll see you all there. One thing I would like; if you can; as mentioned before; is some help with the polar plunge on Matareki. It would also be pretty cool if you guys could organise some sort of activity for whoever shows up outside of the jump in the lake.
+2025-05-21 15:29:45,Edited,ENGAGED,Scouts will be at the hall tonight as well; so I’ll see you all there.
+
+One thing I’d like; if you’re able; is some help with the polar plunge on Matariki; as mentioned before.
+
+It’d also be great if you could organise an activity for anyone who turns up; aside from just the lake jump.
+2025-05-21 15:30:38,Transcription,So one night you could potentially head over there; scout the place out and think about what sort of activity you could potentially run over there; bearing in mind that it would get dark pretty quickly when you're over there; so maybe that's not possible on a Wednesday night; but something to think about.
+2025-05-21 15:30:39,Edited,ENGAGED,One night you could head over; scout the place out; and start thinking about what sort of activity you might run there. Just keep in mind it gets dark pretty quickly; so a Wednesday night might not work – but it’s something to consider.
+2025-05-21 15:32:57,Transcription,Random side question; what are the odds of me being allowed to spend between $500 and $1;000 upgrading the camera system out at the bus yard? It's definitely more of a nice-to-have than a must-have; but the current setup is over 10 years old I'd like to be able to access it online; or access it remotely more than anything
+2025-05-21 15:32:59,Edited,ENGAGED,Random side question – what are the odds of me being allowed to spend between $500 and $1;000 to upgrade the camera system out at the bus yard? It’s definitely more of a nice-to-have than a must-have; but the current setup’s over 10 years old.
+
+The main thing I’m after is being able to access it online or remotely.
+2025-05-21 15:34:59,Transcription,No; it works; hence the nice to have. It's just a very old system; you have to access it locally and it's not a great interface or system to work your way around. We'd be able to use all the current cameras and just plug it into a new base that could then be plugged into the internet so you could access it all remotely.
+2025-05-21 15:35:00,Edited,ENGAGED,No; it works – that’s why it’s just a nice to have; not essential.  
+It’s a very old system though. You have to access it locally; and the interface isn’t great to use.
+
+We’d be able to keep all the current cameras and just plug them into a new base unit; which could then connect to the internet. That way; you’d be able to access everything remotely.
+2025-05-21 15:41:46,Transcription,You could suggest that they don't have to come in tonight; but they do have to submit three or four decent ideas into the chat group over the next 24 hours to help plan out the rest of the term; and potentially part of next term.
+2025-05-21 15:41:47,Edited,ENGAGED,You could suggest they don’t need to come in tonight; but they do need to submit three or four solid ideas in the chat group over the next 24 hours. This’ll help us plan out the rest of the term; and maybe even part of next term.
+2025-05-21 15:42:42,Transcription,If Hunter really wants to come in he could do a little more work on the room moving some furniture around and stuff
+2025-05-21 15:42:43,Edited,FRIENDLY,If Hunter really wants to come in; he could do a bit more work on the room—moving some furniture around and that sort of thing.
+2025-05-21 15:46:07,Transcription,No problem if not; 115 is ready to go in Invercargill; so I can send Dino down to pick that up instead and have the driver we had on Friday for that come and get 219 then.
+2025-05-21 15:46:08,Edited,FRIENDLY,No worries if not. 115 is ready to go in Invercargill; so I can send Dino to pick that up instead and have the driver from Friday come and get 219.
+2025-05-21 15:49:02,Transcription,Cubs is... actually...
+2025-05-21 15:49:03,Edited,FRIENDLY,Cubs is... actually...
+2025-05-21 15:51:12,Transcription,Great to hear from you; Cubs is tracking along well; Everleigh's been sick so I didn't get to go; or didn't go this week; but they did a night hike up Queenstown Hill and looks like it went really well. Lots of illness going around town; Charlotte was out last week; probably about six kids missed out last night or more; so yeah; a bit of that going on. We did the Cosgrove last weekend as well; that was really good; went really well actually; and yeah; going to try and look to run it sort of every year potentially; and get the kids cycling through it more regularly. There's some cool opportunities there to develop skills and then start teaching them later on. It sounds like Cosgrove is done slightly differently all over the country; there's no actual very strict guidelines on what it needs to look like; just as long as there's sort of a development of skills going on between the Cosgrove and the Gold Cosgrove; so having the Elder Scouts lead or teach some of the lessons and things and help run the event is; yeah; one of the methods of getting a Gold Cosgrove. Be nice to be on tour around Malaysia; just sort of enjoy the places you're taking to. Time's definitely flowing; can't believe you're so close to doing the camp. I hope it's been going well for you; travel has a interesting way of changing you and your perceptions and things and the people around you in ways you sometimes don't expect; so yeah; hope it's been going well for you. Yeah; great to hear from you.
+2025-05-21 15:51:18,Edited,FRIENDLY,Great to hear from you. Cubs is tracking along well. Everleigh’s been sick; so I didn’t go this week; but they did a night hike up Queenstown Hill and it sounds like it went really well.
+
+There’s a lot of illness going around town. Charlotte was out last week; and probably six or more kids missed out last night; so that’s been a bit of a thing.
+
+We did the Cosgrove last weekend; which went really well. We’re thinking of running it every year and getting the kids cycling through it more regularly. There’s some cool opportunities there to develop skills and then start teaching them later on.
+
+Cosgrove seems to be done a bit differently all over the country. There aren’t strict guidelines on what it needs to look like; just that it develops skills between the Cosgrove and the Gold Cosgrove. Having the Elder Scouts lead or teach some lessons and help run the event is one way to work towards a Gold Cosgrove.
+
+Would be nice to be on tour around Malaysia; just enjoying the places you’re taking to. Time’s definitely flying—I can’t believe you’re so close to doing the camp.
+
+I hope it’s been going well for you. Travel has a funny way of changing you; your perceptions; and the people around you in ways you don’t always expect. So yeah; hope it’s been good.
+
+Great to hear from you.
+2025-05-21 15:53:36,Transcription,Oh yeah; one thing you'd probably like is Charlotte is sort of interested in going for her Chief Scout and then King in Ventures. She's on track to get her silver by the end of this term and she'll be with Scouts until the end of next year. She turns 14 in May but with Jamboree at the end of next year she wants to go to that again so that gives her a year and a half to get her gold and do the other bits towards Chief Scout. When I said there was some work involved and had to be a bit self-led her comment was that if Renee can do it then she can do it which was pretty cool to hear so you've definitely been a solid role model for her on that front. Thank you
+2025-05-21 15:53:39,Edited,FRIENDLY,Oh yeah; one thing you’d probably like is Charlotte’s keen on going for her Chief Scout and then King in Ventures. She’s on track to get her silver by the end of this term and will be with Scouts until the end of next year.  
+
+She turns 14 in May; but with Jamboree at the end of next year; she wants to go again. That gives her a year and a half to get her gold and tick off the other bits for Chief Scout.  
+
+When I mentioned there’s some work involved and it has to be a bit self-led; she said if Renee can do it; then she can too. That was pretty cool to hear—definitely shows you’ve been a solid role model for her. Thanks for that.
+2025-05-22 08:13:35,Transcription,Can you please get Charles drivers license details and send them through to these guys today please for him to drive the rental car tomorrow
+2025-05-22 08:13:37,Edited,ENGAGED,Can you please get Charles’ driver’s licence details and send them through to these guys today so he can drive the rental car tomorrow?
+2025-05-22 17:30:20,Transcription,Hey team; just found out about this one. There is a thank you; end of season thank you night for Real NZ next Thursday. Obviously appreciate not everyone will be able to go to it. But go check out the event in Mahitahi; follow the link to the post and then the link into the event; or tap on your profile picture top left-hand corner and then go to events and you'll find it in there. Also attached to that they're running nominations for those who live our values; so you can send an email to responses at realnz.com for the people that you'd like to nominate for that. We'd love to see some of the you guys nominated; especially for making it extraordinary; especially some of the reviews that you guys have been getting over time; or anything else that you think people have been living up to. So make sure you get those nominations in so we can represent Transport and hopefully we'll see some of you guys there at next Thursday.
+2025-05-22 17:30:25,Edited,ENGAGED,Hey team;
+
+Just found out about this one – there’s an end-of-season thank you night for RealNZ next Thursday.
+
+I know not everyone will be able to make it; but check out the event in Mahitahi. Follow the link to the post; then through to the event; or just tap your profile picture (top left) and go to Events – you’ll find it there.
+
+They’re also running nominations for people who really live our values. If you want to nominate someone; just send an email to responses@realnz.com with their name and why you think they deserve it.
+
+Would be great to see some of you nominated; especially for Making it Extraordinary – there’ve been some awesome reviews coming through lately; or anything else you reckon deserves a shout-out.
+
+Get those nominations in so we can represent Transport; and hopefully we’ll see a few of you at the event next Thursday.
+2025-05-22 18:01:41,Transcription,Nice one. Glad to hear you're out the other side of it. Can always be a bit daunting with those things. Good luck with the recovery. Hope you don't go too insane having to sit still.
+2025-05-22 18:01:43,Edited,FRIENDLY,Nice one. Glad you’re through the worst of it. Those things can be pretty daunting. Good luck with the recovery—hope you don’t go too stir-crazy having to sit still.
+2025-05-23 08:41:10,Transcription,Hey team; it saddens me to have to share that Dylan's brother Rob passed away quite suddenly over the weekend; so you may notice that Dylan is off the roster actually start with that and just sharing this with you so you're aware of why he's not at work at the moment we hope to see him again for the training next week but obviously these things can take time and he has a lot to work through with his family so we want to just share our thoughts and love with him and his family and let him know that we're thinking of him
+2025-05-23 08:41:13,Edited,REFLECTIVE,Hey team;
+
+It saddens me to share that Dylan’s brother; Rob; passed away quite suddenly over the weekend. You might notice Dylan’s off the roster at the moment – I just wanted you to know why he’s not at work.
+
+We hope to see him back for training next week; but of course these things take time; and he’ll need space to work through everything with his family.
+
+Let’s keep Dylan and his family in our thoughts and send them our love during this tough time.
+2025-05-23 10:11:42,Transcription,Probably the same problem we had with Milford the other day. I think we had the pickup returning this week but the roadworks have been extended until the end of the month so there is seven more days until we can use Ballarat Street. Can you please flag this with bats? Actually I might just add it to the other ticket.
+2025-05-23 10:11:44,Edited,ENGAGED,Probably the same problem we had with Milford the other day. I think we had the pickup returning this week; but the roadworks have been extended until the end of the month; so there’s another seven days before we can use Ballarat Street.
+
+Can you please flag this with BATS? Actually; I might just add it to the other ticket.
+2025-05-23 10:19:36,Transcription,This is actually going out to teammates who have left us; who just worked here for the summer. I haven't sent it to them before; so it's actually just an initial request. A sort of how; hey; hope you're doing well; and if you wouldn't mind; can you fill out this so that we can improve going into the future. Hope you enjoyed working with us. Blah blah blah.
+2025-05-23 10:19:36,Edited,This is actually going out to teammates who have left us; who just worked here for the summer. I haven't sent it to them before; so it's actually just an initial request. A sort of how; hey; hope you're doing well; and if you wouldn't mind; can you fill out this so that we can improve going into the future. Hope you enjoyed working with us. Blah blah blah.
+2025-05-23 10:23:25,Transcription,Hey mate; I hope you've been enjoying your time off and travelling around and that things are going well. I've just put this survey out to the team; trying to gather some feedback on how the summer went and sort of how we're positioned. The same one I've done in previous seasons so it's good for me to be able to track where we're doing well and getting better or slipping and just the areas we can improve in. Really appreciate it if you could take a couple of minutes and just fill it out. Thanks.
+2025-05-23 10:23:28,Edited,ENGAGED,Hey mate;
+
+Hope you’ve been enjoying your time off and getting around a bit. I’ve just sent out this survey to the team to get some feedback on how summer went and where we’re sitting now. It’s the same one I’ve used in previous seasons; so it helps me track what’s working; where we’re improving; and what still needs work.
+
+Would really appreciate it if you could take a couple of minutes to fill it out.
+
+Thanks.
+2025-05-23 10:29:07,Transcription,I guess you can tell him that we have the de-icing crystals that we sprinkle over the icy dangerous hazardous areas near the water blaster and that we have installed new solar LEDs including the ones on his own bus park to enable parking in the dark more easily. I don't think there's much else that applies to him.
+2025-05-23 10:29:09,Edited,ENGAGED,You can let him know we’ve got de-icing crystals on hand; which we use to treat any icy or hazardous spots near the water blaster.
+
+We’ve also installed new solar LEDs; including some on his own bus park; so parking in the dark should be a lot easier now.
+
+I don’t think there’s much else that’s relevant for him.
+2025-05-23 10:36:56,Transcription,It's not really made clear what the connection between our experiences and achieving this vision are.
+2025-05-23 10:36:57,Edited,DIRECT,The connection between our experiences and achieving this vision isn’t clearly explained.
+2025-05-23 10:38:03,Transcription,On the experiences front; I think that this is something that we do very well and something that we have always done very well. This sentence is a great way of summing up what many have strived for over decades of this company's existence.
+2025-05-23 10:38:04,Edited,DIRECT,On the experiences front; this is something we do very well and have always done well. This sums up what many have strived for throughout the company’s history.
+2025-05-23 10:40:28,Transcription,I think improvements have been made and I feel like we are trending in a positive direction; however it still feels like there is a disconnect or separation between head office and the on-the-ground experiences. It feels like there's those parts the companies can sometimes be treated a little differently which isn't really intentional but the nature of the way those two halves of the company works makes it challenging to be consistent across both.
+2025-05-23 10:40:29,Edited,DIRECT,I think improvements have been made and we’re trending in a positive direction. However; there still feels like a disconnect between head office and the on-the-ground experience.  
+
+It seems the two parts of the company are sometimes treated differently. This isn’t intentional; but the way they operate makes it challenging to be consistent across both.
+2025-05-23 10:44:15,Transcription,Do you feel like the company is siloed or well connected?
+2025-05-23 10:44:16,Edited,DIRECT,Do you think the company is siloed or well connected?
+2025-05-23 10:44:36,Transcription,Some sort of question around if the employee feels like the company operates in silos or acts as and is treated as one team.
+2025-05-23 10:44:36,Edited,DIRECT,Is the employee asked whether they feel the company operates in silos or functions as one unified team?
+2025-05-23 10:47:01,Transcription,He should definitely be writing his own risk management for the site as it's applicable to his drivers; his shed; his vehicles and their movements that they make. We should probably have some sort of JV or JCBA; whatever they're called; between us and them and it's probably worth hitting up Steve to get that in place seeing as we are moving their vehicles around the yard. But that should be something that is done together; it's not us supplying him with a risk management thing.
+2025-05-23 10:47:02,Edited,ENGAGED,He should definitely be writing his own risk management plan for the site; since it applies to his drivers; his shed; his vehicles; and how they move around.
+
+We probably need some sort of JV or JCBA—whatever the right term is—between us and them. It’s worth getting Steve involved to help set that up; especially since we’re moving their vehicles around the yard.
+
+But this should be a joint effort; not just us handing over a risk management document to him.
+2025-05-23 10:48:54,Transcription,PCBU... no. I'm sorry. I'm sorry. 
+2025-05-23 10:48:55,Edited,ENGAGED,PCBU – no; sorry.
+2025-05-23 10:49:04,Transcription,Hey Steve; what's the name of the document that you create when you've got two different companies working in the same space?
+2025-05-23 10:49:07,Edited,ENGAGED,Hey Steve;
+
+What’s the name of the document you put together when you’ve got two different companies working in the same space?
+2025-05-23 10:53:22,Transcription,Hey Josh; can I please just chase this order up? You text the other day you're going to try and get it on a pallet and shipped down. I gave you a commercial address in Queenstown but I haven't had any other comms via text or email about where the shipment is. If you can give me an update that'll be wonderful. Thanks; Ian.
+2025-05-23 10:53:23,Edited,ENGAGED,Hey Josh;
+
+Just chasing up this order. You mentioned the other day you’d try to get it on a pallet and shipped down. I gave you the commercial address in Queenstown; but I haven’t had any updates by text or email about where the shipment’s at.
+
+If you can give me an update; that’d be great.
+
+Thanks;
+Iain
+2025-05-23 10:55:02,Transcription,Nice one; thanks Karen. It would be great to see some of your crew there. Also keen to sit down and catch up at some point and see if we can do a few more things together; particularly with the Scouts and as they're heading towards being Venturers as they all end up at the same high school. I don't know about you but I think the only way to have a sustainable Venture unit over time will be to have something combined. So keen to hear your thoughts around all of that. Thanks; Ian.
+2025-05-23 10:55:03,Edited,ENGAGED,Nice one; thanks Karen.
+
+Would be great to see some of your crew there. I’m also keen to catch up at some point and chat about doing a bit more together; especially with the Scouts as they’re heading towards Venturers and all end up at the same high school.
+
+I don’t know about you; but I reckon the only way to keep a Venture unit sustainable long-term is to combine forces. Really keen to hear your thoughts on that.
+2025-05-23 11:00:58,Transcription,I have a hard time believing what comes out of his mouth sometimes.
+2025-05-23 11:00:59,Edited,FRIENDLY,Sometimes I really struggle to believe what he says.
+2025-05-23 11:01:16,Transcription,I have a hard time believing what comes out of his mouth sometimes.
+2025-05-23 11:01:17,Edited,ENGAGED,I find it hard to believe what he says sometimes.
+2025-05-23 11:14:02,Transcription,Hey; I'm not sure if you saw in the post about the Thank You event next Wednesday; but they're doing awards for people who represent our values the best. If you have your own ideas around; that's totally awesome. Please submit them to responses at realNZ.com. If not too much comes to mind; I really want to have a push to see Peanut recognised under the Make It Extraordinary values. She gets more positive reviews than anyone else on the team by far; and it would be cool to see that get recognised. If you don't have any other votes to make; then can I please just encourage you to consider if you would want to put your voice behind Peanut getting Make It Extraordinary. Of course; if you want to nominate anybody else; go for it.
+2025-05-23 11:14:06,Edited,ENGAGED,Hey; not sure if you saw the post about the Thank You event next Wednesday; but they’re doing awards for people who best represent our values.
+
+If you’ve got your own ideas for nominations; that’s awesome—please send them through to responses@realNZ.com.
+
+If nothing else jumps out; I’d really like to see Peanut recognised under the Make It Extraordinary values. She gets more positive reviews than anyone else on the team; and it’d be great to see that acknowledged.
+
+If you don’t have anyone else in mind; I’d encourage you to consider backing Peanut for Make It Extraordinary. But if you want to nominate someone else; go for it.
+2025-05-23 11:20:07,Transcription,Thanks for the quick reply; Josh. I appreciate the info and totally understand what happened. No hard feelings on my end at all. I know half the delays were our problem with getting the money together in the first place. And really appreciated your support of our group and probably quite a lot of others with this amazing deal. We're all good and look forward to getting them when they show up. Thanks; Ian.
+2025-05-23 11:20:11,Edited,ENGAGED,Thanks for the quick reply; Josh. Really appreciate the info and totally get what happened—no hard feelings here.
+
+I know a fair bit of the delay was on our side getting the money sorted in the first place. Also; thanks for backing our group (and probably plenty of others) with such a good deal.
+
+We’re all good and looking forward to getting them when they arrive.
+
+Thanks; Iain.
+2025-05-23 11:41:34,Transcription,After you've done the other things that need doing though; please; it strikes me as one of those jobs that could end up being way harder than what it looks like.
+2025-05-23 11:41:35,Edited,ENGAGED,Once you’ve sorted the other things that need doing; please tackle this.  
+It feels like one of those jobs that could end up being way harder than it looks.
+2025-05-23 11:53:52,Edited,I have this old-school stereo unit. I wanted to get music at the Scout Hall. Speakers and subwoofer I guess are useful for their size; but the unit itself is massive when all I actually want on it is the auxiliary in. The rest of it is kind of wasted. Is there anything else that I could use or rig up that would give me music in the hall using these speakers but not the bass unit?
+2025-05-23 11:53:52,Transcription,I have this old-school stereo unit. I wanted to get music at the Scout Hall. Speakers and subwoofer I guess are useful for their size; but the unit itself is massive when all I actually want on it is the auxiliary in. The rest of it is kind of wasted. Is there anything else that I could use or rig up that would give me music in the hall using these speakers but not the bass unit?
+2025-05-23 12:07:54,Transcription,I'm not in a rush but I do have a very tight budget; so find me the best little kit or setup I can use from Aliexpress. I don't mind doing a little bit of soldering and putting it inside a box if I need to. So yeah; I'll probably ditch the subwoofer; just run the two speakers and make it powerful enough that I could plug in two more speakers later on if I wanted to.
+2025-05-23 12:07:54,Edited,I'm not in a rush but I do have a very tight budget; so find me the best little kit or setup I can use from Aliexpress. I don't mind doing a little bit of soldering and putting it inside a box if I need to. So yeah; I'll probably ditch the subwoofer; just run the two speakers and make it powerful enough that I could plug in two more speakers later on if I wanted to.
+2025-05-23 12:13:35,Transcription,I was just about to message you actually. I was just up there and picked them up. I didn't notice your comment about the Philips speakers though and I didn't see them there when I picked up the other ones. I would very much like the other two. I was planning on wiring them in parallel with the other two speakers so that I could have one in each corner of the hall. Could you please leave them out and I'll swing by again either over the weekend or early next week to pick up the other two. Thank you.
+2025-05-23 12:13:38,Edited,FRIENDLY,I was just about to message you. I was up there and picked them up but didn’t notice your comment about the Philips speakers. I didn’t see them when I grabbed the others either.
+
+I’d really like the other two. I’m planning to wire them in parallel with the ones I’ve got so I can have one in each corner of the hall.
+
+Could you please set those aside? I’ll swing by again over the weekend or early next week to pick them up. Thanks.
+2025-05-23 12:15:38,Transcription,I just wanted to check in with P&P before I said anything. We can give you three days bereavement leave. I'm also going to stick one day of sick leave on top of that so we'll load up four days total for you for next week and then see how we're tracking after that.
+2025-05-23 12:15:40,Edited,FRIENDLY,Just wanted to check in with P&P before saying anything. We can give you three days bereavement leave; plus I’ll add one day of sick leave on top. That makes four days total for next week; and we’ll see how things are tracking after that.
+2025-05-23 13:33:57,Transcription,I've spoken with her about the above as well; however the feedback that we get often has nothing to do with drop-offs and other things like that. It's about the way that she engages with the customer; the information that she delivers and the way that she connects with everybody. Again though; you can vote however you wish if you think somebody else is more deserving.
+2025-05-23 13:34:00,Edited,ENGAGED,I’ve spoken with her about this as well; but the feedback we get is rarely about drop-offs or those sorts of things. It’s more about how she engages with customers; the information she provides; and the way she connects with everyone.
+
+That said; you’re free to vote however you like if you feel someone else is more deserving.
+2025-05-23 15:53:40,Transcription,Can you give me a call when you get a chance please? Sorry I dropped the ball on this one; re-reading over everything you sent through. Given the format of next week; if there's any way to send Tony and Dave up for Monday and Tuesday and skip Karina and Brendan; that would probably be the best outcome; and then rotate them all through the skid training the following week. I've sent you the document outlining how we're doing the training. If that doesn't work we'll make something else fit. Also it looks like Thompson Street House isn't being used so we should be able to get them to stay there. And if they are doing the Monday-Tuesday then we could probably have a slightly delayed departure from the yard to accommodate them driving up that morning.
+2025-05-23 15:53:43,Edited,ENGAGED,Can you give me a call when you get a chance please? Sorry I dropped the ball on this one—just re-reading everything you sent through.
+
+Given the format for next week; if there’s any way to send Tony and Dave up for Monday and Tuesday and skip Karina and Brendan; that’d probably be the best outcome. Then we can rotate everyone through the skid training the following week.
+
+I’ve sent you the document outlining how we’re doing the training. If that plan doesn’t work; we’ll make something else fit.
+
+Also; looks like Thompson Street House isn’t being used; so we should be able to get them to stay there. If they’re doing Monday-Tuesday; we could probably have a slightly delayed departure from the yard to let them drive up that morning.
