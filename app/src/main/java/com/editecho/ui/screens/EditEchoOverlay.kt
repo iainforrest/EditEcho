@@ -3,17 +3,13 @@ package com.editecho.ui.screens
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.media.MediaRecorder
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
@@ -26,10 +22,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalClipboardManager
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -40,10 +32,6 @@ import com.editecho.ui.theme.EditEchoColors
 import com.editecho.view.EditEchoOverlayViewModel
 import com.editecho.view.RecordingState
 import com.editecho.view.ToneState
-import kotlinx.coroutines.launch
-import java.io.File
-import android.content.res.Configuration
-import com.editecho.util.AudioRecorder
 import android.widget.Toast
 import android.util.Log
 import com.editecho.ui.components.EditedMessageBox
@@ -62,12 +50,7 @@ fun EditEchoOverlay(
     val recordingState by viewModel.recordingState.collectAsState()
     val toneState by viewModel.toneState.collectAsState()
     val voiceSettings by viewModel.voiceSettings.collectAsState()
-    
-    // Collect the transcribed and refined text from the ViewModel
-    val transcribedText by viewModel.transcribedText.collectAsState()
     val refinedText by viewModel.refinedText.collectAsState()
-    
-    val scope = rememberCoroutineScope()
     
     // State variables
     var hasMicPermission by remember { mutableStateOf(false) }
@@ -75,10 +58,6 @@ fun EditEchoOverlay(
     
     // Remove redundant state variables that are now in ViewModel
     val isRecording = recordingState is RecordingState.Recording
-    val isProcessing = recordingState is RecordingState.Processing || toneState is ToneState.Processing
-    
-    // Audio recorder
-    val audioRecorder = remember { AudioRecorder(context) }
     
     // Permission launcher
     val permissionLauncher = rememberLauncherForActivityResult(
@@ -283,16 +262,4 @@ fun EditEchoOverlay(
             }
         )
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun EditEchoOverlayPreview() {
-    EditEchoOverlay(onDismiss = {})
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun EditEchoOverlayDarkPreview() {
-    EditEchoOverlay(onDismiss = {})
 } 

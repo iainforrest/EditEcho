@@ -28,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.editecho.service.NotificationService
@@ -269,28 +268,5 @@ fun MainScreen(claudeCompletionClient: ClaudeCompletionClient? = null) {
                 )
             }
         }
-    }
-}
-
-/**
- * Preview for the MainScreen.
- */
-@Preview(showBackground = true)
-@Composable
-fun MainScreenPreview() {
-    EditEchoTheme {
-        MainScreen()
-    }
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun MainActivityDarkPreview() {
-    EditEchoTheme(darkTheme = true) {
-        MainActivityContent(
-            showOverlay = false,
-            onDismissOverlay = {},
-            claudeCompletionClient = null
-        )
     }
 } 

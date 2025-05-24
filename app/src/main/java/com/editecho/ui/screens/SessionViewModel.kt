@@ -38,7 +38,7 @@ class SessionViewModel @Inject constructor(
                     .addOnSuccessListener {
                         // Session started successfully
                     }
-                    .addOnFailureListener { exception ->
+                    .addOnFailureListener { _ ->
                         // Handle error, maybe show a toast or log
                     }
             } catch (e: Exception) {
@@ -60,7 +60,7 @@ class SessionViewModel @Inject constructor(
                     .addOnSuccessListener {
                         // Duration updated successfully
                     }
-                    .addOnFailureListener { exception ->
+                    .addOnFailureListener { _ ->
                         // Handle error, maybe show a toast or log
                     }
 

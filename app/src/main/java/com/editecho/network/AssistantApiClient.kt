@@ -70,7 +70,7 @@ class AssistantApiClient(
             val accumulatedText = StringBuilder()
             val isCompleted = AtomicBoolean(false)
             
-            val eventSource = EventSources.createFactory(okHttpClient)
+            EventSources.createFactory(okHttpClient)
                 .newEventSource(sseRequest, object : EventSourceListener() {
                     override fun onEvent(
                         eventSource: EventSource,
