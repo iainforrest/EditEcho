@@ -23,6 +23,63 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567923830597:android:143fee009ea13a2445982d",
+        "android_client_info": {
+          "package_name": "com.editecho.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl27sDV5DeD4i90M4elBcE3LAre9t6B20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567923830597:android:143fee009ea13a2445982e",
+        "android_client_info": {
+          "package_name": "com.editecho.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl27sDV5DeD4i90M4elBcE3LAre9t6B20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:567923830597:android:143fee009ea13a2445982f",
+        "android_client_info": {
+          "package_name": "com.editecho.dev.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl27sDV5DeD4i90M4elBcE3LAre9t6B20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"
