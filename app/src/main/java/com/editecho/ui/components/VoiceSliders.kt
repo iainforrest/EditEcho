@@ -15,8 +15,8 @@ import com.editecho.ui.theme.EditEchoColors
 /**
  * A composable that displays dual sliders for formality and polish voice settings.
  *
- * @param formality The current formality level (1-5).
- * @param polish The current polish level (1-5).
+ * @param formality The current formality level (0-100).
+ * @param polish The current polish level (0-100).
  * @param onFormalityChange Callback function called when formality changes.
  * @param onPolishChange Callback function called when polish changes.
  * @param modifier Optional modifier for the voice sliders.
@@ -58,8 +58,7 @@ fun VoiceSliders(
                         onFormalityChange(intValue)
                     }
                 },
-                valueRange = 1f..5f,
-                steps = 3, // 4 intermediate steps between 1-5 gives us discrete 1,2,3,4,5
+                valueRange = 0f..100f,
                 colors = SliderDefaults.colors(
                     thumbColor = EditEchoColors.Primary,
                     activeTrackColor = EditEchoColors.Primary,
@@ -112,8 +111,7 @@ fun VoiceSliders(
                         onPolishChange(intValue)
                     }
                 },
-                valueRange = 1f..5f,
-                steps = 3, // 4 intermediate steps between 1-5 gives us discrete 1,2,3,4,5
+                valueRange = 0f..100f,
                 colors = SliderDefaults.colors(
                     thumbColor = EditEchoColors.Primary,
                     activeTrackColor = EditEchoColors.Primary,

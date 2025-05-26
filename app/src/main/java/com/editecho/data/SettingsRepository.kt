@@ -20,11 +20,11 @@ class SettingsRepository @Inject constructor(
     private val polishKey = intPreferencesKey("polish")
 
     val formality: Flow<Int> = context.dataStore.data.map { preferences ->
-        preferences[formalityKey] ?: 3
+        preferences[formalityKey] ?: 50
     }
 
     val polish: Flow<Int> = context.dataStore.data.map { preferences ->
-        preferences[polishKey] ?: 3
+        preferences[polishKey] ?: 50
     }
 
     suspend fun setFormality(value: Int) {

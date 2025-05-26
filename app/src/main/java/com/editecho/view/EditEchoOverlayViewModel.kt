@@ -77,7 +77,7 @@ class EditEchoOverlayViewModel @Inject constructor(
     val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
     // Updated voice settings state
-    private val _voiceSettings = MutableStateFlow(VoiceSettings(formality = 3, polish = 3))
+    private val _voiceSettings = MutableStateFlow(VoiceSettings(formality = 50, polish = 50))
     val voiceSettings: StateFlow<VoiceSettings> = _voiceSettings.asStateFlow()
 
     init {
