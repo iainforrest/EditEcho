@@ -20,13 +20,13 @@ class ClaudeCompletionClient @Inject constructor(
 ) {
     companion object {
         private const val TAG = "ClaudeCompletionClient"
-        private const val MODEL = "claude-3-opus-20240229"
+        private const val MODEL = "claude-sonnet-4-20250514"
     }
 
     /**
-     * Complete text editing using Claude API with Voice DNA patterns
+     * Complete a text using Claude API with voice settings and Voice DNA patterns
      * 
-     * @param voiceSettings The formality and polish levels (1-5)
+     * @param voiceSettings The formality and polish levels (0-100)
      * @param userText The raw text to be edited
      * @return The edited text from Claude, or original text if API fails
      */
