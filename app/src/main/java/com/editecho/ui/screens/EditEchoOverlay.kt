@@ -35,6 +35,135 @@ import com.editecho.view.ToneState
 import android.widget.Toast
 import android.util.Log
 import com.editecho.ui.components.EditedMessageBox
+import com.editecho.prompt.VoiceSettings
+
+/**
+ * Reusable content for the EditEcho overlay that can be used in both Dialog and WindowManager contexts.
+ * This contains the main UI elements: header, text display, sliders, and action buttons.
+ */
+@Composable
+fun EditEchoOverlayContent(
+    recordingState: RecordingState,
+    toneState: ToneState,
+    voiceSettings: VoiceSettings,
+    refinedText: String,
+    onDismiss: () -> Unit,
+    onFormalityChanged: (Int) -> Unit,
+    onPolishChanged: (Int) -> Unit,
+    onStartRecording: () -> Unit,
+    onStopRecording: () -> Unit,
+    onCopyToClipboard: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val isRecording = recordingState is RecordingState.Recording
+    
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Header with close button (title removed for compact overlay)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 2.dp),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            IconButton(onClick = onDismiss) {
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    contentDescription = "Close",
+                    tint = EditEchoColors.PrimaryText
+                )
+            }
+        }
+        
+        Spacer(modifier = Modifier.height(2.dp))
+        
+        // Main content area with two columns
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            // Left column - Text and tone selector
+            Column(
+                modifier = Modifier
+                    .weight(0.85f)
+                    .fillMaxHeight()
+            ) {
+                EditedMessageBox(
+                    recordingState = recordingState,
+                    toneState = toneState,
+                    editedText = refinedText,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                )
+                
+                Spacer(modifier = Modifier.height(8.dp))
+                
+                // Voice sliders for formality and polish control
+                VoiceSliders(
+                    formality = voiceSettings.formality,
+                    polish = voiceSettings.polish,
+                    onFormalityChange = onFormalityChanged,
+                    onPolishChange = onPolishChanged,
+                    modifier = Modifier.height(80.dp)  // Slightly more height for two sliders
+                )
+            }
+            
+            // Right column - Vertical buttons
+            Column(
+                modifier = Modifier
+                    .weight(0.15f)
+                    .fillMaxHeight()
+                    .padding(start = 8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                // Settings button
+                IconButton(
+                    onClick = { /* Settings functionality removed */ },
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Settings,
+                        contentDescription = "Settings",
+                        tint = EditEchoColors.Primary
+                    )
+                }
+                
+                // Copy button
+                IconButton(
+                    onClick = onCopyToClipboard,
+                    enabled = refinedText.isNotEmpty(),
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ContentCopy,
+                        contentDescription = "Copy Text",
+                        tint = if (refinedText.isNotEmpty()) EditEchoColors.Primary else EditEchoColors.Primary.copy(alpha = 0.5f)
+                    )
+                }
+                
+                // Record button
+                IconButton(
+                    onClick = { if (isRecording) onStopRecording() else onStartRecording() },
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Mic,
+                        contentDescription = if (isRecording) "Stop Recording" else "Start Recording",
+                        tint = if (isRecording) EditEchoColors.Error else EditEchoColors.Primary
+                    )
+                }
+            }
+        }
+    }
+}
 
 /**
  * A bottom sheet overlay that provides audio recording, transcription, and tone adjustment functionality.
@@ -134,117 +263,21 @@ fun EditEchoOverlay(
                     containerColor = EditEchoColors.Surface
                 )
             ) {
-                Column(
+                EditEchoOverlayContent(
+                    recordingState = recordingState,
+                    toneState = toneState,
+                    voiceSettings = voiceSettings,
+                    refinedText = refinedText,
+                    onDismiss = onDismiss,
+                    onFormalityChanged = viewModel::onFormalityChanged,
+                    onPolishChanged = viewModel::onPolishChanged,
+                    onStartRecording = { startRecording() },
+                    onStopRecording = { stopRecording() },
+                    onCopyToClipboard = { copyTextToClipboard() },
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // Header with title and close button
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = 2.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = "Edit Echo",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = EditEchoColors.PrimaryText
-                        )
-                        IconButton(onClick = onDismiss) {
-                            Icon(
-                                imageVector = Icons.Default.Close,
-                                contentDescription = "Close",
-                                tint = EditEchoColors.PrimaryText
-                            )
-                        }
-                    }
-                    
-                    Spacer(modifier = Modifier.height(2.dp))
-                    
-                    // Main content area with two columns
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f)
-                    ) {
-                        // Left column - Text and tone selector
-                        Column(
-                            modifier = Modifier
-                                .weight(0.85f)
-                                .fillMaxHeight()
-                        ) {
-                            EditedMessageBox(
-                                recordingState = recordingState,
-                                toneState = toneState,
-                                editedText = refinedText,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .weight(1f)
-                            )
-                            
-                            Spacer(modifier = Modifier.height(8.dp))
-                            
-                            // Voice sliders for formality and polish control
-                            VoiceSliders(
-                                formality = voiceSettings.formality,
-                                polish = voiceSettings.polish,
-                                onFormalityChange = viewModel::onFormalityChanged,
-                                onPolishChange = viewModel::onPolishChanged,
-                                modifier = Modifier.height(80.dp)  // Slightly more height for two sliders
-                            )
-                        }
-                        
-                        // Right column - Vertical buttons
-                        Column(
-                            modifier = Modifier
-                                .weight(0.15f)
-                                .fillMaxHeight()
-                                .padding(start = 8.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            // Settings button
-                            IconButton(
-                                onClick = { /* Settings functionality removed */ },
-                                modifier = Modifier.size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Settings,
-                                    contentDescription = "Settings",
-                                    tint = EditEchoColors.Primary
-                                )
-                            }
-                            
-                            // Copy button
-                            IconButton(
-                                onClick = { copyTextToClipboard() },
-                                enabled = refinedText.isNotEmpty(),
-                                modifier = Modifier.size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.ContentCopy,
-                                    contentDescription = "Copy Text",
-                                    tint = if (refinedText.isNotEmpty()) EditEchoColors.Primary else EditEchoColors.Primary.copy(alpha = 0.5f)
-                                )
-                            }
-                            
-                            // Record button
-                            IconButton(
-                                onClick = { if (isRecording) stopRecording() else startRecording() },
-                                modifier = Modifier.size(48.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Mic,
-                                    contentDescription = if (isRecording) "Stop Recording" else "Start Recording",
-                                    tint = if (isRecording) EditEchoColors.Error else EditEchoColors.Primary
-                                )
-                            }
-                        }
-                    }
-                }
+                        .padding(16.dp)
+                )
             }
         }
     }

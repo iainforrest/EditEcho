@@ -10,14 +10,14 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.editecho.MainActivity
 import com.editecho.R
+import com.editecho.BuildConfig
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Service that displays a persistent notification for EditEcho.
- * When tapped, the notification opens the MainActivity which will show the EditEchoOverlay.
+ * When tapped, the notification starts the OverlayService to show the keyboard-style overlay.
  */
 @AndroidEntryPoint
 class NotificationService : Service() {
@@ -82,23 +82,35 @@ class NotificationService : Service() {
     }
 
     private fun createNotificationBuilder(context: Context): NotificationCompat.Builder {
-        // Create an intent that will open the MainActivity
-        val intent = Intent(context, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-            putExtra("show_overlay", true)
+        // Create an intent that will start the OverlayService
+        val intent = Intent(context, OverlayService::class.java).apply {
+            action = OverlayService.ACTION_START_OVERLAY
         }
         
         // Create a pending intent for the notification
-        val pendingIntent = PendingIntent.getActivity(
+        val pendingIntent = PendingIntent.getService(
             context,
             0,
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         
+        // Determine notification text based on build variant
+        val title = if (BuildConfig.FLAVOR_NAME == "dev") {
+            "EditEcho-dev"
+        } else {
+            "EditEcho"
+        }
+        
+        val contentText = if (BuildConfig.FLAVOR_NAME == "dev") {
+            "Tap to open EditEcho overlay (dev)"
+        } else {
+            "Tap to open EditEcho overlay"
+        }
+        
         return NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("EditEcho")
-            .setContentText("Tap to open EditEcho")
+            .setContentTitle(title)
+            .setContentText(contentText)
             .setSmallIcon(R.drawable.ic_notification)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setOngoing(true)

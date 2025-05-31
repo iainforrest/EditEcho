@@ -180,5 +180,26 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // MockK
+    testImplementation("io.mockk:mockk:1.13.10")
+    androidTestImplementation("io.mockk:mockk-android:1.13.10")
+
+    // Robolectric
+    testImplementation("org.robolectric:robolectric:4.11.1")
+
+    // Hilt Testing
+    testImplementation("com.google.dagger:hilt-android-testing:2.50")
+    kspTest("com.google.dagger:hilt-compiler:2.50")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
+    kspAndroidTest("com.google.dagger:hilt-compiler:2.50")
+    
+    // AndroidX Test Core
+    testImplementation("androidx.test:core-ktx:1.5.0")
+
+    // AndroidX Truth
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("com.google.truth:truth:1.1.5")
+    androidTestImplementation("com.google.truth:truth:1.1.5")
 }
 

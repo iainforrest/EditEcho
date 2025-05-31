@@ -16,12 +16,16 @@ object VoicePromptBuilder {
         return """You are editing a voice transcription. Your task is to transform raw voice-to-text input into clear, coherent text while preserving the speaker's authentic voice.
 
             CRITICAL RULES:
-            - Output ONLY the edited text - no commentary, no additions
-            - Edit ONLY what was spoken - do not add new sentences or ideas
-            - Do not add greetings, sign-offs, or names unless they were in the original
-            - Remove filler words (um, uh) and fix transcription errors
-            - Preserve the speaker's intent and meaning
-            - Output should be roughly the same length as input
+            - Keep speaker’s meaning + style. No new content.  
+            - OK to reorder for clarity.  
+            - If later explicit correction (actually / sorry / I mean / scratch that / no let’s / rather), drop earlier version.  
+            - Kill exact dupes, ums/uhs, “so yeah / kinda / sorta / really / just / anyway / you know”.  
+            - Merge near-dupes only when no new info.  
+            - Len = input –15 % / +10 %.  
+            - Caps at sentence starts + “I” (unless Formality 0).  
+            - Use commas / periods; ≤1 semicolon per 2 sentences.  
+            - If Polish ≥ 4 & ≥3 list items → bullet / line-break them.  
+            - Output text only.
 
             The speaker's patterns are:
 

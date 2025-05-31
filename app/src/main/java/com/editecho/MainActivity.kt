@@ -10,32 +10,17 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import com.editecho.network.ClaudeCompletionClient
 import com.editecho.service.NotificationService
 import com.editecho.ui.theme.EditEchoColors
-import android.content.res.Configuration
-import com.editecho.ui.screens.EditEchoOverlay
 import com.editecho.ui.theme.EditEchoTheme
-import com.editecho.network.ClaudeCompletionClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -45,31 +30,26 @@ class MainActivity : ComponentActivity() {
     
     @Inject
     lateinit var claudeCompletionClient: ClaudeCompletionClient
-    
-    // State to track if the overlay should be shown
-    private var showOverlay by mutableStateOf(false)
-    
-    // Activity result launcher for the RECORD_AUDIO permission
+
+    // Launcher for requesting audio permission
     private val audioPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            // Audio permission granted, check notification permission
+            // Permission granted, check notification permission
             checkNotificationPermission()
         } else {
-            // Permission denied, show message and handle gracefully
-            Toast.makeText(this, "Microphone permission is required for audio recording", Toast.LENGTH_LONG).show()
-            // Close the app
-            finish()
+            // Permission denied, show message
+            Toast.makeText(this, "Audio permission is required for EditEcho to work properly", Toast.LENGTH_LONG).show()
         }
     }
 
-    // Activity result launcher for the POST_NOTIFICATIONS permission
+    // Launcher for requesting notification permission (Android 13+)
     private val notificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            // Notification permission granted, start the notification service
+            // Permission granted, start the notification service
             startNotificationService()
         } else {
             // Permission denied, show message
@@ -83,9 +63,6 @@ class MainActivity : ComponentActivity() {
         // Log the API key from BuildConfig for verification
         Log.d("MainActivity", "🔑 Using API key from BuildConfig: ${BuildConfig.OPENAI_API_KEY.take(10)}...")
         
-        // Check if the overlay should be shown (from notification tap)
-        showOverlay = intent.getBooleanExtra("show_overlay", false)
-        
         // Check if the app has permission to record audio
         checkAudioPermission()
         
@@ -93,8 +70,6 @@ class MainActivity : ComponentActivity() {
         setContent {
             EditEchoTheme {
                 MainActivityContent(
-                    showOverlay = showOverlay,
-                    onDismissOverlay = { showOverlay = false },
                     claudeCompletionClient = claudeCompletionClient
                 )
             }
@@ -155,20 +130,6 @@ class MainActivity : ComponentActivity() {
             startService(serviceIntent)
         }
     }
-    
-    /**
-     * Shows the EditEcho overlay.
-     */
-    private fun showEditEchoOverlay() {
-        showOverlay = true
-    }
-    
-    /**
-     * Hides the EditEcho overlay.
-     */
-    private fun hideEditEchoOverlay() {
-        showOverlay = false
-    }
 }
 
 /**
@@ -176,8 +137,6 @@ class MainActivity : ComponentActivity() {
  */
 @Composable
 fun MainActivityContent(
-    showOverlay: Boolean,
-    onDismissOverlay: () -> Unit,
     claudeCompletionClient: ClaudeCompletionClient? = null
 ) {
     // Surface using the 'background' color from the theme
@@ -185,13 +144,7 @@ fun MainActivityContent(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        if (showOverlay) {
-            // Show the EditEcho overlay
-            EditEchoOverlay(onDismiss = onDismissOverlay)
-        } else {
-            // Show the main screen
-            MainScreen(claudeCompletionClient = claudeCompletionClient)
-        }
+        MainScreen(claudeCompletionClient = claudeCompletionClient)
     }
 }
 
