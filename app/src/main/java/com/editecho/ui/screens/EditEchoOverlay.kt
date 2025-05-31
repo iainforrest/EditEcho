@@ -22,12 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.editecho.ui.components.VoiceSliders
 import com.editecho.ui.theme.EditEchoColors
 import com.editecho.view.EditEchoOverlayViewModel
 import com.editecho.view.RecordingState
@@ -60,28 +61,9 @@ fun EditEchoOverlayContent(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp),
+            .padding(horizontal = 12.dp, vertical = 4.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Header with close button (title removed for compact overlay)
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 2.dp),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = onDismiss) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Close",
-                    tint = EditEchoColors.PrimaryText
-                )
-            }
-        }
-        
-        Spacer(modifier = Modifier.height(2.dp))
-        
         // Main content area with two columns
         Row(
             modifier = Modifier
@@ -91,7 +73,7 @@ fun EditEchoOverlayContent(
             // Left column - Text and tone selector
             Column(
                 modifier = Modifier
-                    .weight(0.85f)
+                    .weight(0.8f)
                     .fillMaxHeight()
             ) {
                 EditedMessageBox(
@@ -100,34 +82,84 @@ fun EditEchoOverlayContent(
                     editedText = refinedText,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(1f)
+                        .weight(0.7f)
                 )
                 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 
-                // Voice sliders for formality and polish control
-                VoiceSliders(
-                    formality = voiceSettings.formality,
-                    polish = voiceSettings.polish,
-                    onFormalityChange = onFormalityChanged,
-                    onPolishChange = onPolishChanged,
-                    modifier = Modifier.height(80.dp)  // Slightly more height for two sliders
-                )
+                // Sliders Section
+                Column(modifier = Modifier.weight(0.3f).padding(bottom = 4.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Formality", 
+                            style = MaterialTheme.typography.bodySmall,
+                            color = EditEchoColors.PrimaryText,
+                            modifier = Modifier.width(65.dp)
+                        )
+                        Slider(
+                            value = voiceSettings.formality.toFloat(),
+                            onValueChange = { onFormalityChanged(it.toInt()) },
+                            valueRange = 0f..100f,
+                            steps = 100,
+                            modifier = Modifier.weight(1f).heightIn(min = 30.dp),
+                            colors = SliderDefaults.colors(
+                                thumbColor = EditEchoColors.Accent,
+                                activeTrackColor = EditEchoColors.Accent,
+                                inactiveTrackColor = EditEchoColors.Accent.copy(alpha = 0.3f)
+                            )
+                        )
+                    }
+
+                    // Polish Slider Section
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Polish", 
+                            style = MaterialTheme.typography.bodySmall,
+                            color = EditEchoColors.PrimaryText,
+                            modifier = Modifier.width(65.dp)
+                        )
+                        Slider(
+                            value = voiceSettings.polish.toFloat(),
+                            onValueChange = { onPolishChanged(it.toInt()) },
+                            valueRange = 0f..100f,
+                            steps = 100,
+                            modifier = Modifier.weight(1f).heightIn(min = 30.dp),
+                            colors = SliderDefaults.colors(
+                                thumbColor = EditEchoColors.Accent,
+                                activeTrackColor = EditEchoColors.Accent,
+                                inactiveTrackColor = EditEchoColors.Accent.copy(alpha = 0.3f)
+                            )
+                        )
+                    }
+                }
             }
             
-            // Right column - Vertical buttons
+            // Right column - Vertical buttons, including X button at the top
             Column(
                 modifier = Modifier
-                    .weight(0.15f)
+                    .weight(0.2f)
                     .fillMaxHeight()
-                    .padding(start = 8.dp),
+                    .padding(start = 6.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceEvenly
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                // Settings button
+                IconButton(onClick = onDismiss, modifier = Modifier.size(36.dp)) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Close",
+                        tint = EditEchoColors.PrimaryText
+                    )
+                }
+                
                 IconButton(
                     onClick = { /* Settings functionality removed */ },
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Settings,
@@ -136,11 +168,10 @@ fun EditEchoOverlayContent(
                     )
                 }
                 
-                // Copy button
                 IconButton(
                     onClick = onCopyToClipboard,
                     enabled = refinedText.isNotEmpty(),
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.ContentCopy,
@@ -149,10 +180,9 @@ fun EditEchoOverlayContent(
                     )
                 }
                 
-                // Record button
                 IconButton(
                     onClick = { if (isRecording) onStopRecording() else onStartRecording() },
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Mic,
@@ -274,9 +304,7 @@ fun EditEchoOverlay(
                     onStartRecording = { startRecording() },
                     onStopRecording = { stopRecording() },
                     onCopyToClipboard = { copyTextToClipboard() },
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp)
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
