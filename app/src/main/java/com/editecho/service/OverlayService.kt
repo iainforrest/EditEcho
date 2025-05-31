@@ -32,7 +32,7 @@ import com.editecho.R
 import com.editecho.ui.screens.EditEchoOverlayContent
 import com.editecho.ui.theme.EditEchoColors
 import com.editecho.view.EditEchoOverlayViewModel
-// import dagger.hilt.android.AndroidEntryPoint // Temporarily commented out
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
@@ -72,7 +72,7 @@ import javax.inject.Inject
  *    - Close button always accessible to dismiss overlay
  *    - Service can be stopped via notification or close button
  */
-// @AndroidEntryPoint // Temporarily commented out
+@AndroidEntryPoint
 class OverlayService : Service(), ViewModelStoreOwner {
 
     companion object {
@@ -105,8 +105,8 @@ class OverlayService : Service(), ViewModelStoreOwner {
         notificationManager = getSystemService(NotificationManager::class.java)
         createNotificationChannel()
 
-        // Initialize ViewModel using ViewModelProvider
-        editEchoOverlayViewModel = ViewModelProvider(this).get(EditEchoOverlayViewModel::class.java)
+        // Initialize ViewModel using ViewModelProvider with Hilt
+        editEchoOverlayViewModel = ViewModelProvider(this)[EditEchoOverlayViewModel::class.java]
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
