@@ -4,31 +4,49 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.hardware.display.DisplayManager
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
+import android.view.Display
 import android.view.Gravity
 import android.view.WindowManager
-import androidx.compose.foundation.background
+import android.view.WindowInsets
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
+import androidx.savedstate.SavedStateRegistry
+import androidx.savedstate.SavedStateRegistryController
+import androidx.savedstate.SavedStateRegistryOwner
+import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.editecho.R
+import com.editecho.data.SettingsRepository
+import com.editecho.network.AssistantApiClient
+import com.editecho.network.ChatCompletionClient
+import com.editecho.network.ClaudeCompletionClient
+import com.editecho.network.WhisperRepository
 import com.editecho.ui.screens.EditEchoOverlayContent
 import com.editecho.ui.theme.EditEchoColors
 import com.editecho.view.EditEchoOverlayViewModel
@@ -73,7 +91,7 @@ import javax.inject.Inject
  *    - Service can be stopped via notification or close button
  */
 @AndroidEntryPoint
-class OverlayService : Service(), ViewModelStoreOwner {
+class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStateRegistryOwner {
 
     companion object {
         private const val TAG = "OverlayService"
@@ -90,6 +108,13 @@ class OverlayService : Service(), ViewModelStoreOwner {
     internal lateinit var windowManager: WindowManager
     internal lateinit var notificationManager: NotificationManager
     private var overlayView: ComposeView? = null
+    private var windowContext: Context? = null
+
+    @Inject lateinit var whisperRepo: WhisperRepository
+    @Inject lateinit var assistant: AssistantApiClient
+    @Inject lateinit var chatCompletionClient: ChatCompletionClient
+    @Inject lateinit var claudeCompletionClient: ClaudeCompletionClient
+    @Inject lateinit var settings: SettingsRepository
 
     lateinit var editEchoOverlayViewModel: EditEchoOverlayViewModel
 
@@ -98,19 +123,50 @@ class OverlayService : Service(), ViewModelStoreOwner {
     override val viewModelStore: ViewModelStore
         get() = _viewModelStore
 
+    private val lifecycleRegistry = LifecycleRegistry(this)
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry
+
+    private val savedStateRegistryController = SavedStateRegistryController.create(this)
+    override val savedStateRegistry: SavedStateRegistry
+        get() = savedStateRegistryController.savedStateRegistry
+
     override fun onCreate() {
         super.onCreate()
         Log.d(TAG, "OverlayService created")
+
+        savedStateRegistryController.performAttach()
+        savedStateRegistryController.performRestore(null)
+
+        lifecycleRegistry.currentState = Lifecycle.State.CREATED
+
         windowManager = getSystemService(WINDOW_SERVICE) as WindowManager
         notificationManager = getSystemService(NotificationManager::class.java)
         createNotificationChannel()
 
-        // Initialize ViewModel using ViewModelProvider with Hilt
-        editEchoOverlayViewModel = ViewModelProvider(this)[EditEchoOverlayViewModel::class.java]
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val displayManager = getSystemService(DisplayManager::class.java)
+            val defaultDisplay = displayManager.getDisplay(Display.DEFAULT_DISPLAY)
+            windowContext = createWindowContext(
+                defaultDisplay,
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                null
+            )
+        }
+
+        editEchoOverlayViewModel = EditEchoOverlayViewModel(
+            context = applicationContext,
+            whisperRepo = whisperRepo,
+            assistant = assistant,
+            chatCompletionClient = chatCompletionClient,
+            claudeCompletionClient = claudeCompletionClient,
+            settings = settings
+        )
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand: ${intent?.action}")
+        lifecycleRegistry.currentState = Lifecycle.State.STARTED
         
         when (intent?.action) {
             ACTION_START_OVERLAY -> {
@@ -134,6 +190,7 @@ class OverlayService : Service(), ViewModelStoreOwner {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "OverlayService destroyed")
+        lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
         hideOverlay()
         viewModelStore.clear()
     }
@@ -230,26 +287,38 @@ class OverlayService : Service(), ViewModelStoreOwner {
         }
         
         try {
-            // Create ComposeView for hosting Jetpack Compose content
-            overlayView = ComposeView(this).apply {
-                // Set up ViewModelStore for this ComposeView
+            lifecycleRegistry.currentState = Lifecycle.State.RESUMED
+            val contextToUse = windowContext ?: this
+            val viewDensity = resources.displayMetrics.density
+            
+            overlayView = ComposeView(contextToUse).apply {
+                setViewTreeLifecycleOwner(this@OverlayService)
                 setViewTreeViewModelStoreOwner(this@OverlayService)
+                setViewTreeSavedStateRegistryOwner(this@OverlayService)
                 
-                // Set the Compose content with EditEchoOverlayContent
+                var imePadding by mutableStateOf(0.dp)
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    setOnApplyWindowInsetsListener { _, insets ->
+                        val imeVisible = insets.isVisible(WindowInsets.Type.ime())
+                        val imeHeight = insets.getInsets(WindowInsets.Type.ime()).bottom
+                        imePadding = if (imeVisible) (imeHeight / viewDensity).dp else 0.dp
+                        Log.d(TAG, "IME visible: $imeVisible, height: $imeHeight, padding: $imePadding")
+                        insets.inset(0, 0, 0, if (imeVisible) imeHeight else 0)
+                    }
+                }
+                
                 setContent {
-                    // Collect state from ViewModel
                     val recordingState by editEchoOverlayViewModel.recordingState.collectAsState()
                     val toneState by editEchoOverlayViewModel.toneState.collectAsState()
                     val voiceSettings by editEchoOverlayViewModel.voiceSettings.collectAsState()
                     val refinedText by editEchoOverlayViewModel.refinedText.collectAsState()
                     
-                    // Create a Card container with proper styling for the overlay
                     Card(
                         modifier = Modifier
-                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)),
-                        colors = CardDefaults.cardColors(
-                            containerColor = EditEchoColors.Surface
-                        )
+                            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                            .padding(bottom = imePadding),
+                        colors = CardDefaults.cardColors(containerColor = EditEchoColors.Surface)
                     ) {
                         EditEchoOverlayContent(
                             recordingState = recordingState,
@@ -257,19 +326,19 @@ class OverlayService : Service(), ViewModelStoreOwner {
                             voiceSettings = voiceSettings,
                             refinedText = refinedText,
                             onDismiss = { 
-                                // Stop the service when close button is pressed
-                                val intent = Intent(this@OverlayService, OverlayService::class.java)
-                                intent.action = ACTION_STOP_OVERLAY
-                                startService(intent)
+                                android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
+                                    val intent = Intent(this@OverlayService, OverlayService::class.java)
+                                    intent.action = ACTION_STOP_OVERLAY
+                                    startService(intent)
+                                }, 100)
                             },
                             onFormalityChanged = editEchoOverlayViewModel::onFormalityChanged,
                             onPolishChanged = editEchoOverlayViewModel::onPolishChanged,
                             onStartRecording = { editEchoOverlayViewModel.startRecording() },
                             onStopRecording = { editEchoOverlayViewModel.stopRecording() },
                             onCopyToClipboard = { 
-                                // Copy functionality will be handled by ViewModel or inline
                                 try {
-                                    val clipboard = getSystemService(android.content.Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+                                    val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
                                     val clip = android.content.ClipData.newPlainText("EditEcho Text", refinedText)
                                     clipboard.setPrimaryClip(clip)
                                     android.widget.Toast.makeText(this@OverlayService, "Text copied to clipboard", android.widget.Toast.LENGTH_SHORT).show()
@@ -305,35 +374,34 @@ class OverlayService : Service(), ViewModelStoreOwner {
             }
             overlayView = null
         }
+        if (lifecycle.currentState != Lifecycle.State.DESTROYED) {
+            lifecycleRegistry.currentState = Lifecycle.State.STARTED
+        }
     }
 
     private fun createLayoutParams(): WindowManager.LayoutParams {
-        // Convert DP to pixels for keyboard-like height
         val density = resources.displayMetrics.density
         val heightPixels = (OVERLAY_HEIGHT_DP * density).toInt()
-        
+        val overlayFlags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
+                         WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                         WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+
         return WindowManager.LayoutParams(
-            // Width: Match parent to span full screen width
             WindowManager.LayoutParams.MATCH_PARENT,
-            // Height: Fixed keyboard-like height
             heightPixels,
-            // Type: Application overlay (requires SYSTEM_ALERT_WINDOW permission)
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-            // Flags for proper keyboard-like behavior
-            WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or // Don't steal focus from underlying app
-            WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL or // Allow touches outside overlay to pass through
-            WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or // Layout within screen bounds
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or // Allow layout beyond screen
-            WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH or // Detect touches outside (but don't consume them)
-            WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM, // Remain above soft keyboard when shown
-            // Pixel format
+            overlayFlags,
             PixelFormat.TRANSLUCENT
         ).apply {
-            // Position at bottom of screen like a keyboard
             gravity = Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
-            // Soft input adjustment: resize underlying app content and keep overlay visible above keyboard
-            softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or 
-                          WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                @Suppress("DEPRECATION")
+                softInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or
+                              WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED
+                Log.d(TAG, "Using legacy soft input mode for keyboard handling")
+            } else {
+                Log.d(TAG, "Relying on WindowInsets API for keyboard handling (API 30+)")
+            }
         }
     }
 } 
