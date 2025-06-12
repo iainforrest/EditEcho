@@ -5,4 +5,67 @@
     <string name="start_overlay">Start Overlay</string>
     <string name="stop_overlay">Stop Overlay</string>
     <string name="overlay_permission_required">Overlay permission is required to start the overlay</string>
+    
+    <!-- Voice Engine 3.0 - Tone Names -->
+    <string name="tone_casual">Casual</string>
+    <string name="tone_neutral">Neutral</string>
+    <string name="tone_informative">Informative</string>
+    <string name="tone_supportive">Supportive</string>
+    <string name="tone_thoughtful">Thoughtful</string>
+    
+    <!-- Voice Engine 3.0 - Tone Descriptions -->
+    <string name="tone_casual_description">Relaxed, informal social chat</string>
+    <string name="tone_neutral_description">Plain, factual updates without subjective stance</string>
+    <string name="tone_informative_description">Detailed explanations, step-by-step information</string>
+    <string name="tone_supportive_description">Empathetic and reassuring communication</string>
+    <string name="tone_thoughtful_description">Introspective, reflective exploration of ideas</string>
+    
+    <!-- Voice Engine 3.0 - Micro-labels (Low Polish) -->
+    <string name="tone_casual_low_label">relaxed</string>
+    <string name="tone_neutral_low_label">simple</string>
+    <string name="tone_informative_low_label">empathetic</string>
+    <string name="tone_supportive_low_label">empathetic</string>
+    <string name="tone_thoughtful_low_label">brief</string>
+    
+    <!-- Voice Engine 3.0 - Micro-labels (High Polish) -->
+    <string name="tone_casual_high_label">clear</string>
+    <string name="tone_neutral_high_label">structured</string>
+    <string name="tone_informative_high_label">direct</string>
+    <string name="tone_supportive_high_label">reassuring</string>
+    <string name="tone_thoughtful_high_label">structured</string>
+    
+    <!-- Voice Engine 3.0 - Polish Slider -->
+    <string name="polish_level_title">Polish Level</string>
+    <string name="polish_level_percentage">%1$d%%</string>
+    <string name="formality_percentage">%1$d%% formality</string>
+    <string name="formality_range_label">Formality Range</string>
+    <string name="formality_range_display">Range: %1$d-%2$d%% formality</string>
+    <string name="formality_range_dropdown">%1$d-%2$d%% formality</string>
+    
+    <!-- Voice Engine 3.0 - General UI -->
+    <string name="select_tone">Select Tone</string>
+    <string name="adjust_polish">Adjust Polish</string>
+    <string name="voice_engine_3_title">Voice Engine 3.0</string>
+    <string name="tone_selection_title">Communication Tone</string>
+    <string name="polish_adjustment_title">Polish Level</string>
+    
+    <!-- Voice Engine 3.0 - Accessibility -->
+    <string name="tone_picker_content_description">Select communication tone</string>
+    <string name="polish_slider_content_description">Adjust polish level from %1$s to %2$s</string>
+    <string name="formality_level_content_description">Current formality level: %1$d percent</string>
+    
+    <!-- Voice Engine 3.0 - Error Messages -->
+    <string name="error_tone_not_found">Selected tone not available</string>
+    <string name="error_invalid_polish_level">Invalid polish level</string>
+    <string name="error_voice_dna_loading">Unable to load voice patterns</string>
+    
+    <!-- Voice Engine 3.0 - Status Messages -->
+    <string name="voice_dna_loaded">Voice patterns loaded successfully</string>
+    <string name="tone_changed">Tone changed to %1$s</string>
+    <string name="polish_adjusted">Polish level adjusted to %1$d%%</string>
+    
+    <!-- Voice Engine 3.0 - Help Text -->
+    <string name="tone_picker_help">Choose the communication style that matches your intent</string>
+    <string name="polish_slider_help">Adjust the formality level within your selected tone\'s range</string>
+    <string name="formality_range_help">Each tone has a natural formality range to maintain authenticity</string>
 </resources>

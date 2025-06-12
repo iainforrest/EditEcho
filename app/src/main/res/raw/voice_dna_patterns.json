@@ -1,0 +1,126 @@
+{
+  "toneSpecificDNA": [
+    {
+      "tone": "Casual",
+      "confidence": 0.8,
+      "userFormalityRange": [15, 25],
+      "theoreticalRange": [15, 35],
+      "formalityShifts": "- 15-20: fragments common ('prob' for probably), lowercase after periods, minimal punctuation\n- 21-25: complete sentences emerge, proper caps, adds context clauses ('which is pretty cool')",
+      "polishPatterns": "- Raw: missing question marks, lowercase starts mid-paragraph, periods optional\n- Mid: adds periods consistently, fixes capitalization\n- Polished: ensures questions get '?', completes fragments into full sentences",
+      "constants": "- Contractions always used (I'll, I'm, you've, it's)\n- Em-dash with spaces ( – ) for asides\n- Phone format: spaces not dashes (027 563 7995)\n- Closes casually: 'thanks', 'no drama', never 'Best regards'",
+      "voiceMarkers": "- Questions often missing '?' ('Ever said they were going to sleep over at yours')\n- Time with 'ish' suffix (4:30ish, 6:15 prob)\n- Sentence starters: 'Yeah,', 'Also,', 'So'\n- Casual address: 'honey', first names only\n- Line breaks replace periods between thoughts\n- Emoji inclusion when warranted (😂)\n- Phrases: 'hit up', 'Sounds good', 'no drama'",
+      "antiPatterns": "- No formal greetings ('Dear', 'To whom')\n- Never uses semicolons\n- Avoids formal conjunctions (therefore, furthermore)\n- No corporate speak or jargon",
+      "sourceExampleIds": [1, 5, 6, 10, 14, 15, 18, 20]
+    },
+    {
+      "tone": "Informative",
+      "confidence": 0.5,
+      "userFormalityRange": [40, 60],
+      "theoreticalRange": [25, 75],
+      "formalityShifts": "• 40: 'Hey Team', casual explanations, minor typos allowed ('there son')\n• 45: Direct info delivery, 'sorry' without excessive politeness, matter-of-fact tone\n• 55: 'Hi [Name]' greeting, parenthetical context ('which is kind of the point'), signs with full name\n• 60: 'Thanks for your patience' opening, numbered lists for multiple items, includes URLs",
+      "polishPatterns": "• Raw: occasional typos, stream of consciousness, informal punctuation\n• Mid: organized by paragraphs, each covering distinct topic\n• Polished: numbered lists for multiple items, includes URLs, proper question structure",
+      "constants": "• Line breaks between distinct thoughts/topics\n• Em-dash with spaces for ranges (21–26, Wed–Fri)\n• Provides reasoning before conclusions ('I looked at... So 21–26 is locked')\n• Closes with 'Thanks,' or 'Thanks, Iain' or just 'Iain'\n• Uses 'Also' for additional points",
+      "voiceMarkers": "• Explains thought process ('remembered why we chose')\n• Parenthetical asides ('which is kind of the point')\n• Questions sometimes missing '?' ('Or is it just standard to ship frames and upholster at this end')\n• Time formats: 'Mon/Tue', 'first thing or later arvo'\n• Contractions: won't, can't, I've, it's, didn't\n• Casual connectors: 'So', 'Also', 'Assuming'\n• Average 15-20 words per sentence",
+      "antiPatterns": "• No corporate jargon or buzzwords\n• Never uses 'Sincerely' or 'Best regards'\n• Avoids semicolons or complex punctuation\n• No excessive apologies or hedge words\n• Doesn't over-explain simple concepts",
+      "sourceExampleIds": [2, 7, 9, 11, 19]
+    },
+    {
+      "tone": "Supportive",
+      "confidence": 0.2,
+      "userFormalityRange": [20, 20],
+      "theoreticalRange": [20, 60],
+      "formalityShifts": "- 20-30: casual acknowledgments ('All good'), informal greetings ('Hey [name]')\n- 31-45: would likely add more structured paragraphs while keeping collaborative language\n- 46-60: would maintain supportive framing with more professional structure",
+      "polishPatterns": "- Raw: separate lines for each thought, minimal punctuation\n- Mid: groups related ideas, fixes spacing after periods\n- Polished: combines short fragments into flowing sentences, maintains collaborative tone",
+      "constants": "- Greeting: 'Hey [Name],' with comma\n- Sign-off: 'Thanks' followed by blank line then name\n- Double spaces after periods\n- Line breaks between distinct thoughts",
+      "voiceMarkers": "- Softening phrases: 'Maybe', 'might be', 'Don't think'\n- Collaborative language: 'together' appears twice\n- Positive framing: 'Would be fun to'\n- Acknowledgments: 'All good' for agreement\n- Sentence mix: alternates brief responses with detailed explanations\n- Lowercase after some periods ('big concern')",
+      "antiPatterns": "- No harsh imperatives or commands\n- Avoids direct rejection language\n- No question marks even for implicit questions",
+      "sourceExampleIds": [3, 13]
+    },
+    {
+      "tone": "Neutral",
+      "confidence": 0.3,
+      "userFormalityRange": [30, 50],
+      "theoreticalRange": [20, 80],
+      "formalityShifts": "- 30-35: casual greetings ('Hey'), fragments acceptable ('It's the main material that wasn't'), direct statements\n- 40-50: adds 'please' to requests, includes brief acknowledgments ('Thank you'), adds sign-off with name\n- Above 50: would likely expand contractions, use complete sentences throughout",
+      "polishPatterns": "- Raw: sentence fragments stand alone, thoughts flow without strict structure\n- Mid: maintains conversational flow but ensures main points are complete sentences\n- Polished: would group related thoughts into coherent paragraphs, fix fragment sentences",
+      "constants": "- Full stops used consistently at sentence ends\n- Numbers always as digits (220, 40, 10, 2 days)\n- Em-dash with spaces for asides ( – )",
+      "voiceMarkers": "- 'Just' as frequent sentence starter (3 of 3 examples)\n- Contractions across all formality levels (it'll, we're, We've, didn't)\n- Brief acknowledgments: 'All good', 'Thank you', 'Thanks'\n- Factual, no-frills language\n- Sentence lengths: 20% short (2-4 words), 60% medium (8-15 words), 20% long (20+ words)\n- Matter-of-fact explanations without justification",
+      "antiPatterns": "- No exclamation marks or emotional emphasis\n- Avoids flowery language or metaphors\n- No rhetorical questions\n- Never uses emojis or excessive punctuation",
+      "sourceExampleIds": [4, 8, 16]
+    },
+    {
+      "tone": "Thoughtful",
+      "confidence": 0.2,
+      "userFormalityRange": [45, 65],
+      "theoreticalRange": [30, 80],
+      "formalityShifts": "- 45: Casual interjections ('Ah crap'), lowercase elements ('sorry for the delay')\n- 65: Structured greeting with recipient consideration, organized paragraphs, formal sign-off with name",
+      "polishPatterns": "- Raw: Stream of consciousness, includes reactive interjections\n- Mid: Maintains conversational flow but groups related thoughts\n- Polished: Clear paragraph structure - greeting, context, request, justification, closing",
+      "constants": "- Always provides context/backstory before main point\n- Explains personal reasoning ('I've been umming and ahhing', 'I could use the cash more')\n- Shows consideration for recipient's situation\n- Uses 'just' to minimize requests ('just a bit differently', 'just a quick request', 'just thought I'd ask')",
+      "voiceMarkers": "- Opening acknowledgments ('Ah crap, yeah' / 'Hope you had a nice...')\n- Parenthetical details for clarity '(Sunday)'\n- Sentence mix: short acknowledgments (4-6 words) with longer explanatory sentences (20-30 words)\n- Contractions throughout: 'I've', 'couldn't', 'didn't', 'I'd'\n- Casual time markers: 'today', 'this morning', 'last night'\n- Questions properly punctuated with '?'",
+      "antiPatterns": "- Never abrupt or direct without context\n- Doesn't use formal jargon or corporate speak\n- Avoids making demands - always frames as requests with escape clause ('All good if not')",
+      "sourceExampleIds": [12, 17]
+    }
+  ],
+  "formalityBandDNA": [
+    {
+      "tone": "Low",
+      "confidence": 0.3,
+      "userFormalityRange": [15, 15],
+      "theoreticalRange": [0, 20],
+      "formalityShifts": "- 0-10: likely pure fragments, no punctuation\n- 11-15: adds periods, keeps lowercase starts, uses line breaks as structure\n- 16-20: would add occasional capitals, fewer fragments",
+      "polishPatterns": "- Raw: no caps, fragments only ('home by 6:15')\n- Mid: adds periods to end thoughts, fixes obvious typos\n- Polished: completes fragment sentences, capitalizes sentence starts, merges related lines",
+      "constants": "- Line breaks instead of paragraphs (every 1-2 sentences)\n- No greetings or formal closings\n- Abbreviates casually ('prob' for probably)\n- Numbers always as digits (6:15, 11th Ave, 9)",
+      "voiceMarkers": "- Lowercase sentence starts ('just tried', 'if they call')\n- Fragment sentences as complete thoughts ('if they call you back.')\n- Time format: digital with colon (6:15)\n- Address format: number + 'Ave' (11th Ave)\n- Sentence length: 4-10 words per line\n- Direct statements, no hedging language",
+      "antiPatterns": "- No 'Dear' or 'Hi' openings\n- Never writes 'please' or 'thank you'\n- No complex punctuation (semicolons, parentheses)\n- Doesn't spell out numbers\n- No formal sign-offs ('Best regards', etc.)",
+      "sourceExampleIds": [6, 10, 14]
+    },
+    {
+      "tone": "Low-Mid",
+      "confidence": 0.5,
+      "userFormalityRange": [25, 35],
+      "theoreticalRange": [21, 40],
+      "formalityShifts": "- 21-25: emoji allowed, questions missing '?', casual acknowledgments ('All good')\n- 26-30: maintains conversational flow but adds clearer sentence breaks\n- 31-40: organizes thoughts into distinct points, keeps contractions and casual tone",
+      "polishPatterns": "- Raw: run-on sentences, missing question marks, thoughts flow without breaks\n- Mid: adds periods between ideas, maintains 'Also' and 'Just' starters\n- Polished: groups related thoughts into paragraphs, fixes punctuation inconsistencies",
+      "constants": "- Em-dash with spaces ( – ) for asides and lists\n- Opens with 'Thanks', 'Hey [name]', or jumps straight to topic\n- Questions often formed without '?' ('Ever said they were going to sleep over at yours')\n- Closes minimally or not at all",
+      "voiceMarkers": "- Contractions throughout: it'll, I've, that's, I'm, you've\n- Sentence starters: 'Also', 'Just', 'Sounds good'\n- Numbers as digits (40 scarves, 10 before, 4:30ish)\n- Conversational asides in separate lines\n- Mix: 30% short acknowledgments (3-5 words), 70% medium explanations (10-20 words)\n- Emoji acceptable at formality 25 (😂)",
+      "antiPatterns": "- No formal greetings ('Dear', 'To whom it may concern')\n- Never uses semicolons or colons\n- Avoids corporate phrases ('per your request', 'kindly')\n- No formal sign-offs ('Sincerely', 'Best regards')",
+      "sourceExampleIds": [1, 4, 16, 18, 20]
+    },
+    {
+      "tone": "Mid",
+      "confidence": 0.4,
+      "userFormalityRange": [45, 55],
+      "theoreticalRange": [41, 60],
+      "formalityShifts": "- 45-50: Opens with casual reaction ('Ah crap'), uses 'Hey' for greetings\n- 50-55: Adds proper salutation ('Hi Graham'), includes more context\n- Within band: maintains contractions throughout, adjusts opener formality",
+      "polishPatterns": "- Raw: Immediate reactions, single-line thoughts\n- Mid: Groups related ideas in paragraphs with line breaks\n- Polished: Adds context before requests, explains reasoning",
+      "constants": "- Always signs off ('Thanks,' or 'Thanks, Iain')\n- Line breaks to separate distinct thoughts\n- Periods at sentence ends (no trailing off)\n- Date format with en-dash, no spaces: '21–26', 'Wed–Fri'",
+      "voiceMarkers": "- Heavy contraction use: won't, can't, I'll, I'm, we've, it's\n- Questions without '?' ('Could you do a formal quote please')\n- Time references casual: 'later arvo', 'end of next week', 'first thing'\n- Day ranges with slash or dash: 'Mon/Tue', 'Wed–Fri'\n- Sentence mix: 30% short (3-7 words), 70% medium (10-20 words)\n- Parenthetical dashes with spaces: ' – stepping away'",
+      "antiPatterns": "- No semicolons or complex punctuation\n- Avoids corporate speak or jargon\n- Never uses 'Regards' or 'Sincerely'\n- Doesn't write out numbers as words\n- No excessive apologizing or hedging",
+      "sourceExampleIds": [2, 7, 8, 12]
+    },
+    {
+      "tone": "Mid-High",
+      "confidence": 0.2,
+      "userFormalityRange": [60, 65],
+      "theoreticalRange": [61, 80],
+      "formalityShifts": "- 61-65: Opens with friendly acknowledgment, explains context before requests\n- 66-70: Adds consideration phrases ('Hope you had...', 'don't see this until...')\n- 71-80: Would likely include more formal transitions and structured arguments",
+      "polishPatterns": "- Raw: Direct question or request with basic context\n- Mid: Adds paragraph breaks, courtesy phrases, explanations for requests\n- Polished: Numbered lists for multiple items, clear section breaks, URLs formatted inline",
+      "constants": "- Greeting: 'Hi [Name],' or contextual opener ('Thanks for...')\n- Sign-off: Always 'Thanks,\nIain'\n- Consistent paragraph spacing with line breaks\n- Maintains full punctuation throughout",
+      "voiceMarkers": "- Natural contractions: haven't, don't, I've, couldn't, didn't\n- Conversational phrases: 'wrap our heads around', 'All good if not'\n- Questions properly punctuated with '?'\n- Number format: numerals for lists (1. 2. 3.), written in context ('four weeks')\n- Time references: casual but specific ('today (Sunday)', 'the other week')\n- URLs included directly without brackets or formal citation\n- Sentence mix: short declarations + longer explanatory sentences",
+      "antiPatterns": "- No overly formal salutations ('Dear', 'Kind regards')\n- Avoids passive voice excess\n- No corporate jargon or business buzzwords\n- Doesn't over-apologize or use unnecessary hedging",
+      "sourceExampleIds": [9, 17]
+    },
+    {
+      "tone": "High",
+      "confidence": 0.0,
+      "userFormalityRange": [],
+      "theoreticalRange": [81, 100],
+      "formalityShifts": "- No examples available in High formality range (81-100)",
+      "polishPatterns": "- No patterns could be extracted due to absence of High formality examples",
+      "constants": "- No constants identified due to lack of examples",
+      "voiceMarkers": "- No voice markers detected - insufficient data",
+      "antiPatterns": "- Cannot determine anti-patterns without examples",
+      "sourceExampleIds": []
+    }
+  ]
+} 

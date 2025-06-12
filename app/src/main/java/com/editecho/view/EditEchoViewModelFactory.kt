@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.editecho.data.SettingsRepository
+import com.editecho.data.VoiceDNARepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
 import com.editecho.network.ClaudeCompletionClient
@@ -18,7 +19,8 @@ class EditEchoViewModelFactory @AssistedInject constructor(
     private val assistantApiClient: AssistantApiClient,
     private val chatCompletionClient: ChatCompletionClient,
     private val claudeCompletionClient: ClaudeCompletionClient,
-    private val settings: SettingsRepository
+    private val settings: SettingsRepository,
+    private val voiceDNARepository: VoiceDNARepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EditEchoOverlayViewModel::class.java)) {
@@ -29,7 +31,8 @@ class EditEchoViewModelFactory @AssistedInject constructor(
                 assistantApiClient,
                 chatCompletionClient,
                 claudeCompletionClient,
-                settings
+                settings,
+                voiceDNARepository
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

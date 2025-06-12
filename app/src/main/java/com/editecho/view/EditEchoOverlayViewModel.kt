@@ -10,12 +10,15 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.editecho.data.SettingsRepository
+import com.editecho.data.VoiceDNARepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
 import com.editecho.network.ClaudeCompletionClient
 import com.editecho.network.WhisperRepository
-// import com.editecho.prompt.ToneProfile
+import com.editecho.prompt.ToneProfile
 import com.editecho.prompt.VoiceSettings
+import com.editecho.prompt.VoicePromptBuilder
+import com.editecho.util.FormalityMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +55,8 @@ class EditEchoOverlayViewModel @Inject constructor(
     private val assistant: AssistantApiClient,
     private val chatCompletionClient: ChatCompletionClient,
     private val claudeCompletionClient: ClaudeCompletionClient,
-    private val settings: SettingsRepository
+    private val settings: SettingsRepository,
+    private val voiceDNARepository: VoiceDNARepository
 ) : ViewModel() {
 
     companion object {
@@ -79,6 +83,13 @@ class EditEchoOverlayViewModel @Inject constructor(
     // Updated voice settings state
     private val _voiceSettings = MutableStateFlow(VoiceSettings(formality = 50, polish = 50))
     val voiceSettings: StateFlow<VoiceSettings> = _voiceSettings.asStateFlow()
+    
+    // Voice Engine 3.0 state - tone selection and polish level
+    private val _selectedTone = MutableStateFlow(ToneProfile.getDefault())
+    val selectedTone: StateFlow<ToneProfile> = _selectedTone.asStateFlow()
+    
+    private val _polishLevel = MutableStateFlow(50)
+    val polishLevel: StateFlow<Int> = _polishLevel.asStateFlow()
 
     init {
         // Load saved voice settings from SettingsRepository
@@ -132,7 +143,7 @@ class EditEchoOverlayViewModel @Inject constructor(
         }
     }
 
-    // New voice settings update functions
+    // Voice Engine 2.0 compatibility functions
     fun onFormalityChanged(value: Int) {
         Log.d(TAG, "Formality changed to: $value")
         _voiceSettings.value = _voiceSettings.value.copy(formality = value)
@@ -153,10 +164,44 @@ class EditEchoOverlayViewModel @Inject constructor(
         }
     }
 
-    // Commented out old tone selection function
-    // fun onToneSelected(tone: ToneProfile) {
-    //     _selectedTone.value = tone
-    // }
+    // Voice Engine 3.0 functions
+    fun onToneSelected(tone: ToneProfile) {
+        Log.d(TAG, "Tone selected: ${tone.displayName}")
+        _selectedTone.value = tone
+        // When tone changes, update formality calculation automatically
+        updateFormalityFromToneAndPolish()
+    }
+    
+    fun onPolishLevelChanged(polishLevel: Int) {
+        Log.d(TAG, "Polish level changed to: $polishLevel")
+        _polishLevel.value = polishLevel
+        // Update formality calculation based on new polish level
+        updateFormalityFromToneAndPolish()
+        // Save to settings repository (using polish for compatibility)
+        viewModelScope.launch {
+            settings.setPolish(polishLevel)
+            Log.d(TAG, "Saved polish level setting: $polishLevel")
+        }
+    }
+    
+    private fun updateFormalityFromToneAndPolish() {
+        val currentTone = _selectedTone.value
+        val currentPolish = _polishLevel.value
+        val calculatedFormality = FormalityMapper.calculateFormality(currentTone, currentPolish)
+        
+        Log.d(TAG, "Calculated formality: $calculatedFormality% for tone ${currentTone.displayName} at ${currentPolish}% polish")
+        
+        // Update VoiceSettings for compatibility with existing systems
+        _voiceSettings.value = _voiceSettings.value.copy(
+            formality = calculatedFormality,
+            polish = currentPolish
+        )
+        
+        // Save calculated formality
+        viewModelScope.launch {
+            settings.setFormality(calculatedFormality)
+        }
+    }
 
     fun startRecording() = viewModelScope.launch {
         try {
@@ -252,15 +297,31 @@ class EditEchoOverlayViewModel @Inject constructor(
             Log.d(TAG, "Stream complete, final text: '$finalText'")
             */
             
-            // NEW: Use Claude API with Voice DNA
-            Log.d(TAG, "Using Claude API with Voice DNA - Formality: ${voiceSettings.value.formality}, Polish: ${voiceSettings.value.polish}")
+            // Voice Engine 3.0: Use tone + polish with DNA patterns
+            Log.d(TAG, "Using Voice Engine 3.0 - Tone: ${selectedTone.value.displayName}, Polish: ${polishLevel.value}%")
             
             val edited = try {
-                claudeCompletionClient.complete(voiceSettings.value, transcript)
+                // Build Voice Engine 3.0 prompt with DNA patterns
+                val prompt = VoicePromptBuilder.buildPrompt(
+                    tone = selectedTone.value,
+                    polishLevel = polishLevel.value,
+                    rawText = transcript,
+                    repository = voiceDNARepository
+                )
+                
+                Log.d(TAG, "Generated Voice Engine 3.0 prompt for ${selectedTone.value.displayName} tone")
+                
+                // Use Claude with the new prompt
+                claudeCompletionClient.completeWithPrompt(prompt)
             } catch (e: Exception) {
-                Log.e(TAG, "Claude API failed, falling back to transcript", e)
-                // Fall back to original transcript if Claude fails
-                transcript
+                Log.e(TAG, "Voice Engine 3.0 failed, falling back to Voice Engine 2.0", e)
+                try {
+                    // Fallback to Voice Engine 2.0 approach
+                    claudeCompletionClient.complete(voiceSettings.value, transcript)
+                } catch (e2: Exception) {
+                    Log.e(TAG, "All editing approaches failed, using transcript", e2)
+                    transcript
+                }
             }
             
             // Update refined text
@@ -268,8 +329,8 @@ class EditEchoOverlayViewModel @Inject constructor(
             
             Log.d(TAG, "Claude editing complete. Original: '$transcript' -> Edited: '$edited'")
             
-            // Log the edited text to history with voice settings
-            appendToHistory("Edited,F${voiceSettings.value.formality}P${voiceSettings.value.polish}", edited)
+            // Log the edited text to history with Voice Engine 3.0 settings
+            appendToHistory("VE3,${selectedTone.value.displayName},P${polishLevel.value}F${voiceSettings.value.formality}", edited)
             
             // Update UI with final text
             _toneState.value = ToneState.Success(edited)

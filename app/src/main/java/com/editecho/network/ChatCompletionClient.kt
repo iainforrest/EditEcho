@@ -80,9 +80,8 @@ class ChatCompletionClient(
     }
 
     private fun selectModel(tone: ToneProfile): String = when (tone) {
-        ToneProfile.FRIENDLY, ToneProfile.DIRECT -> "gpt-4.1-mini"
-        ToneProfile.ENGAGED, ToneProfile.REFLECTIVE -> "gpt-4.1"
-        ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("ChatCompletionClient should not be called for TRANSCRIBE_ONLY tone")
+        ToneProfile.CASUAL, ToneProfile.NEUTRAL -> "gpt-4.1-mini"
+        ToneProfile.INFORMATIVE, ToneProfile.SUPPORTIVE, ToneProfile.THOUGHTFUL -> "gpt-4.1"
     }
 }
 

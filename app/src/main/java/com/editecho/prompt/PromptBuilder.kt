@@ -21,7 +21,7 @@ object PromptBuilder {
         sb.append(PromptAssets.BASE_SYSTEM).append("\n\n")
 
         // 2️⃣ tone header + brief
-        sb.append("## TONE\n${tone.category}\n\n")
+        sb.append("## TONE\n${tone.displayName}\n\n")
         sb.append(getToneBrief(tone)).append("\n\n")
 
         // 3️⃣ authentic examples
@@ -41,18 +41,18 @@ object PromptBuilder {
         "Here's the raw message to improve:\n$raw"
 
     private fun getToneBrief(tone: ToneProfile): String = when (tone) {
-        ToneProfile.FRIENDLY    -> PromptAssets.Briefs.FRIENDLY
-        ToneProfile.ENGAGED     -> PromptAssets.Briefs.ENGAGED
-        ToneProfile.DIRECT      -> PromptAssets.Briefs.DIRECT
-        ToneProfile.REFLECTIVE  -> PromptAssets.Briefs.REFLECTIVE
-        ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
+        ToneProfile.CASUAL -> PromptAssets.Briefs.FRIENDLY
+        ToneProfile.NEUTRAL -> PromptAssets.Briefs.DIRECT  
+        ToneProfile.INFORMATIVE -> PromptAssets.Briefs.ENGAGED
+        ToneProfile.SUPPORTIVE -> PromptAssets.Briefs.FRIENDLY
+        ToneProfile.THOUGHTFUL -> PromptAssets.Briefs.REFLECTIVE
     }
 
     private fun getToneExamples(tone: ToneProfile): List<String> = when (tone) {
-        ToneProfile.FRIENDLY    -> PromptAssets.Examples.FRIENDLY
-        ToneProfile.ENGAGED     -> PromptAssets.Examples.ENGAGED
-        ToneProfile.DIRECT      -> PromptAssets.Examples.DIRECT
-        ToneProfile.REFLECTIVE  -> PromptAssets.Examples.REFLECTIVE
-        ToneProfile.TRANSCRIBE_ONLY -> throw IllegalStateException("buildSystemPrompt should not be called for TRANSCRIBE_ONLY tone")
+        ToneProfile.CASUAL -> PromptAssets.Examples.FRIENDLY
+        ToneProfile.NEUTRAL -> PromptAssets.Examples.DIRECT
+        ToneProfile.INFORMATIVE -> PromptAssets.Examples.ENGAGED
+        ToneProfile.SUPPORTIVE -> PromptAssets.Examples.FRIENDLY
+        ToneProfile.THOUGHTFUL -> PromptAssets.Examples.REFLECTIVE
     }
 }

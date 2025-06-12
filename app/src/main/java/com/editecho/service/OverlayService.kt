@@ -43,6 +43,7 @@ import androidx.savedstate.SavedStateRegistryOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.editecho.R
 import com.editecho.data.SettingsRepository
+import com.editecho.data.VoiceDNARepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
 import com.editecho.network.ClaudeCompletionClient
@@ -115,6 +116,7 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
     @Inject lateinit var chatCompletionClient: ChatCompletionClient
     @Inject lateinit var claudeCompletionClient: ClaudeCompletionClient
     @Inject lateinit var settings: SettingsRepository
+    @Inject lateinit var voiceDNARepository: VoiceDNARepository
 
     lateinit var editEchoOverlayViewModel: EditEchoOverlayViewModel
 
@@ -160,7 +162,8 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
             assistant = assistant,
             chatCompletionClient = chatCompletionClient,
             claudeCompletionClient = claudeCompletionClient,
-            settings = settings
+            settings = settings,
+            voiceDNARepository = voiceDNARepository
         )
     }
 
@@ -314,6 +317,10 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                     val voiceSettings by editEchoOverlayViewModel.voiceSettings.collectAsState()
                     val refinedText by editEchoOverlayViewModel.refinedText.collectAsState()
                     
+                    // Voice Engine 3.0 state
+                    val selectedTone by editEchoOverlayViewModel.selectedTone.collectAsState()
+                    val polishLevel by editEchoOverlayViewModel.polishLevel.collectAsState()
+                    
                     Card(
                         modifier = Modifier
                             .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
@@ -325,6 +332,8 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                             toneState = toneState,
                             voiceSettings = voiceSettings,
                             refinedText = refinedText,
+                            selectedTone = selectedTone,
+                            polishLevel = polishLevel,
                             onDismiss = { 
                                 android.os.Handler(android.os.Looper.getMainLooper()).postDelayed({
                                     val intent = Intent(this@OverlayService, OverlayService::class.java)
@@ -334,6 +343,8 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                             },
                             onFormalityChanged = editEchoOverlayViewModel::onFormalityChanged,
                             onPolishChanged = editEchoOverlayViewModel::onPolishChanged,
+                            onToneSelected = editEchoOverlayViewModel::onToneSelected,
+                            onPolishLevelChanged = editEchoOverlayViewModel::onPolishLevelChanged,
                             onStartRecording = { editEchoOverlayViewModel.startRecording() },
                             onStopRecording = { editEchoOverlayViewModel.stopRecording() },
                             onCopyToClipboard = { 

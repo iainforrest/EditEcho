@@ -2,22 +2,99 @@
 package com.editecho.prompt
 
 /**
- * Intent–based tone categories.
+ * Voice Engine 3.0 tone profiles with formality ranges and micro-labels
  */
-@Deprecated("Replaced by VoiceSettings")
 enum class ToneProfile(
     val displayName: String,
-    val category: String,
-    val description: String
+    val description: String,
+    val minFormality: Int,
+    val maxFormality: Int,
+    val lowMicroLabel: String,
+    val highMicroLabel: String
 ) {
-    FRIENDLY("Friendly", "Casual/Personal", "A warm, upbeat tone used when speaking to close friends or peers."),
-    ENGAGED("Engaged", "Balanced/Informative", "A balanced and informative tone conveying organized thought with a friendly twist."),
-    DIRECT("Direct", "Professional/Concise", "A straightforward and professional tone for clear and concise communication."),
-    REFLECTIVE("Reflective", "Thoughtful/Introspective", "A thoughtful and introspective tone with a touch of warmth and sincerity."),
-    TRANSCRIBE_ONLY("Transcribe Only", "Raw/Unedited", "Get the raw transcription without any AI editing.");
+    CASUAL(
+        displayName = "Casual",
+        description = "Relaxed, informal social chat",
+        minFormality = 10,
+        maxFormality = 40,
+        lowMicroLabel = "relaxed",
+        highMicroLabel = "clear"
+    ),
+    
+    NEUTRAL(
+        displayName = "Neutral",
+        description = "Plain, factual updates without subjective stance",
+        minFormality = 20,
+        maxFormality = 70,
+        lowMicroLabel = "simple",
+        highMicroLabel = "structured"
+    ),
+    
+    INFORMATIVE(
+        displayName = "Informative",
+        description = "Detailed explanations, step-by-step information",
+        minFormality = 25,
+        maxFormality = 75,
+        lowMicroLabel = "empathetic",
+        highMicroLabel = "direct"
+    ),
+    
+    SUPPORTIVE(
+        displayName = "Supportive",
+        description = "Empathetic and reassuring communication",
+        minFormality = 20,
+        maxFormality = 60,
+        lowMicroLabel = "empathetic",
+        highMicroLabel = "reassuring"
+    ),
+    
+    THOUGHTFUL(
+        displayName = "Thoughtful",
+        description = "Introspective, reflective exploration of ideas",
+        minFormality = 30,
+        maxFormality = 70,
+        lowMicroLabel = "brief",
+        highMicroLabel = "structured"
+    );
+
+    /**
+     * Calculate actual formality level based on polish slider position (0-100)
+     */
+    fun calculateFormality(polishLevel: Int): Int {
+        val clampedPolish = polishLevel.coerceIn(0, 100)
+        return minFormality + ((maxFormality - minFormality) * clampedPolish / 100)
+    }
+    
+    /**
+     * Get the formality range as a pair
+     */
+    fun getFormalityRange(): Pair<Int, Int> = Pair(minFormality, maxFormality)
+    
+    /**
+     * Get micro-labels as a pair
+     */
+    fun getMicroLabels(): Pair<String, String> = Pair(lowMicroLabel, highMicroLabel)
 
     companion object {
-        fun fromName(name: String): ToneProfile =
-            values().firstOrNull { it.displayName == name } ?: FRIENDLY
+        /**
+         * Get ToneProfile by display name (case insensitive)
+         */
+        fun fromName(name: String): ToneProfile? =
+            values().firstOrNull { it.displayName.equals(name, ignoreCase = true) }
+        
+        /**
+         * Get default tone profile
+         */
+        fun getDefault(): ToneProfile = NEUTRAL
+        
+        /**
+         * Get all available tone names
+         */
+        fun getAllToneNames(): List<String> = values().map { it.displayName }
     }
 }
+
+/**
+ * Convert to VoiceDNA repository tone name format
+ */
+fun ToneProfile.toRepositoryFormat(): String = this.displayName

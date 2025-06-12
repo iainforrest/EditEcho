@@ -24,7 +24,46 @@ class ClaudeCompletionClient @Inject constructor(
     }
 
     /**
-     * Complete a text using Claude API with voice settings and Voice DNA patterns
+     * Complete a text using Claude API with a pre-built prompt (Voice Engine 3.0)
+     * 
+     * @param prompt The complete prompt including DNA patterns and text to edit
+     * @return The edited text from Claude, or throws exception if API fails
+     */
+    suspend fun completeWithPrompt(prompt: String): String {
+        return try {
+            Log.d(TAG, "Claude Voice Engine 3.0 request")
+            Log.d(TAG, "Prompt length: ${prompt.length}")
+            
+            // Create Claude request with the pre-built prompt
+            val request = ClaudeRequest(
+                model = MODEL,
+                messages = listOf(
+                    ClaudeMessage(
+                        role = "user",
+                        content = prompt
+                    )
+                ),
+                maxTokens = 4096
+            )
+            
+            // Make the API call
+            val response = api.createMessage(request)
+            
+            // Extract text from the first content block
+            val editedText = response.content.firstOrNull()?.text ?: throw Exception("No content in Claude response")
+            
+            Log.d(TAG, "Claude Voice Engine 3.0 response received, output length: ${editedText.length}")
+            
+            editedText
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Claude Voice Engine 3.0 API call failed", e)
+            throw e // Re-throw for fallback handling in ViewModel
+        }
+    }
+    
+    /**
+     * Complete a text using Claude API with voice settings and Voice DNA patterns (Voice Engine 2.0)
      * 
      * @param voiceSettings The formality and polish levels (0-100)
      * @param userText The raw text to be edited
