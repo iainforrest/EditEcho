@@ -23,3 +23,5 @@ secrets.properties
 secrets.properties
 app/editecho code.zip
 failed log.txt
+keystore.properties
+app/keystore.properties

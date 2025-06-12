@@ -25,6 +25,14 @@ val claudeKey: String = properties.getProperty("CLAUDE_API_KEY", "").also {
     if (it.isBlank()) logger.warn("⚠️  CLAUDE_API_KEY is blank in secrets.properties")
 }
 
+// Load keystore properties
+val keystoreFile = rootProject.file("app/keystore.properties")
+val keystoreProperties = Properties().apply {
+    if (keystoreFile.exists()) {
+        load(keystoreFile.inputStream())
+    }
+}
+
 android {
     namespace   = "com.editecho"
     compileSdk  = 34
@@ -49,6 +57,15 @@ android {
         )
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
+        }
+    }
+
     // ─── Build Types ───────────────────────────────────────────────────────
     buildTypes {
         debug {
@@ -66,6 +83,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("release")
             
             buildConfigField("boolean", "IS_DEBUG_BUILD", "false")
         }

@@ -189,6 +189,7 @@ object VoicePromptBuilder {
             - Use commas / periods; ≤1 semicolon per 2 sentences.  
             - If Polish ≥ 4 & ≥3 list items → bullet / line-break them.  
             - Output text only.
+            IMPORTANT: Don’t use em-dashes. Replace every — with a comma, semicolon, or parentheses.
 
             TONE DNA PATTERNS (${toneDNA.tone}, confidence ${toneDNA.confidence}):
             
@@ -253,6 +254,7 @@ object VoicePromptBuilder {
             - Use commas / periods; ≤1 semicolon per 2 sentences.  
             - If Polish ≥ 4 & ≥3 list items → bullet / line-break them.  
             - Output text only.
+             IMPORTANT: Don’t use em-dashes. Replace every — with a comma, semicolon, or parentheses.
 
             FORMALITY BAND PATTERNS (${formalityBandDNA.tone} - ${actualFormality}%, confidence ${formalityBandDNA.confidence}):
             
@@ -304,6 +306,7 @@ object VoicePromptBuilder {
             - Use commas / periods; ≤1 semicolon per 2 sentences.  
             - If Polish ≥ 4 & ≥3 list items → bullet / line-break them.  
             - Output text only.
+             IMPORTANT: Don’t use em-dashes. Replace every — with a comma, semicolon, or parentheses.
 
             TONE GUIDANCE: ${tone.displayName} - ${tone.description}
             FORMALITY GUIDANCE: ${formalityContext}
