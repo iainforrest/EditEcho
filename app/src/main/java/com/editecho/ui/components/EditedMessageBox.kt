@@ -16,6 +16,7 @@ import com.editecho.ui.theme.EditEchoColors
  *
  * @param recordingState The current recording state
  * @param toneState The current tone processing state
+ * @param isTranscribing Whether transcription is currently active
  * @param editedText The final edited text to display
  * @param modifier Optional modifier for the box
  */
@@ -23,6 +24,7 @@ import com.editecho.ui.theme.EditEchoColors
 fun EditedMessageBox(
     recordingState: RecordingState,
     toneState: ToneState,
+    isTranscribing: Boolean,
     editedText: String,
     modifier: Modifier = Modifier
 ) {
@@ -38,14 +40,13 @@ fun EditedMessageBox(
     var frameIdx by remember { mutableStateOf(0) }
     
     // Animation effect
-    LaunchedEffect(recordingState, toneState) {
+    LaunchedEffect(recordingState, toneState, isTranscribing) {
         while (true) {
             when {
-                recordingState is RecordingState.Recording -> {
-                    delay(100)
-                    frameIdx = (frameIdx + 1) % waveFrames.size
-                }
-                recordingState is RecordingState.Processing || toneState is ToneState.Processing -> {
+                recordingState is RecordingState.Recording || 
+                isTranscribing || 
+                recordingState is RecordingState.Processing || 
+                toneState is ToneState.Processing -> {
                     delay(100)
                     frameIdx = (frameIdx + 1) % waveFrames.size
                 }
@@ -56,8 +57,13 @@ fun EditedMessageBox(
     
     // Determine display text based on state
     val displayText = when {
+        recordingState is RecordingState.Recording && isTranscribing -> {
+            // Show both Recording and Transcribing on separate lines
+            "Recording ${waveFrames[frameIdx]}\nTranscribing ${waveFrames[frameIdx]}"
+        }
         recordingState is RecordingState.Recording -> "Recording ${waveFrames[frameIdx]}"
-        recordingState is RecordingState.Processing -> "Transcribing ${waveFrames[frameIdx]}"
+        recordingState is RecordingState.Processing && isTranscribing -> "Transcribing ${waveFrames[frameIdx]}"
+        recordingState is RecordingState.Processing -> "Processing ${waveFrames[frameIdx]}"
         toneState is ToneState.Processing -> "Editing ${waveFrames[frameIdx]}"
         toneState is ToneState.Success && editedText.isNotEmpty() -> editedText
         else -> "Your edited message will appear here..."

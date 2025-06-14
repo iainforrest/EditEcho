@@ -1,7 +1,9 @@
 package com.editecho.network
 
+import android.content.Context
 import android.util.Log
 import com.editecho.BuildConfig
+import com.editecho.R
 import com.editecho.network.dto.DeepgramResponse
 import com.editecho.network.dto.getTranscript
 import com.editecho.network.dto.isTranscriptionResult
@@ -29,6 +31,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 import java.io.File
+import dagger.hilt.android.qualifiers.ApplicationContext
 
 /**
  * Repository for handling real-time transcription with Deepgram's streaming API.
@@ -37,29 +40,22 @@ import java.io.File
  * processes transcription results, and provides fallback mechanisms for network failures.
  */
 @Singleton
-class DeepgramRepository @Inject constructor() {
+class DeepgramRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val okHttpClient: OkHttpClient,
+    private val json: Json
+) {
     
     companion object {
         private const val TAG = "DeepgramRepository"
         private const val DEEPGRAM_WS_URL = "wss://api.deepgram.com/v1/listen"
         
-        // Hardcoded keywords as specified in the PRD
-        private val KEYWORDS = listOf(
-            "Aleisha" to 1.2,
-            "Te Anau" to 1.2,
-            "Iain Forrest" to 1.2
-        )
+        // Keywords are now loaded from resources
+        private var KEYWORDS: Map<String, Double> = emptyMap()
         
         // WebSocket connection timeout
         private const val CONNECTION_TIMEOUT_SECONDS = 30L
     }
-    
-    private val json = Json { ignoreUnknownKeys = true }
-    private val okHttpClient = OkHttpClient.Builder()
-        .connectTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-        .readTimeout(0, TimeUnit.SECONDS) // No read timeout for streaming
-        .writeTimeout(CONNECTION_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-        .build()
     
     private var webSocket: WebSocket? = null
     private var isConnected = false
@@ -111,6 +107,41 @@ class DeepgramRepository @Inject constructor() {
         CONNECTING,
         CONNECTED,
         ERROR
+    }
+    
+    init {
+        loadKeywordsFromResources()
+    }
+    
+    /**
+     * Load keywords from the string-array resource file.
+     * This makes them easily updatable without changing code.
+     */
+    private fun loadKeywordsFromResources() {
+        try {
+            val keywordArray = context.resources.getStringArray(R.array.deepgram_keywords)
+            val keywordMap = keywordArray.mapNotNull {
+                val parts = it.split(':')
+                if (parts.size == 2) {
+                    val keyword = parts[0]
+                    val intensifier = parts[1].toDoubleOrNull()
+                    if (intensifier != null) {
+                        keyword to intensifier
+                    } else {
+                        null
+                    }
+                } else {
+                    null
+                }
+            }.toMap()
+
+            KEYWORDS = keywordMap
+            Log.d(TAG, "Successfully loaded ${KEYWORDS.size} keywords from resources.")
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load keywords from resources. Using empty map.", e)
+            KEYWORDS = emptyMap()
+        }
     }
     
     /**
@@ -166,8 +197,8 @@ class DeepgramRepository @Inject constructor() {
         params.add("encoding=$encoding")
         
         // Language and model settings
-        params.add("language=en")
-        params.add("model=nova-2")
+        params.add("language=en-NZ")
+        params.add("model=nova-3")
         
         // Real-time streaming settings
         params.add("interim_results=true")
@@ -175,9 +206,9 @@ class DeepgramRepository @Inject constructor() {
         params.add("smart_format=true")
         params.add("punctuate=true")
         
-        // Add keywords with intensifiers
+        // Add keyterms with intensifiers
         KEYWORDS.forEach { (keyword, intensifier) ->
-            params.add("keywords=${keyword.replace(" ", "%20")}:$intensifier")
+            params.add("keyterm=${keyword.replace(" ", "%20")}:$intensifier")
         }
         
         return "$baseUrl?${params.joinToString("&")}"
@@ -349,31 +380,22 @@ class DeepgramRepository @Inject constructor() {
      * This method provides a clean interface for the ViewModel, hiding the complexity
      * of WebSocket management and returning the final transcript as a String.
      * 
+     * This method should be called AFTER stopAudioStreaming() has been called.
+     * 
      * @param fallbackFile File to save audio chunks for fallback transcription
      * @return The final transcribed text as a String
      */
     suspend fun transcribeStream(fallbackFile: java.io.File): String {
-        Log.d(TAG, "Starting streaming transcription")
+        Log.d(TAG, "Getting final streaming transcription results")
         var wavFile: File? = null
         
         return try {
-            // Clear any previous transcript
-            clearTranscript()
-            
-            // Start audio streaming
-            val streamingStarted = startAudioStreaming(fallbackFile)
-            if (!streamingStarted) {
-                throw Exception("Failed to start audio streaming")
-            }
-            
-            // Wait for transcription to complete
-            // This is a simplified implementation - in practice, this would be called
-            // when the user stops recording and we need to wait for final results
-            val streamingResult = waitForFinalTranscription()
+            // Try to get the final streaming transcript first
+            val streamingResult = getFinalStreamingTranscript()
             
             // If streaming was successful and we have results, return them
             if (streamingResult.isNotBlank()) {
-                Log.d(TAG, "Streaming transcription successful")
+                Log.d(TAG, "Streaming transcription successful: '$streamingResult'")
                 return streamingResult
             } else {
                 Log.w(TAG, "Streaming transcription returned empty result, attempting fallback")
@@ -408,18 +430,6 @@ class DeepgramRepository @Inject constructor() {
             // Clean up audio files
             cleanupAudioFiles(fallbackFile, wavFile)
         }
-    }
-    
-    /**
-     * Wait for the final transcription results.
-     * This method blocks until we have received final results or timeout.
-     */
-    private suspend fun waitForFinalTranscription(): String {
-        // In a real implementation, this would wait for the user to stop recording
-        // and then wait for any remaining final results from Deepgram
-        
-        // For now, return the current accumulated transcript
-        return getCurrentTranscript()
     }
     
     /**
@@ -508,14 +518,14 @@ class DeepgramRepository @Inject constructor() {
         val params = mutableListOf<String>()
         
         // Use similar parameters as streaming for consistency
-        params.add("language=en")
-        params.add("model=nova-2")
+        params.add("language=en-NZ")
+        params.add("model=nova-3")
         params.add("smart_format=true")
         params.add("punctuate=true")
         
-        // Add keywords with intensifiers (same as streaming)
+        // Add keyterms with intensifiers (same as streaming)
         KEYWORDS.forEach { (keyword, intensifier) ->
-            params.add("keywords=${keyword.replace(" ", "%20")}:$intensifier")
+            params.add("keyterm=${keyword.replace(" ", "%20")}:$intensifier")
         }
         
         return "$baseUrl?${params.joinToString("&")}"
@@ -589,6 +599,8 @@ class DeepgramRepository @Inject constructor() {
     
     /**
      * Stop audio streaming and return the fallback file.
+     * This method properly signals the end of the audio stream to Deepgram
+     * and waits for final transcription results before closing the connection.
      * 
      * @return The fallback audio file, or null if streaming wasn't active
      */
@@ -596,7 +608,7 @@ class DeepgramRepository @Inject constructor() {
         var fallbackFile: java.io.File? = null
         
         try {
-            // Stop streaming job
+            // Stop streaming job first to prevent more audio from being sent
             streamingJob?.cancel()
             streamingJob = null
             
@@ -606,16 +618,58 @@ class DeepgramRepository @Inject constructor() {
             }
             audioRecorder = null
             
-            // Close WebSocket connection
-            closeConnection()
+            // Send CloseStream message to Deepgram to signal end of audio
+            if (isConnected && webSocket != null) {
+                try {
+                    val closeStreamMessage = """{"type": "CloseStream"}"""
+                    webSocket?.send(closeStreamMessage)
+                    Log.d(TAG, "CloseStream message sent to Deepgram")
+                    
+                    // Give Deepgram a moment to process final results
+                    // Don't close connection immediately - let it close naturally or timeout
+                    Log.d(TAG, "Waiting for Deepgram to finalize transcription...")
+                    
+                } catch (e: Exception) {
+                    Log.e(TAG, "Failed to send CloseStream message", e)
+                    // If we can't send CloseStream, close connection immediately
+                    closeConnection()
+                }
+            } else {
+                Log.d(TAG, "WebSocket not connected, skipping CloseStream message")
+            }
             
-            Log.d(TAG, "Audio streaming stopped")
+            Log.d(TAG, "Audio streaming stopped, waiting for final transcription results")
             
         } catch (e: Exception) {
             Log.e(TAG, "Error stopping audio streaming", e)
+            // Ensure connection is closed on error
+            closeConnection()
         }
         
         return fallbackFile
+    }
+    
+    /**
+     * Get the final transcript from the current streaming session.
+     * This should be called after stopAudioStreaming() to get the complete results.
+     * 
+     * @return The final transcribed text as a String
+     */
+    suspend fun getFinalStreamingTranscript(): String {
+        // Wait a moment for any final results to arrive after CloseStream
+        kotlinx.coroutines.delay(2000) // 2 second timeout for final results
+        
+        // Get the final transcript
+        val finalTranscript = getCurrentTranscript()
+        
+        // Now close the connection since we have the final results
+        closeConnection()
+        
+        // Mark transcription as complete
+        _isTranscribing.value = false
+        
+        Log.d(TAG, "Final streaming transcript: '$finalTranscript'")
+        return finalTranscript
     }
     
     /**

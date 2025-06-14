@@ -49,6 +49,7 @@ import com.editecho.prompt.ToneProfile
 fun EditEchoOverlayContent(
     recordingState: RecordingState,
     toneState: ToneState,
+    isTranscribing: Boolean,
     refinedText: String,
     selectedTone: ToneProfile,
     polishLevel: Int,
@@ -83,6 +84,7 @@ fun EditEchoOverlayContent(
                 EditedMessageBox(
                     recordingState = recordingState,
                     toneState = toneState,
+                    isTranscribing = isTranscribing,
                     editedText = refinedText,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -180,6 +182,7 @@ fun EditEchoOverlay(
     val context = LocalContext.current
     val recordingState by viewModel.recordingState.collectAsState()
     val toneState by viewModel.toneState.collectAsState()
+    val isTranscribing by viewModel.isTranscribing.collectAsState()
     // Legacy voiceSettings removed in Voice Engine 3.0
     val refinedText by viewModel.refinedText.collectAsState()
     
@@ -270,6 +273,7 @@ fun EditEchoOverlay(
                 EditEchoOverlayContent(
                     recordingState = recordingState,
                     toneState = toneState,
+                    isTranscribing = isTranscribing,
                     refinedText = refinedText,
                     selectedTone = selectedTone,
                     polishLevel = polishLevel,

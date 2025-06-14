@@ -57,12 +57,12 @@ This task list is based on the PRD for implementing real-time transcription and 
   - [x] 4.6 Remember to clean up the locally saved audio file after the transcription process (whether successful or failed) is complete.
   - [x] 4.7 Ensure the app builds successfully using DevDebug.
 
-- [ ] **5.0 Update UI and ViewModel**
-  - [ ] 5.1 In `EditEchoOverlayViewModel`, replace the call to `whisperRepo.transcribe()` with the new method from `DeepgramRepository`.
-  - [ ] 5.2 Add a new state to `RecordingState` or a new `StateFlow<Boolean>` in the ViewModel called `isTranscribing` to track when the first partial result is received from Deepgram.
-  - [ ] 5.3 Modify `EditedMessageBox.kt` to observe the new state. It should display "Recording )" initially, and then both "Recording )" and "Transcribing )" on separate lines once the `isTranscribing` state is true.
-  - [ ] 5.4 Update the logic so that when the user stops recording, the "Recording" text disappears, but "Transcribing" remains until the final result is processed.
-  - [ ] 5.5 Implement proper handling of interim transcription results in the UI - decide whether to show live interim results to user or keep them hidden as specified in the PRD.
-  - [ ] 5.6 Add proper WebSocket connection state handling in the ViewModel to gracefully handle connection failures and reconnection attempts.
-  - [ ] 5.7 Confirm the final transcript is passed to the Claude editing pipeline as before and that the `refinedText` is updated correctly.
-  - [ ] 5.8 Ensure the entire application builds using DevDebug and runs successfully, and test the end-to-end flow including error scenarios and fallback mechanisms. 
+- [x] **5.0 Update UI and ViewModel**
+  - [x] 5.1 In `EditEchoOverlayViewModel`, replace the call to `whisperRepo.transcribe()` with the new method from `DeepgramRepository`.
+  - [x] 5.2 Add a new state to `RecordingState` or a new `StateFlow<Boolean>` in the ViewModel called `isTranscribing` to track when the first partial result is received from Deepgram.
+  - [x] 5.3 Modify `EditedMessageBox.kt` to observe the new state. It should display "Recording )" initially, and then both "Recording )" and "Transcribing )" on separate lines once the `isTranscribing` state is true.
+  - [ ] 5.4 **TEST**: Record a 30+ second audio clip and verify the UI flow shows: "Recording )" → "Recording )\nTranscribing )" → "Transcribing )" → "Editing )" → final edited text. Confirm transcription completes ~1 second after recording stops.
+  - [ ] 5.5 **TEST**: Verify transcription speed improvement compared to previous Whisper batch processing. Test with various recording lengths (5s, 30s, 60s+) and measure time from recording stop to transcription complete.
+  - [ ] 5.6 **TEST**: Test edge cases and error scenarios: network disconnection during recording, very short recordings (<1s), very long recordings (>5min), microphone permission revoked mid-recording, background app switching.
+  - [ ] 5.7 **TEST**: Verify the complete end-to-end flow works correctly: recording → real-time transcription → Voice Engine 3.0 editing → clipboard copy. Confirm final edited text quality matches previous Whisper results.
+  - [ ] 5.8 **TEST**: Test fallback scenarios by simulating network issues during streaming. Verify automatic reconnection attempts work and batch API fallback produces correct results when streaming fails completely. 

@@ -3,8 +3,6 @@ package com.editecho.view
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.media.MediaRecorder
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
@@ -14,7 +12,7 @@ import com.editecho.data.VoiceDNARepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
 import com.editecho.network.ClaudeCompletionClient
-import com.editecho.network.WhisperRepository
+import com.editecho.network.DeepgramRepository
 import com.editecho.prompt.ToneProfile
 
 import com.editecho.prompt.VoicePromptBuilder
@@ -51,7 +49,7 @@ sealed class ToneState {
 @HiltViewModel
 class EditEchoOverlayViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val whisperRepo: WhisperRepository,
+    private val deepgramRepo: DeepgramRepository,
     private val assistant: AssistantApiClient,
     private val chatCompletionClient: ChatCompletionClient,
     private val claudeCompletionClient: ClaudeCompletionClient,
@@ -63,9 +61,8 @@ class EditEchoOverlayViewModel @Inject constructor(
         private const val TAG = "EditEchoViewModel"
     }
 
-    /* Media-recorder stuff */
-    private var mediaRecorder: MediaRecorder? = null
-    private var audioFile: File? = null
+    /* Deepgram streaming audio recording */
+    private var fallbackAudioFile: File? = null
 
     /* UI state */
     private val _recordingState = MutableStateFlow<RecordingState>(RecordingState.Idle)
@@ -80,7 +77,9 @@ class EditEchoOverlayViewModel @Inject constructor(
     private val _refinedText = MutableStateFlow("")
     val refinedText: StateFlow<String> = _refinedText.asStateFlow()
 
-
+    // New state for tracking when transcription starts (sub-task 5.2)
+    private val _isTranscribing = MutableStateFlow(false)
+    val isTranscribing: StateFlow<Boolean> = _isTranscribing.asStateFlow()
     
     // Voice Engine 3.0 state - tone selection and polish level
     private val _selectedTone = MutableStateFlow(ToneProfile.getDefault())
@@ -186,25 +185,28 @@ class EditEchoOverlayViewModel @Inject constructor(
 
     fun startRecording() = viewModelScope.launch {
         try {
-            audioFile = File(context.cacheDir, "audio_record.m4a")
-            mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                MediaRecorder(context)
+            // Create fallback file for Deepgram streaming
+            fallbackAudioFile = File(context.cacheDir, "deepgram_fallback_${System.currentTimeMillis()}.pcm")
+            
+            // Clear previous transcription state
+            _transcribedText.value = ""
+            _refinedText.value = ""
+            _isTranscribing.value = false
+            
+            // Start Deepgram streaming
+            val streamingStarted = deepgramRepo.startAudioStreaming(fallbackAudioFile!!)
+            
+            if (streamingStarted) {
+                _recordingState.value = RecordingState.Recording
+                Log.d(TAG, "Deepgram streaming started successfully")
+                
+                // Observe transcription state from Deepgram
+                observeDeepgramTranscription()
             } else {
-                @Suppress("DEPRECATION")
-                MediaRecorder()
-            }.apply {
-                setAudioSource(MediaRecorder.AudioSource.MIC)
-                setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-                setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-                setAudioEncodingBitRate(128_000)
-                setAudioSamplingRate(44_100)
-                setAudioChannels(1)
-                setOutputFile(audioFile?.absolutePath)
-                prepare()
-                start()
+                throw Exception("Failed to start Deepgram audio streaming")
             }
-            _recordingState.value = RecordingState.Recording
-        } catch (e: IOException) {
+            
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to start recording", e)
             _recordingState.value = RecordingState.Error("Start recording error: ${e.message}")
         }
@@ -212,24 +214,47 @@ class EditEchoOverlayViewModel @Inject constructor(
 
     fun stopRecording() = viewModelScope.launch {
         try {
-            mediaRecorder?.apply {
-                stop()
-                release()
-            }
-            mediaRecorder = null
+            // Stop Deepgram streaming - this sends CloseStream message and waits for final results
+            val finalFallbackFile = deepgramRepo.stopAudioStreaming()
+            
+            // Update UI state - Recording stops, but Transcribing continues
             _recordingState.value = RecordingState.Processing
-            transcribeAndRefine()
-        } catch (e: IOException) {
+            
+            Log.d(TAG, "Recording stopped, waiting for final transcription results...")
+            
+            // Get the final transcript from Deepgram (this will wait for final results)
+            transcribeAndRefine(finalFallbackFile)
+            
+        } catch (e: Exception) {
             Log.e(TAG, "Failed to stop recording", e)
             _recordingState.value = RecordingState.Error("Stop recording error: ${e.message}")
+            _isTranscribing.value = false // Reset transcribing state on error
+        }
+    }
+    
+    /**
+     * Observe Deepgram transcription state to update isTranscribing flag.
+     */
+    private fun observeDeepgramTranscription() {
+        viewModelScope.launch {
+            deepgramRepo.hasReceivedFirstResult.collect { hasFirstResult ->
+                if (hasFirstResult && !_isTranscribing.value) {
+                    _isTranscribing.value = true
+                    Log.d(TAG, "First transcription result received, setting isTranscribing = true")
+                }
+            }
         }
     }
 
     /* ---------- Core flow ---------- */
-    private fun transcribeAndRefine() = viewModelScope.launch {
+    private fun transcribeAndRefine(fallbackFile: File?) = viewModelScope.launch {
         try {
-            val file = audioFile ?: error("No audio file")
-            val transcript = withContext(Dispatchers.IO) { whisperRepo.transcribe(file) }
+            val file = fallbackFile ?: error("No fallback audio file")
+            
+            Log.d(TAG, "Getting final transcript from Deepgram...")
+            val transcript = withContext(Dispatchers.IO) { deepgramRepo.transcribeStream(file) }
+            
+            Log.d(TAG, "Final transcript received: '$transcript'")
             
             // Set transcribed text for UI display
             _transcribedText.value = transcript
@@ -237,9 +262,12 @@ class EditEchoOverlayViewModel @Inject constructor(
             // Log the transcription to history
             appendToHistory("Transcription", transcript)
             
-            // Set both states to Processing to show "Editing" state
+            // Transcription is complete, now start editing
+            _isTranscribing.value = false // Transcribing is done
             _recordingState.value = RecordingState.Idle
             _toneState.value = ToneState.Processing
+            
+            Log.d(TAG, "Starting Voice Engine 3.0 editing...")
             
             // Clear previous refined text
             _refinedText.value = ""
@@ -334,9 +362,9 @@ class EditEchoOverlayViewModel @Inject constructor(
     /* ---------- Cleanup ---------- */
     override fun onCleared() {
         super.onCleared()
-        mediaRecorder?.release()
-        mediaRecorder = null
-        audioFile?.delete()
-        audioFile = null
+        // Clean up Deepgram resources
+        deepgramRepo.closeConnection()
+        fallbackAudioFile?.delete()
+        fallbackAudioFile = null
     }
 }

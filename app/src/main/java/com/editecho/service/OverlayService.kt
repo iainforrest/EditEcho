@@ -47,7 +47,7 @@ import com.editecho.data.VoiceDNARepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
 import com.editecho.network.ClaudeCompletionClient
-import com.editecho.network.WhisperRepository
+import com.editecho.network.DeepgramRepository
 import com.editecho.ui.screens.EditEchoOverlayContent
 import com.editecho.ui.theme.EditEchoColors
 import com.editecho.view.EditEchoOverlayViewModel
@@ -142,7 +142,7 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
     private var overlayView: ComposeView? = null
     private var windowContext: Context? = null
 
-    @Inject lateinit var whisperRepo: WhisperRepository
+    @Inject lateinit var deepgramRepo: DeepgramRepository
     @Inject lateinit var assistant: AssistantApiClient
     @Inject lateinit var chatCompletionClient: ChatCompletionClient
     @Inject lateinit var claudeCompletionClient: ClaudeCompletionClient
@@ -189,7 +189,7 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
 
         editEchoOverlayViewModel = EditEchoOverlayViewModel(
             context = applicationContext,
-            whisperRepo = whisperRepo,
+            deepgramRepo = deepgramRepo,
             assistant = assistant,
             chatCompletionClient = chatCompletionClient,
             claudeCompletionClient = claudeCompletionClient,
@@ -346,6 +346,7 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                 setContent {
                     val recordingState by editEchoOverlayViewModel.recordingState.collectAsState()
                     val toneState by editEchoOverlayViewModel.toneState.collectAsState()
+                    val isTranscribing by editEchoOverlayViewModel.isTranscribing.collectAsState()
                     val refinedText by editEchoOverlayViewModel.refinedText.collectAsState()
                     
                     // Voice Engine 3.0 state
@@ -361,6 +362,7 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                         EditEchoOverlayContent(
                             recordingState = recordingState,
                             toneState = toneState,
+                            isTranscribing = isTranscribing,
                             refinedText = refinedText,
                             selectedTone = selectedTone,
                             polishLevel = polishLevel,

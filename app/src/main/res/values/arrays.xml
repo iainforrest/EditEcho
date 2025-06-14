@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="deepgram_keywords">
+        <!-- Each item is a keyword:intensifier pair -->
+        <item>Aleisha:1.8</item>
+        <item>Te Anau:1.8</item>
+        <item>Iain:1.8</item>
+        <item>Iain Forrest:1.8</item>
+        <item>Ellie:1.8</item>
+    </string-array>
+</resources> 

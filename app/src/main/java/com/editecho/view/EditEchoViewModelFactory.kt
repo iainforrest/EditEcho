@@ -8,14 +8,14 @@ import com.editecho.data.VoiceDNARepository
 import com.editecho.network.AssistantApiClient
 import com.editecho.network.ChatCompletionClient
 import com.editecho.network.ClaudeCompletionClient
-import com.editecho.network.WhisperRepository
+import com.editecho.network.DeepgramRepository
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 
 class EditEchoViewModelFactory @AssistedInject constructor(
     @Assisted private val context: Context,
-    private val whisperRepository: WhisperRepository,
+    private val deepgramRepository: DeepgramRepository,
     private val assistantApiClient: AssistantApiClient,
     private val chatCompletionClient: ChatCompletionClient,
     private val claudeCompletionClient: ClaudeCompletionClient,
@@ -27,7 +27,7 @@ class EditEchoViewModelFactory @AssistedInject constructor(
             @Suppress("UNCHECKED_CAST")
             return EditEchoOverlayViewModel(
                 context,
-                whisperRepository,
+                deepgramRepository,
                 assistantApiClient,
                 chatCompletionClient,
                 claudeCompletionClient,
