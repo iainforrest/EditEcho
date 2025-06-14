@@ -8,12 +8,13 @@ alwaysApply: false
 Guidelines for managing task lists in markdown files to track progress on completing a PRD
 
 ## Task Implementation
+- before starting 1.0 ensure you are working on a dev branch, not the main one. 
 - **One sub-task at a time:** Do **NOT** start the next sub‑task until you ask the user for permission and they say “yes” or "y"
 - **Completion protocol:**  
   1. When you finish a **sub‑task**, immediately mark it as completed by changing `[ ]` to `[x]`.  
   2. If **all** subtasks underneath a parent task are now `[x]`, also mark the **parent task** as completed.  
 - Stop after each sub‑task and wait for the user’s go‑ahead.
-- We are building an android app, A parent task is not complete until a test build has been successfully created. 
+- We are building an android app, A parent task is not complete until a test build of DevDebug has been successfully created. 
 
 ## Task List Maintenance
 

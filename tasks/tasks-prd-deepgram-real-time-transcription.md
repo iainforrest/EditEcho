@@ -6,8 +6,11 @@ This task list is based on the PRD for implementing real-time transcription and 
 
 - **`secrets.properties`** - Modified to include DEEPGRAM_API_KEY configuration.
 - **`app/build.gradle.kts`** - Modified to load and expose DEEPGRAM_API_KEY via BuildConfig. Existing OkHttp 4.12.0 dependency provides WebSocket support.
-- **`app/src/main/java/com/editecho/network/DeepgramRepository.kt`** - Created. Basic repository structure with placeholder methods for streaming and batch transcription.
+- **`app/src/main/java/com/editecho/network/DeepgramRepository.kt`** - Completed. Full WebSocket connection management, audio streaming integration, keyword boosting, connection state management, JSON response parsing, transcript accumulation with interim/final result handling, KeepAlive mechanism, and comprehensive error handling.
 - **`app/src/main/java/com/editecho/di/NetworkModule.kt`** - Modified to provide DeepgramRepository singleton instance via Hilt dependency injection.
+- **`app/src/main/java/com/editecho/util/StreamingAudioRecorder.kt`** - Created. New audio recorder that captures raw PCM chunks using AudioRecord instead of saving to file with MediaRecorder. Provides SharedFlow of audio chunks for real-time streaming.
+- **`app/src/main/java/com/editecho/network/dto/DeepgramResponse.kt`** - Created. Complete data classes for parsing Deepgram's JSON response format including transcription results, confidence scores, metadata, and utility extension functions.
+- **`app/src/main/java/com/editecho/util/AudioFormatConverter.kt`** - To be created. Utility for converting raw PCM audio chunks to WAV format for fallback batch API compatibility.
 - **`app/src/main/java/com/editecho/view/EditEchoOverlayViewModel.kt`** - To be modified to use the new `DeepgramRepository` and update the UI state according to the PRD.
 - **`app/src/main/java/com/editecho/util/AudioRecorder.kt`** - May need modification or replacement to provide raw audio data chunks instead of saving to a file. The existing `MediaRecorder` might not be suitable.
 - **`app/src/main/java/com/editecho/ui/components/EditedMessageBox.kt`** - To be modified to handle the new dual "Recording" / "Transcribing" UI state.
@@ -29,32 +32,37 @@ This task list is based on the PRD for implementing real-time transcription and 
   - [x] 1.4 Modify `app/src/main/java/com/editecho/di/NetworkModule.kt` to provide a singleton instance of `DeepgramRepository` using Hilt.
   - [x] 1.5 Ensure the app builds successfully with the new empty repository and Hilt module.
 
-- [ ] **2.0 Implement Real-time Audio Streaming & Keyword Boosting**
-  - [ ] 2.1 Modify the audio recording logic (likely in `EditEchoOverlayViewModel` or a new audio utility class) to capture raw audio chunks (e.g., using `AudioRecord`) instead of saving a complete file with `MediaRecorder`.
-  - [ ] 2.2 In `DeepgramRepository`, implement a method to initialize a WebSocket connection to Deepgram's streaming endpoint.
-  - [ ] 2.3 Construct the WebSocket URL to include the `keywords` query parameter with the hardcoded values: `keywords=Aleisha:1.2&keywords=Te Anau:1.2&keywords=Iain Forrest:1.2`. Use a moderate intensifier like `1.2` to start.
-  - [ ] 2.4 Implement the logic to send the raw audio chunks received from the microphone over the active WebSocket connection.
-  - [ ] 2.5 Ensure the app builds successfully after these changes.
+- [x] **2.0 Implement Real-time Audio Streaming & Keyword Boosting**
+  - [x] 2.1 Modify the audio recording logic (likely in `EditEchoOverlayViewModel` or a new audio utility class) to capture raw audio chunks (e.g., using `AudioRecord`) instead of saving a complete file with `MediaRecorder`.
+  - [x] 2.2 In `DeepgramRepository`, implement a method to initialize a WebSocket connection to Deepgram's streaming endpoint.
+  - [x] 2.3 Construct the WebSocket URL to include the `keywords` query parameter with the hardcoded values: `keywords=Aleisha:1.2&keywords=Te Anau:1.2&keywords=Iain Forrest:1.2`. Use a moderate intensifier like `1.2` to start.
+  - [x] 2.4 Implement the logic to send the raw audio chunks received from the microphone over the active WebSocket connection.
+  - [x] 2.5 Ensure the app builds successfully after these changes.
 
-- [ ] **3.0 Implement Transcription Result Handling**
-  - [ ] 3.1 In `DeepgramRepository`, implement the `onMessage` listener for the WebSocket.
-  - [ ] 3.2 Add logic to parse the incoming JSON messages from Deepgram, distinguishing between partial and final results using the `is_final` and `speech_final` flags.
-  - [ ] 3.3 Create a mechanism within the repository to accumulate the text from transcription results.
-  - [ ] 3.4 Create a public method in `DeepgramRepository` (e.g., `transcribeStream`) that hides the complexity and returns the final, complete transcript as a `String`. This ensures compatibility with the `ViewModel`.
-  - [ ] 3.5 Ensure the app builds successfully.
+- [x] **3.0 Implement Transcription Result Handling**
+  - [x] 3.1 In `DeepgramRepository`, implement the `onMessage` listener for the WebSocket.
+  - [x] 3.2 Add logic to parse the incoming JSON messages from Deepgram, distinguishing between partial and final results using the `is_final` and `speech_final` flags. Create data classes for Deepgram's response format including `type`, `channel.alternatives[0].transcript`, `confidence`, etc.
+  - [x] 3.3 Create a mechanism within the repository to accumulate the text from transcription results, properly handling interim results (append/replace logic) vs final results (commit to final transcript).
+  - [x] 3.4 Implement KeepAlive mechanism to send periodic ping messages when no audio data is being transmitted to prevent the 10-second timeout disconnection that Deepgram enforces.
+  - [x] 3.5 Create a public method in `DeepgramRepository` (e.g., `transcribeStream`) that hides the complexity and returns the final, complete transcript as a `String`. This ensures compatibility with the `ViewModel`.
+  - [x] 3.6 Add proper error handling for common Deepgram disconnection scenarios: no audio data timeout, invalid encoding parameters, and network connectivity issues.
+  - [x] 3.7 Ensure the app builds successfully using DevDebug.
 
 - [ ] **4.0 Implement Stream Failure Fallback**
-  - [ ] 4.1 While streaming is active, simultaneously save the captured audio chunks to a local file in the app's cache.
+  - [ ] 4.1 While streaming is active, simultaneously save the captured audio chunks to a local file in the app's cache. Convert raw PCM chunks to WAV format for compatibility with Deepgram's batch API.
   - [ ] 4.2 In `DeepgramRepository`, implement `onFailure` and `onClosing` listeners for the WebSocket to detect connection errors or unexpected closures.
-  - [ ] 4.3 If a stream fails, implement a fallback method in `DeepgramRepository` that sends the locally saved audio file to the Deepgram **Pre-recorded (Batch) Audio API**.
-  - [ ] 4.4 Ensure this fallback method returns a `String` transcript, just like the streaming method, to maintain a consistent interface for the ViewModel.
-  - [ ] 4.5 Remember to clean up the locally saved audio file after the transcription process (whether successful or failed) is complete.
-  - [ ] 4.6 Ensure the app builds successfully.
+  - [ ] 4.3 Implement automatic reconnection logic for transient network issues. Include exponential backoff and maximum retry attempts to handle temporary connectivity problems.
+  - [ ] 4.4 If a stream fails and reconnection is not possible, implement a fallback method in `DeepgramRepository` that sends the locally saved audio file (in WAV format) to the Deepgram **Pre-recorded (Batch) Audio API**.
+  - [ ] 4.5 Ensure this fallback method returns a `String` transcript, just like the streaming method, to maintain a consistent interface for the ViewModel.
+  - [ ] 4.6 Remember to clean up the locally saved audio file after the transcription process (whether successful or failed) is complete.
+  - [ ] 4.7 Ensure the app builds successfully using DevDebug.
 
 - [ ] **5.0 Update UI and ViewModel**
   - [ ] 5.1 In `EditEchoOverlayViewModel`, replace the call to `whisperRepo.transcribe()` with the new method from `DeepgramRepository`.
   - [ ] 5.2 Add a new state to `RecordingState` or a new `StateFlow<Boolean>` in the ViewModel called `isTranscribing` to track when the first partial result is received from Deepgram.
   - [ ] 5.3 Modify `EditedMessageBox.kt` to observe the new state. It should display "Recording )" initially, and then both "Recording )" and "Transcribing )" on separate lines once the `isTranscribing` state is true.
   - [ ] 5.4 Update the logic so that when the user stops recording, the "Recording" text disappears, but "Transcribing" remains until the final result is processed.
-  - [ ] 5.5 Confirm the final transcript is passed to the Claude editing pipeline as before and that the `refinedText` is updated correctly.
-  - [ ] 5.6 Ensure the entire application builds and runs successfully, and test the end-to-end flow. 
+  - [ ] 5.5 Implement proper handling of interim transcription results in the UI - decide whether to show live interim results to user or keep them hidden as specified in the PRD.
+  - [ ] 5.6 Add proper WebSocket connection state handling in the ViewModel to gracefully handle connection failures and reconnection attempts.
+  - [ ] 5.7 Confirm the final transcript is passed to the Claude editing pipeline as before and that the `refinedText` is updated correctly.
+  - [ ] 5.8 Ensure the entire application builds using DevDebug and runs successfully, and test the end-to-end flow including error scenarios and fallback mechanisms. 
