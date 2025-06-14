@@ -49,13 +49,10 @@ import com.editecho.prompt.ToneProfile
 fun EditEchoOverlayContent(
     recordingState: RecordingState,
     toneState: ToneState,
-    voiceSettings: VoiceSettings,
     refinedText: String,
     selectedTone: ToneProfile,
     polishLevel: Int,
     onDismiss: () -> Unit,
-    onFormalityChanged: (Int) -> Unit,
-    onPolishChanged: (Int) -> Unit,
     onToneSelected: (ToneProfile) -> Unit,
     onPolishLevelChanged: (Int) -> Unit,
     onStartRecording: () -> Unit,
@@ -111,66 +108,7 @@ fun EditEchoOverlayContent(
                         modifier = Modifier.fillMaxWidth()
                     )
                     
-                    // Legacy sliders for fallback (initially collapsed)
-                    var showLegacySliders by remember { mutableStateOf(false) }
-                    
-                    if (showLegacySliders) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = "Legacy Controls",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = EditEchoColors.PrimaryText.copy(alpha = 0.7f),
-                            modifier = Modifier.padding(bottom = 4.dp)
-                        )
-                        
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Formality", 
-                                style = MaterialTheme.typography.bodySmall,
-                                color = EditEchoColors.PrimaryText.copy(alpha = 0.7f),
-                                modifier = Modifier.width(65.dp)
-                            )
-                            Slider(
-                                value = voiceSettings.formality.toFloat(),
-                                onValueChange = { onFormalityChanged(it.toInt()) },
-                                valueRange = 0f..100f,
-                                steps = 100,
-                                modifier = Modifier.weight(1f).heightIn(min = 20.dp),
-                                colors = SliderDefaults.colors(
-                                    thumbColor = EditEchoColors.Accent.copy(alpha = 0.7f),
-                                    activeTrackColor = EditEchoColors.Accent.copy(alpha = 0.7f),
-                                    inactiveTrackColor = EditEchoColors.Accent.copy(alpha = 0.3f)
-                                )
-                            )
-                        }
-
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = "Polish", 
-                                style = MaterialTheme.typography.bodySmall,
-                                color = EditEchoColors.PrimaryText.copy(alpha = 0.7f),
-                                modifier = Modifier.width(65.dp)
-                            )
-                            Slider(
-                                value = voiceSettings.polish.toFloat(),
-                                onValueChange = { onPolishChanged(it.toInt()) },
-                                valueRange = 0f..100f,
-                                steps = 100,
-                                modifier = Modifier.weight(1f).heightIn(min = 20.dp),
-                                colors = SliderDefaults.colors(
-                                    thumbColor = EditEchoColors.Accent.copy(alpha = 0.7f),
-                                    activeTrackColor = EditEchoColors.Accent.copy(alpha = 0.7f),
-                                    inactiveTrackColor = EditEchoColors.Accent.copy(alpha = 0.3f)
-                                )
-                            )
-                        }
-                    }
+                    // Legacy sliders removed in Voice Engine 3.0
                 }
             }
             
@@ -242,7 +180,7 @@ fun EditEchoOverlay(
     val context = LocalContext.current
     val recordingState by viewModel.recordingState.collectAsState()
     val toneState by viewModel.toneState.collectAsState()
-    val voiceSettings by viewModel.voiceSettings.collectAsState()
+    // Legacy voiceSettings removed in Voice Engine 3.0
     val refinedText by viewModel.refinedText.collectAsState()
     
     // Voice Engine 3.0 state
@@ -331,13 +269,10 @@ fun EditEchoOverlay(
                 EditEchoOverlayContent(
                     recordingState = recordingState,
                     toneState = toneState,
-                    voiceSettings = voiceSettings,
                     refinedText = refinedText,
                     selectedTone = selectedTone,
                     polishLevel = polishLevel,
                     onDismiss = onDismiss,
-                    onFormalityChanged = viewModel::onFormalityChanged,
-                    onPolishChanged = viewModel::onPolishChanged,
                     onToneSelected = viewModel::onToneSelected,
                     onPolishLevelChanged = viewModel::onPolishLevelChanged,
                     onStartRecording = { startRecording() },

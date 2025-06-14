@@ -314,7 +314,6 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                 setContent {
                     val recordingState by editEchoOverlayViewModel.recordingState.collectAsState()
                     val toneState by editEchoOverlayViewModel.toneState.collectAsState()
-                    val voiceSettings by editEchoOverlayViewModel.voiceSettings.collectAsState()
                     val refinedText by editEchoOverlayViewModel.refinedText.collectAsState()
                     
                     // Voice Engine 3.0 state
@@ -330,7 +329,6 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                         EditEchoOverlayContent(
                             recordingState = recordingState,
                             toneState = toneState,
-                            voiceSettings = voiceSettings,
                             refinedText = refinedText,
                             selectedTone = selectedTone,
                             polishLevel = polishLevel,
@@ -341,8 +339,6 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
                                     startService(intent)
                                 }, 100)
                             },
-                            onFormalityChanged = editEchoOverlayViewModel::onFormalityChanged,
-                            onPolishChanged = editEchoOverlayViewModel::onPolishChanged,
                             onToneSelected = editEchoOverlayViewModel::onToneSelected,
                             onPolishLevelChanged = editEchoOverlayViewModel::onPolishLevelChanged,
                             onStartRecording = { editEchoOverlayViewModel.startRecording() },
