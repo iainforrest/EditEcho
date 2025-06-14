@@ -42,13 +42,16 @@ android {
     compileSdk  = 34
 
     defaultConfig {
-        applicationId = "com.editecho.dev.debug"
-        minSdk        = 26
-        targetSdk     = 34
-        versionCode   = 1
-        versionName   = "0.4"
+        applicationId = "com.editecho"
+        minSdk = 31
+        targetSdk = 34
+        versionCode = 5
+        versionName = "0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables {
+            useSupportLibrary = true
+        }
 
         buildConfigField(
             "String",
