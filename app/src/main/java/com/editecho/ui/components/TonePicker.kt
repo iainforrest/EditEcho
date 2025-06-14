@@ -3,6 +3,7 @@ package com.editecho.ui.components
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.*
@@ -43,18 +44,14 @@ fun TonePicker(
             verticalAlignment = Alignment.Top
         ) {
             // Dropdown menu (45% width)
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = it },
-                modifier = Modifier.weight(0.45f)
-            ) {
+            Box(modifier = Modifier.weight(0.45f)) {
                 // Custom dropdown button with minimal padding
                 Surface(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .menuAnchor()
                         .height(36.dp) // Fixed height instead of heightIn
-                        .clip(RoundedCornerShape(4.dp)),
+                        .clip(RoundedCornerShape(4.dp))
+                        .clickable { expanded = !expanded },
                     color = MaterialTheme.colorScheme.surface,
                     border = BorderStroke(
                         width = 1.dp,
@@ -86,7 +83,7 @@ fun TonePicker(
                     }
                 }
                 
-                ExposedDropdownMenu(
+                KeyboardAwareDropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false },
                     modifier = Modifier.fillMaxWidth()

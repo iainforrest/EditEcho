@@ -249,6 +249,7 @@ fun EditEchoOverlay(
             usePlatformDefaultWidth = false
         )
     ) {
+        Log.d("EditEchoOverlay", "⛔️ EditEchoOverlay (Dialog) is the active implementation. This is likely incorrect.")
         Box(
             modifier = Modifier
                 .fillMaxSize()

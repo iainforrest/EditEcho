@@ -57,6 +57,37 @@ import javax.inject.Inject
 /**
  * Android Foreground Service that manages a WindowManager-based overlay for EditEcho.
  * This service creates and manages a keyboard-style overlay positioned at the bottom of the screen.
+ *
+ * ## Keyboard and Inset Handling
+ *
+ * This service uses a `WindowManager` with a `ComposeView` to create the overlay. The keyboard
+ * interaction is handled differently based on the Android version:
+ *
+ * - **API 30+ (Android 11+):** A `setOnApplyWindowInsetsListener` is attached to the `ComposeView`.
+ *   This listener detects when the IME (Input Method Editor, i.e., the keyboard) is visible
+ *   and calculates its height. This height is then applied as bottom padding to the main `Card`
+ *   of the overlay, pushing the UI up to avoid being obscured by the keyboard.
+ *
+ * - **Below API 30:** The `WindowManager.LayoutParams` use the `SOFT_INPUT_ADJUST_RESIZE` flag,
+ *   which is the legacy method for telling the window to resize when the keyboard appears.
+ *
+ * ### Dropdown Menu Behavior
+ *
+ * The overlay window uses the `FLAG_NOT_FOCUSABLE` flag. This is necessary to allow users to
+ * interact with the application behind the overlay. However, this creates a challenge for
+ * dropdown menus, as they typically need to open in a new, focusable window.
+ *
+ * The standard `ExposedDropdownMenuBox` fails in this context because its popup is often
+ * positioned incorrectly or hidden behind the keyboard. To solve this, we use a custom
+ * `KeyboardAwareDropdownMenu` component. This component:
+ *
+ * 1.  Uses a standard `DropdownMenu`, which gives us more control over positioning.
+ * 2.  Listens to `WindowInsets.ime` to detect the keyboard's height.
+ * 3.  Manually calculates and applies a negative vertical offset to the dropdown, effectively
+ *     shifting it upwards to stay visible above the keyboard.
+ *
+ * This approach ensures the dropdown remains usable without interfering with the non-focusable
+ * nature of the main overlay window.
  * 
  * OVERLAY BEHAVIOR DOCUMENTATION:
  * 
@@ -169,6 +200,7 @@ class OverlayService : Service(), ViewModelStoreOwner, LifecycleOwner, SavedStat
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand: ${intent?.action}")
+        Log.d(TAG, "✅ OverlayService is the active implementation")
         lifecycleRegistry.currentState = Lifecycle.State.STARTED
         
         when (intent?.action) {
