@@ -22,10 +22,13 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import okhttp3.MediaType.Companion.toMediaType
 import okio.ByteString
+import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
+import java.io.File
 
 /**
  * Repository for handling real-time transcription with Deepgram's streaming API.
@@ -70,6 +73,13 @@ class DeepgramRepository @Inject constructor() {
     private var lastAudioSentTime = 0L
     private val keepAliveIntervalMs = 8000L // Send keepalive every 8 seconds
     private val audioTimeoutMs = 10000L // Deepgram timeout is ~10 seconds
+    
+    // Reconnection logic for handling transient network issues
+    private var reconnectionJob: Job? = null
+    private var reconnectionAttempts = 0
+    private val maxReconnectionAttempts = 3
+    private val baseReconnectionDelayMs = 1000L // Start with 1 second
+    private var isReconnecting = false
     
     // State flows for connection status and transcription results
     private val _connectionState = MutableStateFlow(ConnectionState.DISCONNECTED)
@@ -201,6 +211,7 @@ class DeepgramRepository @Inject constructor() {
     fun closeConnection() {
         try {
             stopKeepAlive() // Stop KeepAlive before closing
+            stopReconnection() // Stop any reconnection attempts
             webSocket?.close(1000, "Normal closure")
             webSocket = null
             isConnected = false
@@ -210,8 +221,6 @@ class DeepgramRepository @Inject constructor() {
             Log.e(TAG, "Error closing WebSocket connection", e)
         }
     }
-    
-
     
     /**
      * Clear the accumulated transcript and reset transcription state.
@@ -320,11 +329,23 @@ class DeepgramRepository @Inject constructor() {
             isConnected = false
             stopKeepAlive() // Stop KeepAlive on failure
             this@DeepgramRepository.webSocket = null
+            
+            // Attempt reconnection for recoverable errors
+            if (shouldAttemptReconnection(t)) {
+                audioRecorder?.let { recorder ->
+                    val audioConfig = recorder.getAudioConfig()
+                    Log.d(TAG, "Attempting reconnection due to recoverable error")
+                    attemptReconnection(audioConfig)
+                }
+            } else {
+                Log.d(TAG, "Error not recoverable, skipping reconnection")
+                _connectionState.value = ConnectionState.ERROR
+            }
         }
     }
     
     /**
-     * Transcribe audio using real-time streaming.
+     * Transcribe audio using real-time streaming with automatic fallback to batch transcription.
      * This method provides a clean interface for the ViewModel, hiding the complexity
      * of WebSocket management and returning the final transcript as a String.
      * 
@@ -333,6 +354,7 @@ class DeepgramRepository @Inject constructor() {
      */
     suspend fun transcribeStream(fallbackFile: java.io.File): String {
         Log.d(TAG, "Starting streaming transcription")
+        var wavFile: File? = null
         
         return try {
             // Clear any previous transcript
@@ -347,11 +369,44 @@ class DeepgramRepository @Inject constructor() {
             // Wait for transcription to complete
             // This is a simplified implementation - in practice, this would be called
             // when the user stops recording and we need to wait for final results
-            waitForFinalTranscription()
+            val streamingResult = waitForFinalTranscription()
+            
+            // If streaming was successful and we have results, return them
+            if (streamingResult.isNotBlank()) {
+                Log.d(TAG, "Streaming transcription successful")
+                return streamingResult
+            } else {
+                Log.w(TAG, "Streaming transcription returned empty result, attempting fallback")
+                throw Exception("Empty streaming result")
+            }
             
         } catch (e: Exception) {
-            Log.e(TAG, "Streaming transcription failed", e)
-            throw e
+            Log.e(TAG, "Streaming transcription failed, attempting batch fallback", e)
+            
+            try {
+                // Create WAV file from collected PCM chunks for batch transcription
+                wavFile = File(fallbackFile.parent, "${fallbackFile.nameWithoutExtension}.wav")
+                val wavCreated = audioRecorder?.createWavFile(wavFile) ?: false
+                
+                if (!wavCreated || wavFile?.exists() != true) {
+                    throw Exception("Failed to create WAV file for batch transcription")
+                }
+                
+                Log.d(TAG, "Created WAV file for batch transcription: ${wavFile.absolutePath}")
+                
+                // Attempt batch transcription
+                val batchResult = transcribeBatch(wavFile)
+                Log.d(TAG, "Batch transcription fallback successful")
+                return batchResult
+                
+            } catch (batchError: Exception) {
+                Log.e(TAG, "Both streaming and batch transcription failed", batchError)
+                throw Exception("Transcription failed: Streaming error: ${e.message}, Batch error: ${batchError.message}")
+            }
+            
+        } finally {
+            // Clean up audio files
+            cleanupAudioFiles(fallbackFile, wavFile)
         }
     }
     
@@ -382,16 +437,88 @@ class DeepgramRepository @Inject constructor() {
     }
     
     /**
-     * Placeholder method for batch transcription fallback.
-     * This will be implemented in sub-task 4.3.
+     * Fallback method for batch transcription using Deepgram's pre-recorded API.
+     * This is used when streaming fails and we need to transcribe the saved audio file.
      * 
-     * @param audioFile The audio file to transcribe
-     * @return The transcribed text
+     * @param audioFile The WAV audio file to transcribe
+     * @return The transcribed text as a String
      */
     suspend fun transcribeBatch(audioFile: java.io.File): String {
-        Log.d(TAG, "transcribeBatch called - placeholder implementation")
-        // TODO: Implement batch transcription fallback
-        return "Batch transcription placeholder"
+        Log.d(TAG, "Starting batch transcription fallback for file: ${audioFile.absolutePath}")
+        
+        return try {
+            // Validate the audio file
+            if (!audioFile.exists() || audioFile.length() == 0L) {
+                throw IOException("Audio file does not exist or is empty: ${audioFile.absolutePath}")
+            }
+            
+            Log.d(TAG, "Batch transcribing file: ${audioFile.name}, size: ${audioFile.length()} bytes")
+            
+            // Build the batch transcription URL with same parameters as streaming
+            val batchUrl = buildBatchTranscriptionUrl()
+            
+            // Create the request
+            val requestBody = okhttp3.MultipartBody.Builder()
+                .setType(okhttp3.MultipartBody.FORM)
+                .addFormDataPart(
+                    "audio",
+                    audioFile.name,
+                    okhttp3.RequestBody.create(
+                        "audio/wav".toMediaType(),
+                        audioFile
+                    )
+                )
+                .build()
+            
+            val request = okhttp3.Request.Builder()
+                .url(batchUrl)
+                .addHeader("Authorization", "Token ${BuildConfig.DEEPGRAM_API_KEY}")
+                .addHeader("Content-Type", "multipart/form-data")
+                .post(requestBody)
+                .build()
+            
+            // Execute the request
+            val response = okHttpClient.newCall(request).execute()
+            
+            if (!response.isSuccessful) {
+                throw IOException("Batch transcription failed: HTTP ${response.code} - ${response.message}")
+            }
+            
+            val responseBody = response.body?.string() ?: throw IOException("Empty response body")
+            Log.d(TAG, "Batch transcription response: $responseBody")
+            
+            // Parse the batch response (similar format to streaming)
+            val batchResponse = json.decodeFromString<DeepgramResponse>(responseBody)
+            val transcript = batchResponse.getTranscript()
+            
+            Log.d(TAG, "Batch transcription completed: '$transcript'")
+            return transcript
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Batch transcription failed", e)
+            throw Exception("Batch transcription failed: ${e.message}")
+        }
+    }
+    
+    /**
+     * Build the URL for Deepgram's pre-recorded (batch) transcription API.
+     */
+    private fun buildBatchTranscriptionUrl(): String {
+        val baseUrl = "https://api.deepgram.com/v1/listen"
+        val params = mutableListOf<String>()
+        
+        // Use similar parameters as streaming for consistency
+        params.add("language=en")
+        params.add("model=nova-2")
+        params.add("smart_format=true")
+        params.add("punctuate=true")
+        
+        // Add keywords with intensifiers (same as streaming)
+        KEYWORDS.forEach { (keyword, intensifier) ->
+            params.add("keywords=${keyword.replace(" ", "%20")}:$intensifier")
+        }
+        
+        return "$baseUrl?${params.joinToString("&")}"
     }
     
     /**
@@ -410,6 +537,9 @@ class DeepgramRepository @Inject constructor() {
         try {
             // Initialize audio recorder
             audioRecorder = StreamingAudioRecorder()
+            
+            // Reset reconnection state for fresh start
+            resetReconnectionState()
             
             // Initialize WebSocket connection with audio recorder's configuration
             val audioConfig = audioRecorder!!.getAudioConfig()
@@ -683,6 +813,94 @@ class DeepgramRepository @Inject constructor() {
             error.message?.contains("network", ignoreCase = true) == true -> true // Reconnect on network issues
             error.message?.contains("connection", ignoreCase = true) == true -> true // Reconnect on connection issues
             else -> true // Default to attempting reconnection
+        }
+    }
+    
+    /**
+     * Attempt to reconnect to Deepgram with exponential backoff.
+     */
+    private fun attemptReconnection(audioConfig: StreamingAudioRecorder.AudioConfig) {
+        if (isReconnecting || reconnectionAttempts >= maxReconnectionAttempts) {
+            Log.w(TAG, "Reconnection already in progress or max attempts reached")
+            return
+        }
+        
+        isReconnecting = true
+        reconnectionJob = CoroutineScope(Dispatchers.IO).launch {
+            while (reconnectionAttempts < maxReconnectionAttempts && !isConnected) {
+                try {
+                    reconnectionAttempts++
+                    val delayMs = baseReconnectionDelayMs * (1 shl (reconnectionAttempts - 1)) // Exponential backoff
+                    
+                    Log.d(TAG, "Reconnection attempt $reconnectionAttempts/$maxReconnectionAttempts in ${delayMs}ms")
+                    kotlinx.coroutines.delay(delayMs)
+                    
+                    // Attempt to reconnect
+                    val success = initializeWebSocketConnection(
+                        sampleRate = audioConfig.sampleRate,
+                        channels = audioConfig.channels,
+                        encoding = audioConfig.encoding
+                    )
+                    
+                    if (success) {
+                        Log.d(TAG, "Reconnection successful after $reconnectionAttempts attempts")
+                        reconnectionAttempts = 0
+                        isReconnecting = false
+                        return@launch
+                    }
+                    
+                } catch (e: Exception) {
+                    Log.e(TAG, "Reconnection attempt $reconnectionAttempts failed", e)
+                }
+            }
+            
+            // All reconnection attempts failed
+            Log.e(TAG, "All reconnection attempts failed. Falling back to batch transcription.")
+            isReconnecting = false
+            _connectionState.value = ConnectionState.ERROR
+        }
+    }
+    
+    /**
+     * Stop any ongoing reconnection attempts.
+     */
+    private fun stopReconnection() {
+        reconnectionJob?.cancel()
+        reconnectionJob = null
+        isReconnecting = false
+        reconnectionAttempts = 0
+        Log.d(TAG, "Reconnection attempts stopped")
+    }
+    
+    /**
+     * Reset reconnection state for a fresh start.
+     */
+    private fun resetReconnectionState() {
+        stopReconnection()
+        reconnectionAttempts = 0
+        isReconnecting = false
+    }
+    
+    /**
+     * Clean up temporary audio files after transcription.
+     */
+    private fun cleanupAudioFiles(fallbackFile: File?, wavFile: File?) {
+        try {
+            fallbackFile?.let { file ->
+                if (file.exists()) {
+                    val deleted = file.delete()
+                    Log.d(TAG, "Cleanup fallback file ${file.name}: ${if (deleted) "success" else "failed"}")
+                }
+            }
+            
+            wavFile?.let { file ->
+                if (file.exists()) {
+                    val deleted = file.delete()
+                    Log.d(TAG, "Cleanup WAV file ${file.name}: ${if (deleted) "success" else "failed"}")
+                }
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error during audio file cleanup", e)
         }
     }
 } 

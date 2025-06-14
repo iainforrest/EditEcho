@@ -6,11 +6,11 @@ This task list is based on the PRD for implementing real-time transcription and 
 
 - **`secrets.properties`** - Modified to include DEEPGRAM_API_KEY configuration.
 - **`app/build.gradle.kts`** - Modified to load and expose DEEPGRAM_API_KEY via BuildConfig. Existing OkHttp 4.12.0 dependency provides WebSocket support.
-- **`app/src/main/java/com/editecho/network/DeepgramRepository.kt`** - Completed. Full WebSocket connection management, audio streaming integration, keyword boosting, connection state management, JSON response parsing, transcript accumulation with interim/final result handling, KeepAlive mechanism, and comprehensive error handling.
+- **`app/src/main/java/com/editecho/network/DeepgramRepository.kt`** - Completed. Full WebSocket connection management, audio streaming integration, keyword boosting, connection state management, JSON response parsing, transcript accumulation with interim/final result handling, KeepAlive mechanism, comprehensive error handling, automatic reconnection with exponential backoff, and batch API fallback with cleanup.
 - **`app/src/main/java/com/editecho/di/NetworkModule.kt`** - Modified to provide DeepgramRepository singleton instance via Hilt dependency injection.
 - **`app/src/main/java/com/editecho/util/StreamingAudioRecorder.kt`** - Created. New audio recorder that captures raw PCM chunks using AudioRecord instead of saving to file with MediaRecorder. Provides SharedFlow of audio chunks for real-time streaming.
 - **`app/src/main/java/com/editecho/network/dto/DeepgramResponse.kt`** - Created. Complete data classes for parsing Deepgram's JSON response format including transcription results, confidence scores, metadata, and utility extension functions.
-- **`app/src/main/java/com/editecho/util/AudioFormatConverter.kt`** - To be created. Utility for converting raw PCM audio chunks to WAV format for fallback batch API compatibility.
+- **`app/src/main/java/com/editecho/util/AudioFormatConverter.kt`** - Created. Complete utility for converting raw PCM audio chunks to WAV format with proper header generation for Deepgram's batch API compatibility.
 - **`app/src/main/java/com/editecho/view/EditEchoOverlayViewModel.kt`** - To be modified to use the new `DeepgramRepository` and update the UI state according to the PRD.
 - **`app/src/main/java/com/editecho/util/AudioRecorder.kt`** - May need modification or replacement to provide raw audio data chunks instead of saving to a file. The existing `MediaRecorder` might not be suitable.
 - **`app/src/main/java/com/editecho/ui/components/EditedMessageBox.kt`** - To be modified to handle the new dual "Recording" / "Transcribing" UI state.
@@ -48,14 +48,14 @@ This task list is based on the PRD for implementing real-time transcription and 
   - [x] 3.6 Add proper error handling for common Deepgram disconnection scenarios: no audio data timeout, invalid encoding parameters, and network connectivity issues.
   - [x] 3.7 Ensure the app builds successfully using DevDebug.
 
-- [ ] **4.0 Implement Stream Failure Fallback**
-  - [ ] 4.1 While streaming is active, simultaneously save the captured audio chunks to a local file in the app's cache. Convert raw PCM chunks to WAV format for compatibility with Deepgram's batch API.
-  - [ ] 4.2 In `DeepgramRepository`, implement `onFailure` and `onClosing` listeners for the WebSocket to detect connection errors or unexpected closures.
-  - [ ] 4.3 Implement automatic reconnection logic for transient network issues. Include exponential backoff and maximum retry attempts to handle temporary connectivity problems.
-  - [ ] 4.4 If a stream fails and reconnection is not possible, implement a fallback method in `DeepgramRepository` that sends the locally saved audio file (in WAV format) to the Deepgram **Pre-recorded (Batch) Audio API**.
-  - [ ] 4.5 Ensure this fallback method returns a `String` transcript, just like the streaming method, to maintain a consistent interface for the ViewModel.
-  - [ ] 4.6 Remember to clean up the locally saved audio file after the transcription process (whether successful or failed) is complete.
-  - [ ] 4.7 Ensure the app builds successfully using DevDebug.
+- [x] **4.0 Implement Stream Failure Fallback**
+  - [x] 4.1 While streaming is active, simultaneously save the captured audio chunks to a local file in the app's cache. Convert raw PCM chunks to WAV format for compatibility with Deepgram's batch API.
+  - [x] 4.2 In `DeepgramRepository`, implement `onFailure` and `onClosing` listeners for the WebSocket to detect connection errors or unexpected closures.
+  - [x] 4.3 Implement automatic reconnection logic for transient network issues. Include exponential backoff and maximum retry attempts to handle temporary connectivity problems.
+  - [x] 4.4 If a stream fails and reconnection is not possible, implement a fallback method in `DeepgramRepository` that sends the locally saved audio file (in WAV format) to the Deepgram **Pre-recorded (Batch) Audio API**.
+  - [x] 4.5 Ensure this fallback method returns a `String` transcript, just like the streaming method, to maintain a consistent interface for the ViewModel.
+  - [x] 4.6 Remember to clean up the locally saved audio file after the transcription process (whether successful or failed) is complete.
+  - [x] 4.7 Ensure the app builds successfully using DevDebug.
 
 - [ ] **5.0 Update UI and ViewModel**
   - [ ] 5.1 In `EditEchoOverlayViewModel`, replace the call to `whisperRepo.transcribe()` with the new method from `DeepgramRepository`.

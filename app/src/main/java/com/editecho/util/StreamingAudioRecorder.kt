@@ -41,6 +41,10 @@ class StreamingAudioRecorder {
     private var fallbackFile: File? = null
     private var fallbackOutputStream: FileOutputStream? = null
     
+    // Collect PCM chunks for WAV conversion in case of fallback
+    private val pcmChunks = mutableListOf<ByteArray>()
+    private var audioConfig: AudioConfig? = null
+    
     // Flow for streaming audio chunks to consumers (like DeepgramRepository)
     private val _audioChunks = MutableSharedFlow<ByteArray>(
         extraBufferCapacity = 100 // Buffer up to 100 chunks if consumer is slow
@@ -71,6 +75,10 @@ class StreamingAudioRecorder {
         try {
             this.fallbackFile = fallbackFile
             this.fallbackOutputStream = FileOutputStream(fallbackFile)
+            
+            // Initialize audio configuration and clear previous chunks
+            audioConfig = getAudioConfig()
+            pcmChunks.clear()
             
             // Initialize AudioRecord
             audioRecord = AudioRecord(
@@ -161,10 +169,13 @@ class StreamingAudioRecorder {
                     // Create a copy of the buffer with only the bytes that were read
                     val audioChunk = buffer.copyOf(bytesRead)
                     
+                    // Collect chunk for WAV conversion
+                    pcmChunks.add(audioChunk.clone())
+                    
                     // Emit to streaming flow
                     _audioChunks.tryEmit(audioChunk)
                     
-                    // Save to fallback file
+                    // Save to fallback file (raw PCM)
                     fallbackOutputStream?.write(audioChunk)
                     
                 } else if (bytesRead < 0) {
@@ -213,6 +224,56 @@ class StreamingAudioRecorder {
             bitsPerSample = 16,
             encoding = "linear16" // Deepgram format
         )
+    }
+    
+    /**
+     * Get the collected PCM chunks for WAV conversion.
+     * 
+     * @return List of PCM audio chunks
+     */
+    fun getPcmChunks(): List<ByteArray> {
+        return pcmChunks.toList() // Return a copy to prevent modification
+    }
+    
+    /**
+     * Create a WAV file from the collected PCM chunks.
+     * 
+     * @param wavFile Output WAV file
+     * @return true if WAV file was created successfully, false otherwise
+     */
+    fun createWavFile(wavFile: File): Boolean {
+        return try {
+            val config = audioConfig ?: throw IllegalStateException("Audio configuration not available")
+            val converter = AudioFormatConverter()
+            
+            if (!converter.validateAudioParameters(config.sampleRate, config.channels)) {
+                throw IllegalArgumentException("Invalid audio parameters")
+            }
+            
+            converter.convertPcmToWav(
+                pcmChunks = pcmChunks,
+                outputFile = wavFile,
+                sampleRate = config.sampleRate,
+                channels = config.channels
+            )
+            
+            Log.d(TAG, "WAV file created successfully: ${wavFile.absolutePath}")
+            Log.d(TAG, "WAV file size: ${wavFile.length()} bytes")
+            true
+            
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to create WAV file", e)
+            false
+        }
+    }
+    
+    /**
+     * Get the duration of recorded audio in milliseconds.
+     */
+    fun getRecordingDurationMs(): Long {
+        val config = audioConfig ?: return 0L
+        val totalPcmSize = pcmChunks.sumOf { it.size }
+        return AudioFormatConverter().calculateDurationMs(totalPcmSize, config.sampleRate, config.channels)
     }
     
     /**
