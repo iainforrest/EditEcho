@@ -39,7 +39,8 @@ object VoicePromptBuilder {
             polishLevel = polishLevel,
             actualFormality = actualFormality,
             dnaSelection = dnaSelection,
-            rawText = rawText
+            rawText = rawText,
+            repository = repository
         )
     }
     
@@ -113,11 +114,13 @@ object VoicePromptBuilder {
         polishLevel: Int,
         actualFormality: Int,
         dnaSelection: FormalityMapper.DNASelection,
-        rawText: String
+        rawText: String,
+        repository: VoiceDNARepository
     ): String {
         val primaryDNA = dnaSelection.primaryDNA
         val fallbackDNA = dnaSelection.fallbackDNA
         val formalityBand = dnaSelection.formalityBand
+        val universalDNA = repository.getUniversalDNA()
         
         return when {
             // High confidence tone DNA available
@@ -128,7 +131,8 @@ object VoicePromptBuilder {
                     actualFormality = actualFormality,
                     toneDNA = primaryDNA,
                     formalityBandDNA = fallbackDNA,
-                    rawText = rawText
+                    rawText = rawText,
+                    universalDNA = universalDNA
                 )
             }
             
@@ -141,7 +145,8 @@ object VoicePromptBuilder {
                     formalityBandDNA = primaryDNA,
                     toneDNA = fallbackDNA,
                     formalityBand = formalityBand,
-                    rawText = rawText
+                    rawText = rawText,
+                    universalDNA = universalDNA
                 )
             }
             
@@ -151,7 +156,8 @@ object VoicePromptBuilder {
                     tone = tone,
                     polishLevel = polishLevel,
                     actualFormality = actualFormality,
-                    rawText = rawText
+                    rawText = rawText,
+                    universalDNA = universalDNA
                 )
             }
         }
@@ -166,7 +172,8 @@ object VoicePromptBuilder {
         actualFormality: Int,
         toneDNA: VoiceDNA,
         formalityBandDNA: VoiceDNA?,
-        rawText: String
+        rawText: String,
+        universalDNA: UniversalDNA?
     ): String {
         val formalityGuidance = formalityBandDNA?.let { band ->
             """
@@ -175,6 +182,8 @@ object VoicePromptBuilder {
             ${band.formalityShifts}
             """.trimIndent()
         } ?: ""
+        
+        val universalDNASnippet = buildUniversalDNASnippet(universalDNA)
         
         return """You are editing a voice transcription. Your task is to transform raw voice-to-text input into clear, coherent text while preserving the speaker's authentic voice.
 
@@ -189,8 +198,8 @@ object VoicePromptBuilder {
             - Use commas / periods; ≤1 semicolon per 2 sentences.  
             - If Polish ≥ 4 & ≥3 list items → bullet / line-break them.  
             - Output text only.
-            IMPORTANT: Don’t use em-dashes. Replace every — with a comma, semicolon, or parentheses.
-
+            IMPORTANT: Don't use em-dashes. Replace every — with a comma, semicolon, or parentheses.
+$universalDNASnippet
             TONE DNA PATTERNS (${toneDNA.tone}, confidence ${toneDNA.confidence}):
             
             FORMALITY SHIFTS:
@@ -227,7 +236,8 @@ object VoicePromptBuilder {
         formalityBandDNA: VoiceDNA,
         toneDNA: VoiceDNA?,
         formalityBand: FormalityMapper.FormalityBand?,
-        rawText: String
+        rawText: String,
+        universalDNA: UniversalDNA?
     ): String {
         val toneIntent = toneDNA?.let { tDNA ->
             """
@@ -240,6 +250,8 @@ object VoicePromptBuilder {
         
         TONE INTENT: Apply ${tone.displayName} communication intent using the above formality patterns.
         """.trimIndent()
+        
+        val universalDNASnippet = buildUniversalDNASnippet(universalDNA)
         
         return """You are editing a voice transcription. Your task is to transform raw voice-to-text input into clear, coherent text while preserving the speaker's authentic voice.
 
@@ -254,8 +266,8 @@ object VoicePromptBuilder {
             - Use commas / periods; ≤1 semicolon per 2 sentences.  
             - If Polish ≥ 4 & ≥3 list items → bullet / line-break them.  
             - Output text only.
-             IMPORTANT: Don’t use em-dashes. Replace every — with a comma, semicolon, or parentheses.
-
+             IMPORTANT: Don't use em-dashes. Replace every — with a comma, semicolon, or parentheses.
+$universalDNASnippet
             FORMALITY BAND PATTERNS (${formalityBandDNA.tone} - ${actualFormality}%, confidence ${formalityBandDNA.confidence}):
             
             FORMALITY SHIFTS:
@@ -289,9 +301,11 @@ object VoicePromptBuilder {
         tone: ToneProfile,
         polishLevel: Int,
         actualFormality: Int,
-        rawText: String
+        rawText: String,
+        universalDNA: UniversalDNA?
     ): String {
         val formalityContext = FormalityMapper.getFormalityContext(actualFormality)
+        val universalDNASnippet = buildUniversalDNASnippet(universalDNA)
         
         return """You are editing a voice transcription. Your task is to transform raw voice-to-text input into clear, coherent text while preserving the speaker's authentic voice.
 
@@ -306,8 +320,8 @@ object VoicePromptBuilder {
             - Use commas / periods; ≤1 semicolon per 2 sentences.  
             - If Polish ≥ 4 & ≥3 list items → bullet / line-break them.  
             - Output text only.
-             IMPORTANT: Don’t use em-dashes. Replace every — with a comma, semicolon, or parentheses.
-
+             IMPORTANT: Don't use em-dashes. Replace every — with a comma, semicolon, or parentheses.
+$universalDNASnippet
             TONE GUIDANCE: ${tone.displayName} - ${tone.description}
             FORMALITY GUIDANCE: ${formalityContext}
             POLISH LEVEL: ${polishLevel}% (${tone.lowMicroLabel} → ${tone.highMicroLabel})
@@ -318,6 +332,25 @@ object VoicePromptBuilder {
             $rawText
 
             Return only the edited text, nothing else.
+        """.trimIndent()
+    }
+    
+    /**
+     * Builds a reusable snippet for Universal DNA patterns.
+     * @param universalDNA The universal DNA patterns or null if not available
+     * @return Formatted string with universal rules or empty string if no patterns
+     */
+    private fun buildUniversalDNASnippet(universalDNA: UniversalDNA?): String {
+        if (universalDNA == null || universalDNA.patterns.isEmpty()) return ""
+        
+        val patterns = universalDNA.patterns.joinToString("\n") { "- $it" }
+        
+        return """
+
+            ---
+            UNIVERSAL VOICE RULES (Apply to all edits, but specific tone rules take priority):
+            $patterns
+            ---
         """.trimIndent()
     }
     

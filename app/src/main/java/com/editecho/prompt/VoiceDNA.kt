@@ -17,11 +17,22 @@ data class VoiceDNA(
 )
 
 /**
+ * Data class for universal DNA patterns that apply across all tones and formalities
+ */
+data class UniversalDNA(
+    val confidence: Float,
+    val description: String,
+    val patterns: List<String>,
+    val warnings: List<String>
+)
+
+/**
  * Container for all Voice DNA patterns loaded from JSON
  */
 data class VoiceDNACollection(
     val toneSpecificDNA: List<VoiceDNA>,
-    val formalityBandDNA: List<VoiceDNA>
+    val formalityBandDNA: List<VoiceDNA>,
+    val universalDNA: UniversalDNA?
 ) {
     /**
      * Get tone-specific DNA by tone name

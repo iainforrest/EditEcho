@@ -2,6 +2,7 @@ package com.editecho.data
 
 import com.editecho.prompt.VoiceDNA
 import com.editecho.prompt.VoiceDNACollection
+import com.editecho.prompt.UniversalDNA
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
@@ -140,7 +141,56 @@ class VoiceDNARepositoryTest {
             )
         )
         
-        return VoiceDNACollection(toneSpecificDNA, formalityBandDNA)
+        return VoiceDNACollection(toneSpecificDNA, formalityBandDNA, null)
+    }
+    
+    private fun createTestVoiceDNACollectionWithUniversal(): VoiceDNACollection {
+        val toneSpecificDNA = listOf(
+            VoiceDNA(
+                tone = "Casual",
+                confidence = 0.8f,
+                userFormalityRange = listOf(15, 25),
+                theoreticalRange = listOf(15, 35),
+                formalityShifts = "Test formality shifts",
+                polishPatterns = "Test polish patterns",
+                constants = "Test constants",
+                voiceMarkers = "Test voice markers with ish",
+                antiPatterns = "Test anti patterns",
+                sourceExampleIds = listOf(1, 2, 3)
+            )
+        )
+        
+        val formalityBandDNA = listOf(
+            VoiceDNA(
+                tone = "Low",
+                confidence = 0.3f,
+                userFormalityRange = listOf(15, 15),
+                theoreticalRange = listOf(0, 20),
+                formalityShifts = "Test formality shifts",
+                polishPatterns = "Test polish patterns",
+                constants = "Test constants",
+                voiceMarkers = "Test voice markers",
+                antiPatterns = "Test anti patterns",
+                sourceExampleIds = listOf(14, 15)
+            )
+        )
+        
+        val universalDNA = UniversalDNA(
+            confidence = 0.75f,
+            description = "Core patterns that persist across all communication regardless of tone or formality",
+            patterns = listOf(
+                "Strong preference for digits over spelled numbers",
+                "Heavy contraction use regardless of formality (I'll, I'm, won't, can't)",
+                "Line breaks separate distinct thoughts more than traditional paragraphs",
+                "Time format always digital with colon (6:15, 4:30)"
+            ),
+            warnings = listOf(
+                "Based on 20 examples spanning casual to mid-high formality",
+                "Question mark omission should be applied sparingly and only in casual contexts"
+            )
+        )
+        
+        return VoiceDNACollection(toneSpecificDNA, formalityBandDNA, universalDNA)
     }
     
     // ─── VoiceDNACollection Tests ──────────────────────────────────────────
@@ -356,5 +406,29 @@ class VoiceDNARepositoryTest {
         
         val supportiveDNA = collection.toneSpecificDNA.find { it.tone == "Supportive" }
         assertThat(supportiveDNA?.voiceMarkers).contains("Collaborative language")
+    }
+    
+    // ─── Universal DNA Tests ───────────────────────────────────────────────
+    
+    @Test
+    fun `getUniversalDNA should return null when no universal DNA is present`() {
+        val collection = createTestVoiceDNACollection()
+        
+        assertThat(collection.universalDNA).isNull()
+    }
+    
+    @Test
+    fun `getUniversalDNA should return expected data when universal DNA is present`() {
+        val collection = createTestVoiceDNACollectionWithUniversal()
+        
+        val universalDNA = collection.universalDNA
+        assertThat(universalDNA).isNotNull()
+        assertThat(universalDNA!!.confidence).isEqualTo(0.75f)
+        assertThat(universalDNA.description).contains("Core patterns that persist across all communication")
+        assertThat(universalDNA.patterns).hasSize(4)
+        assertThat(universalDNA.patterns).contains("Strong preference for digits over spelled numbers")
+        assertThat(universalDNA.patterns).contains("Heavy contraction use regardless of formality (I'll, I'm, won't, can't)")
+        assertThat(universalDNA.warnings).hasSize(2)
+        assertThat(universalDNA.warnings).contains("Based on 20 examples spanning casual to mid-high formality")
     }
 } 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.editecho.prompt.VoiceDNA
 import com.editecho.prompt.VoiceDNACollection
+import com.editecho.prompt.UniversalDNA
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -52,6 +53,7 @@ class VoiceDNARepository @Inject constructor(@ApplicationContext private val con
             
             Log.d(TAG, "Successfully loaded ${_voiceDNACollection?.toneSpecificDNA?.size ?: 0} tone-specific DNA patterns")
             Log.d(TAG, "Successfully loaded ${_voiceDNACollection?.formalityBandDNA?.size ?: 0} formality band DNA patterns")
+            Log.d(TAG, "Universal DNA loaded: ${_voiceDNACollection?.universalDNA != null}")
             
         } catch (e: Exception) {
             Log.e(TAG, "Failed to load Voice DNA patterns", e)
@@ -79,6 +81,15 @@ class VoiceDNARepository @Inject constructor(@ApplicationContext private val con
     fun getFormalityBandDNA(formalityLevel: Int): VoiceDNA? {
         val collection = loadVoiceDNAPatterns() ?: return null
         return collection.getFormalityBandDNA(formalityLevel)
+    }
+    
+    /**
+     * Get the universal DNA patterns that apply to all edits
+     * @return UniversalDNA or null if not found
+     */
+    fun getUniversalDNA(): UniversalDNA? {
+        val collection = loadVoiceDNAPatterns() ?: return null
+        return collection.universalDNA
     }
     
     /**
@@ -142,6 +153,7 @@ class VoiceDNARepository @Inject constructor(@ApplicationContext private val con
         return mapOf(
             "toneCount" to collection.toneSpecificDNA.size,
             "formalityBandCount" to collection.formalityBandDNA.size,
+            "universalDNALoaded" to (collection.universalDNA != null),
             "toneConfidences" to toneConfidences,
             "formalityRanges" to formalityRanges,
             "highConfidenceTones" to collection.toneSpecificDNA.filter { 

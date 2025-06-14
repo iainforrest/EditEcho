@@ -354,4 +354,126 @@ class VoicePromptBuilderTest {
             sourceExampleIds = listOf(4, 5, 6)
         )
     }
+    
+    private fun createTestUniversalDNA(): UniversalDNA {
+        return UniversalDNA(
+            confidence = 0.75f,
+            description = "Core patterns that persist across all communication",
+            patterns = listOf(
+                "Strong preference for digits over spelled numbers",
+                "Heavy contraction use regardless of formality (I'll, I'm, won't, can't)",
+                "Line breaks separate distinct thoughts more than traditional paragraphs",
+                "Time format always digital with colon (6:15, 4:30)"
+            ),
+            warnings = listOf(
+                "Based on 20 examples spanning casual to mid-high formality",
+                "Question mark omission should be applied sparingly"
+            )
+        )
+    }
+    
+    // ─── Universal DNA Integration Tests ───────────────────────────────────
+    
+    @Test
+    fun `buildPrompt should include universal DNA in high confidence tone prompts`() {
+        val mockRepository = mockk<VoiceDNARepository>()
+        val toneDNA = createTestToneDNA("Casual", 0.8f)
+        val universalDNA = createTestUniversalDNA()
+        
+        every { mockRepository.getToneDNA("Casual") } returns toneDNA
+        every { mockRepository.getFormalityBandDNA(any()) } returns null
+        every { mockRepository.getUniversalDNA() } returns universalDNA
+        
+        val prompt = VoicePromptBuilder.buildPrompt(
+            tone = ToneProfile.CASUAL,
+            polishLevel = 50,
+            rawText = "hey mate whats up",
+            repository = mockRepository
+        )
+        
+        // Should include universal DNA section
+        assertThat(prompt).contains("UNIVERSAL VOICE RULES (Apply to all edits, but specific tone rules take priority):")
+        assertThat(prompt).contains("- Strong preference for digits over spelled numbers")
+        assertThat(prompt).contains("- Heavy contraction use regardless of formality (I'll, I'm, won't, can't)")
+        assertThat(prompt).contains("- Line breaks separate distinct thoughts more than traditional paragraphs")
+        assertThat(prompt).contains("- Time format always digital with colon (6:15, 4:30)")
+        
+        // Should also include tone-specific patterns
+        assertThat(prompt).contains("TONE DNA PATTERNS (Casual, confidence 0.8)")
+    }
+    
+    @Test
+    fun `buildPrompt should include universal DNA in low confidence formality band prompts`() {
+        val mockRepository = mockk<VoiceDNARepository>()
+        val toneDNA = createTestToneDNA("Supportive", 0.3f)
+        val formalityBandDNA = createTestFormalityBandDNA("Low-Mid", 0.5f)
+        val universalDNA = createTestUniversalDNA()
+        
+        every { mockRepository.getToneDNA("Supportive") } returns toneDNA
+        every { mockRepository.getFormalityBandDNA(40) } returns formalityBandDNA
+        every { mockRepository.getUniversalDNA() } returns universalDNA
+        
+        val prompt = VoicePromptBuilder.buildPrompt(
+            tone = ToneProfile.SUPPORTIVE,
+            polishLevel = 50,
+            rawText = "i think we should help them out",
+            repository = mockRepository
+        )
+        
+        // Should include universal DNA section
+        assertThat(prompt).contains("UNIVERSAL VOICE RULES (Apply to all edits, but specific tone rules take priority):")
+        assertThat(prompt).contains("- Strong preference for digits over spelled numbers")
+        assertThat(prompt).contains("- Heavy contraction use regardless of formality (I'll, I'm, won't, can't)")
+        
+        // Should also include formality band patterns
+        assertThat(prompt).contains("FORMALITY BAND PATTERNS (Low-Mid - 40%, confidence 0.5)")
+    }
+    
+    @Test
+    fun `buildPrompt should include universal DNA in fallback prompts`() {
+        val mockRepository = mockk<VoiceDNARepository>()
+        val universalDNA = createTestUniversalDNA()
+        
+        every { mockRepository.getToneDNA("Neutral") } returns null
+        every { mockRepository.getFormalityBandDNA(any()) } returns null
+        every { mockRepository.getUniversalDNA() } returns universalDNA
+        
+        val prompt = VoicePromptBuilder.buildPrompt(
+            tone = ToneProfile.NEUTRAL,
+            polishLevel = 50,
+            rawText = "this is a test message",
+            repository = mockRepository
+        )
+        
+        // Should include universal DNA section
+        assertThat(prompt).contains("UNIVERSAL VOICE RULES (Apply to all edits, but specific tone rules take priority):")
+        assertThat(prompt).contains("- Strong preference for digits over spelled numbers")
+        assertThat(prompt).contains("- Time format always digital with colon (6:15, 4:30)")
+        
+        // Should also include fallback guidance
+        assertThat(prompt).contains("TONE GUIDANCE: Neutral - Plain, factual updates without subjective stance")
+    }
+    
+    @Test
+    fun `buildPrompt should handle missing universal DNA gracefully`() {
+        val mockRepository = mockk<VoiceDNARepository>()
+        val toneDNA = createTestToneDNA("Casual", 0.8f)
+        
+        every { mockRepository.getToneDNA("Casual") } returns toneDNA
+        every { mockRepository.getFormalityBandDNA(any()) } returns null
+        every { mockRepository.getUniversalDNA() } returns null
+        
+        val prompt = VoicePromptBuilder.buildPrompt(
+            tone = ToneProfile.CASUAL,
+            polishLevel = 50,
+            rawText = "hey mate whats up",
+            repository = mockRepository
+        )
+        
+        // Should not include universal DNA section when not available
+        assertThat(prompt).doesNotContain("UNIVERSAL VOICE RULES")
+        
+        // Should still include tone-specific patterns
+        assertThat(prompt).contains("TONE DNA PATTERNS (Casual, confidence 0.8)")
+    }
 } 
