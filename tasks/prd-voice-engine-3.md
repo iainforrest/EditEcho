@@ -48,7 +48,8 @@ Voice Engine 3.0 replaces the current universal formality + polish slider system
 2. User adjusts polish slider (micro-labels update automatically)
 3. User hits record and speaks
 4. Recording transcribed via existing Whisper AI
-5. Edited text appears and copies to clipboard
+5. Transcribed text + DNA and polish levels is sent to Claude Sonnet 4 and edited
+6. Edited text appears and copies to clipboard
 
 ### 3.2 Formality Mapping Requirements
 
@@ -75,11 +76,11 @@ actualFormality = minFormality + ((maxFormality - minFormality) * polishLevel / 
 
 **R3.3.1** For each edit request, determine DNA patterns to use:
 - **Primary**: Use tone-specific DNA (e.g., "Casual" DNA)
-- **Fallback**: If tone confidence < 0.8, also include formality band DNA
+- **Fallback**: If tone confidence < 0.7, also include formality band DNA
 
 **R3.3.2** Confidence-based blending logic:
-- **High tone confidence (≥0.8)**: Use tone DNA patterns with formality guidance
-- **Low tone confidence (<0.8)**: Use formality band DNA patterns with tone intent
+- **High tone confidence (≥0.7)**: Use tone DNA patterns with formality guidance
+- **Low tone confidence (<0.7)**: Use formality band DNA patterns with tone intent
 - **Very low confidence**: Use template prompts with minimal personalization
 
 **R3.3.3** Formality band DNA selection based on calculated formality level:

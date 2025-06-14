@@ -25,6 +25,10 @@ val claudeKey: String = properties.getProperty("CLAUDE_API_KEY", "").also {
     if (it.isBlank()) logger.warn("⚠️  CLAUDE_API_KEY is blank in secrets.properties")
 }
 
+val deepgramKey: String = properties.getProperty("DEEPGRAM_API_KEY", "").also {
+    if (it.isBlank()) logger.warn("⚠️  DEEPGRAM_API_KEY is blank in secrets.properties")
+}
+
 // Load keystore properties
 val keystoreFile = rootProject.file("app/keystore.properties")
 val keystoreProperties = Properties().apply {
@@ -54,6 +58,12 @@ android {
             "String",
             "CLAUDE_API_KEY",
             "\"$claudeKey\""
+        )
+        
+        buildConfigField(
+            "String",
+            "DEEPGRAM_API_KEY",
+            "\"$deepgramKey\""
         )
     }
 

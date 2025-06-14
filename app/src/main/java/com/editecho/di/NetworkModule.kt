@@ -4,6 +4,7 @@ import com.editecho.BuildConfig
 import com.editecho.network.ChatCompletionClient
 import com.editecho.network.ClaudeApi
 import com.editecho.network.ClaudeCompletionClient
+import com.editecho.network.DeepgramRepository
 import com.editecho.network.OpenAiChatApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -113,5 +114,11 @@ object NetworkModule {
     @Singleton
     fun provideClaudeCompletionClient(api: ClaudeApi, json: Json): ClaudeCompletionClient {
         return ClaudeCompletionClient(api, json)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDeepgramRepository(): DeepgramRepository {
+        return DeepgramRepository()
     }
 } 
