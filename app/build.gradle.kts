@@ -42,11 +42,13 @@ android {
     compileSdk  = 34
 
     defaultConfig {
-        applicationId = "com.editecho"
-        minSdk        = 31
+        applicationId = "com.editecho.dev.debug"
+        minSdk        = 26
         targetSdk     = 34
-        versionCode   = 4
-        versionName   = "0.3.1"
+        versionCode   = 1
+        versionName   = "0.4"
+
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField(
             "String",

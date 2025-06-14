@@ -188,7 +188,10 @@ class EditEchoOverlayViewModel @Inject constructor(
             // Create fallback file for Deepgram streaming
             fallbackAudioFile = File(context.cacheDir, "deepgram_fallback_${System.currentTimeMillis()}.pcm")
             
-            // Clear previous transcription state
+            // **Clear previous transcription state to prevent carry-over**
+            deepgramRepo.clearTranscript()
+            
+            // Clear previous UI state
             _transcribedText.value = ""
             _refinedText.value = ""
             _isTranscribing.value = false
